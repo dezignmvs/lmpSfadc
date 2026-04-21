@@ -236,7 +236,7 @@
             <div class="flex items-center gap-4">
                 <a href="https://sfadc.in" target="_blank"
                     class="hidden sm:flex border-2 border-brand-dark bg-brand-dark text-white px-5 py-2.5 text-sm font-bold hard-transition hover:bg-white hover:text-brand-dark capitalize">
-                    SFADC.in
+                    SEP Live Score
                 </a>
 
                 <div class="relative hidden-page animate-fade-in" id="nav-user-container">
@@ -1436,7 +1436,7 @@
             if (role === 'owner') {
                 if (ownerAuthStep === 1) {
                     // Hardcoded Owner Bypass Phase 1
-                    if (u === 'aslan' && p === '340') {
+                    if (u === 'fayizhudawi' && p === '8281501686') {
                         ownerAuthStep = 2;
                         document.getElementById('login-username-container').classList.add('hidden-page');
                         document.getElementById('login-password-container').classList.add('hidden-page');
@@ -1448,8 +1448,8 @@
                     return;
                 } else if (ownerAuthStep === 2) {
                     // Hardcoded Owner Bypass Phase 2
-                    if (passcode === 'Suhail@340') {
-                        appSession = { id: 'master-owner', role: 'owner', name: 'Master Owner', username: 'aslan' };
+                    if (passcode === 'Kfayiz521') {
+                        appSession = { id: 'master-owner', role: 'owner', name: 'Fayiz Hudawi', username: 'fayizhudawi' };
                         window.showPage('page-owner');
                     } else { window.showToast("Invalid Passcode.", "error"); }
                     return;
