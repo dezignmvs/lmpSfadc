@@ -1,0 +1,21 @@
+{
+  "name": "SFADC Leave Management System",
+  "short_name": "SFADC Leaves",
+  "description": "Leave Management System for SFADC Odamala",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FAFAFB",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
