@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Management System | SFADC</title>
+
+    <!-- PWA Manifest & Metadata -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192x192.png">
+
+    <!-- iOS Web App Configurations -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SFADC Leaves">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: '#05299E',
+                            watermelon: '#EE4266',
+                            golden: '#FFD23F',
+                            dark: '#111827',
+                            light: '#FAFAFB',
+                            white: '#FFFFFF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Satoshi', 'sans-serif'],
+                        clash: ['Clash Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Fontshare Fonts -->
+    <link
+        href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=clash-grotesk@400,500,600,700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background-color: #FAFAFB;
+            color: #111827;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .hidden-page {
+            display: none !important;
+        }
+
+        /* Neo-Brutalist Transitions (Flat) */
+        .hard-transition {
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        /* Modern Flat Inputs */
+        .input-flat {
+            background-color: #FFFFFF;
+            border: 2px solid #111827;
+            color: #111827;
+            border-radius: 0px;
+            padding: 0.875rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .input-flat:focus {
+            outline: none;
+            background-color: #F3F4F6;
+        }
+
+        .input-flat:disabled {
+            background-color: #e5e7eb;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        /* Checkbox styling */
+        input[type="checkbox"] {
+            accent-color: #05299E;
+            width: 1.25rem;
+            height: 1.25rem;
+            cursor: pointer;
+            border-radius: 0;
+            border: 2px solid #111827;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-enter {
+            animation: slideUp 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        .stagger-1 {
+            opacity: 0;
+            animation-delay: 50ms;
+        }
+
+        .stagger-2 {
+            opacity: 0;
+            animation-delay: 100ms;
+        }
+
+        .stagger-3 {
+            opacity: 0;
+            animation-delay: 150ms;
+        }
+
+        /* Brutalist Tabs */
+        .tab-btn {
+            border: 2px solid transparent;
+            color: #6B7280;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn.active {
+            border: 2px solid #111827;
+            border-bottom-color: #FAFAFB;
+            background: #FAFAFB;
+            color: #111827;
+            font-weight: 700;
+            z-index: 10;
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: #111827;
+            background: #e5e7eb;
+            border: 2px solid #111827;
+        }
+
+        /* Hide scrollbar for tabs */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Print Optimization */
+        @media print {
+
+            nav,
+            button,
+            input,
+            select,
+            .no-print,
+            .tab-btn,
+            .admin-toggles {
+                display: none !important;
+            }
+
+            body {
+                background-color: #FFFFFF;
+            }
+
+            .app-page,
+            .admin-tab-content {
+                display: none !important;
+            }
+
+            #page-admin,
+            #admin-tab-database {
+                display: block !important;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 2px solid #111827 !important;
+            }
+
+            th,
+            td {
+                border-bottom: 2px solid #111827;
+                padding: 8px;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col selection:bg-brand-golden selection:text-brand-dark relative">
+
+    <!-- Top Navigation (Neo-Brutalist Flat) -->
+    <nav class="bg-brand-white border-b-2 border-brand-dark sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
+            <!-- Left: Logo & Text -->
+            <div class="flex items-center gap-3 cursor-pointer group animate-fade-in"
+                onclick="window.showPage('page-home')">
+                <div class="w-4 h-4 bg-brand-golden border-2 border-brand-dark"></div>
+                <h1 class="text-[16px] sm:text-xl font-clash font-bold text-brand-dark capitalize">
+                    Leave Management System <span class="hidden sm:inline text-brand-blue">| SFADC Odamala</span>
+                </h1>
+            </div>
+
+            <!-- Right: Actions -->
+            <div class="flex items-center gap-4">
+                <a href="https://sfadc.in" target="_blank"
+                    class="hidden sm:flex border-2 border-brand-dark bg-brand-dark text-white px-5 py-2.5 text-sm font-bold hard-transition hover:bg-white hover:text-brand-dark capitalize">
+                    SFADC.in
+                </a>
+
+                <div class="relative hidden-page animate-fade-in" id="nav-user-container">
+                    <button id="nav-avatar" onclick="toggleUserMenu()"
+                        class="w-12 h-12 bg-brand-golden text-brand-dark font-clash font-bold flex items-center justify-center border-2 border-brand-dark hard-transition hover:bg-brand-dark hover:text-brand-golden text-lg">
+                        U
+                    </button>
+
+                    <div id="user-dropdown"
+                        class="absolute right-0 mt-4 w-64 bg-brand-white border-2 border-brand-dark py-3 hidden opacity-0 transition-all duration-200 z-50 origin-top-right">
+                        <div class="px-6 py-3 mb-2">
+                            <p class="text-xs text-brand-blue font-black mb-1 capitalize" id="dropdown-role">Role</p>
+                            <p class="text-base font-clash font-bold text-brand-dark truncate capitalize"
+                                id="dropdown-name">User Name</p>
+                        </div>
+                        <div class="h-0.5 bg-brand-dark w-full mb-2"></div>
+                        <button onclick="window.handleLogout()"
+                            class="w-full text-left px-6 py-3 text-brand-white bg-brand-watermelon hover:bg-brand-dark text-sm font-bold flex items-center gap-3 hard-transition border-y-2 border-transparent">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" x2="9" y1="12" y2="12" />
+                            </svg>
+                            Logout Securely
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 mt-4 overflow-x-hidden">
+
+        <!-- 1. HOME / LANDING -->
+        <div id="page-home" class="app-page max-w-lg mx-auto mt-12 sm:mt-20 text-center">
+            <div class="mb-12 animate-fade-in border-2 border-brand-dark bg-white p-8">
+                <div
+                    class="inline-flex items-center justify-center w-16 h-16 bg-brand-golden border-2 border-brand-dark text-brand-dark mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                </div>
+                <h2 class="text-4xl sm:text-5xl font-clash font-black text-brand-dark mb-4 capitalize">Access <span
+                        class="text-brand-blue">Portal</span></h2>
+                <p class="text-brand-dark text-base font-bold capitalize">Select Your Authorized Role To Manage Leaves.
+                </p>
+            </div>
+
+            <div class="space-y-6 max-w-sm mx-auto">
+                <!-- Admin Button -->
+                <button onclick="window.openLogin('admin')"
+                    class="hard-transition animate-fade-in stagger-1 group relative w-full flex items-center justify-between p-5 bg-brand-blue text-white border-2 border-brand-dark hover:bg-brand-dark">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white border-2 border-brand-dark text-brand-blue">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-clash font-black text-lg capitalize">Admin</h3>
+                            <p class="text-xs font-bold mt-0.5 opacity-90 capitalize">Manage Records & System</p>
+                        </div>
+                    </div>
+                    <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="m9 18 6-6-6-6" />
+                    </svg>
+                </button>
+
+                <!-- Student Button -->
+                <button onclick="window.openLogin('user')"
+                    class="hard-transition animate-fade-in stagger-2 group relative w-full flex items-center justify-between p-5 bg-brand-golden text-brand-dark border-2 border-brand-dark hover:bg-brand-dark hover:text-brand-golden">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-white border-2 border-brand-dark text-brand-dark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                                <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                            </svg>
+                        </div>
+                        <div class="text-left">
+                            <h3 class="font-clash font-black text-lg capitalize">Student</h3>
+                            <p class="text-xs font-bold mt-0.5 opacity-90 capitalize">View Personal Ledger</p>
+                        </div>
+                    </div>
+                    <svg class="text-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="m9 18 6-6-6-6" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. LOGIN -->
+        <div id="page-login" class="app-page hidden-page max-w-md mx-auto mt-12 sm:mt-20 animate-fade-in">
+            <div class="text-center mb-8">
+                <!-- Secret Trigger Icon for Owner Login -->
+                <div class="inline-flex p-4 bg-brand-golden border-2 border-brand-dark text-brand-dark mb-6 cursor-pointer hard-transition hover:bg-brand-dark hover:text-brand-golden select-none"
+                    onclick="window.triggerOwnerLogin()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="14" height="10" x="5" y="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
+                </div>
+                <h2 class="text-4xl font-clash font-black text-brand-dark capitalize">Sign In</h2>
+                <p id="login-subtitle" class="text-sm text-brand-blue font-bold mt-3 capitalize"></p>
+            </div>
+
+            <form id="login-form" onsubmit="window.processLogin(event)"
+                class="bg-white p-8 sm:p-10 border-2 border-brand-dark">
+                <input type="hidden" id="active-role">
+
+                <div id="login-username-container" class="animate-fade-in stagger-1 mb-5">
+                    <label id="login-username-label"
+                        class="block text-sm font-black text-brand-dark mb-2 capitalize">Username</label>
+                    <input type="text" id="login-username" class="input-flat w-full text-base font-bold"
+                        placeholder="Enter Your Detail" required>
+                </div>
+
+                <div id="login-password-container" class="animate-fade-in stagger-2 mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-sm font-black text-brand-dark capitalize">Password</label>
+                    </div>
+                    <div class="relative">
+                        <input type="password" id="login-password" class="input-flat w-full text-base font-bold"
+                            placeholder="Enter Your Password">
+                        <span onclick="window.toggleLoginPass()"
+                            class="absolute right-4 top-3.5 text-brand-dark cursor-pointer hover:opacity-70 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <div id="login-passcode-container" class="hidden-page animate-fade-in mb-6">
+                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                            <path d="M12 9v4" />
+                            <path d="M12 17h.01" />
+                        </svg>
+                        Security Passcode
+                    </label>
+                    <input type="password" id="login-passcode"
+                        class="input-flat w-full text-center tracking-[0.4em] font-black text-xl">
+                </div>
+
+                <div class="animate-fade-in stagger-3">
+                    <button type="submit"
+                        class="w-full bg-brand-blue text-white border-2 border-brand-dark font-clash font-black text-xl py-4 hard-transition hover:bg-brand-dark mt-2 capitalize">
+                        <span id="login-btn-text">Login</span>
+                    </button>
+                </div>
+
+                <div class="mt-8 text-center animate-fade-in stagger-3">
+                    <button type="button" onclick="window.showPage('page-home')"
+                        class="text-brand-dark font-bold hard-transition capitalize text-sm border-2 border-brand-dark px-4 py-2 hover:bg-brand-dark hover:text-white">Go
+                        Back</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 3. OWNER DASHBOARD -->
+        <div id="page-owner" class="app-page hidden-page space-y-6 sm:space-y-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-2 animate-fade-in">
+                <div>
+                    <h2 class="text-4xl sm:text-5xl font-clash font-black text-brand-dark capitalize">Owner <span
+                            class="text-brand-blue">Terminal</span></h2>
+                    <p class="text-brand-dark font-bold mt-2 text-base capitalize">System Administration And Global
+                        Settings.</p>
+                </div>
+            </div>
+
+            <!-- Brutalist Tabs Navigation -->
+            <div
+                class="flex border-b-2 border-brand-dark mb-8 overflow-x-auto no-scrollbar animate-fade-in stagger-1 relative z-10">
+                <button onclick="window.switchOwnerTab('owner-tab-admins')" id="btn-owner-tab-admins"
+                    class="tab-btn active px-6 py-4 text-sm capitalize">
+                    Manage Admins
+                </button>
+                <button onclick="window.switchOwnerTab('owner-tab-students')" id="btn-owner-tab-students"
+                    class="tab-btn px-6 py-4 text-sm capitalize">
+                    Student Profiles
+                </button>
+                <button onclick="window.switchOwnerTab('owner-tab-reasons')" id="btn-owner-tab-reasons"
+                    class="tab-btn px-6 py-4 text-sm capitalize">
+                    Leave Reasons
+                </button>
+            </div>
+
+            <!-- TAB 1: ADMINS -->
+            <div id="owner-tab-admins"
+                class="owner-tab-content grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in stagger-2">
+                <div class="lg:col-span-1 border-2 border-brand-dark p-6 sm:p-8 bg-white h-fit">
+                    <h3 class="font-clash font-black text-xl text-brand-dark mb-6 capitalize">Create Admin</h3>
+                    <form id="form-create-admin" onsubmit="window.createAdmin(event)" class="space-y-5">
+                        <div>
+                            <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Full Name</label>
+                            <input type="text" id="admin-name" class="input-flat w-full font-bold" required>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:grid-cols-1 xl:grid-cols-2">
+                            <div>
+                                <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Phone</label>
+                                <input type="tel" id="admin-phone" class="input-flat w-full font-bold" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Place</label>
+                                <input type="text" id="admin-place" class="input-flat w-full font-bold" required>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t-2 border-brand-dark space-y-5">
+                            <div>
+                                <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Username</label>
+                                <input type="text" id="admin-user" class="input-flat w-full font-bold" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Password</label>
+                                <input type="password" id="admin-pass" class="input-flat w-full font-bold" required>
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="w-full mt-4 bg-brand-blue text-white border-2 border-brand-dark font-clash font-black py-4 hard-transition capitalize hover:bg-brand-dark">
+                            Register Admin
+                        </button>
+                    </form>
+                </div>
+
+                <div class="lg:col-span-2 border-2 border-brand-dark overflow-hidden flex flex-col bg-white h-fit">
+                    <div class="p-6 border-b-2 border-brand-dark bg-brand-golden">
+                        <h3 class="font-clash font-black text-xl text-brand-dark capitalize">Registered Admins</h3>
+                    </div>
+                    <div class="overflow-x-auto flex-grow p-4 bg-white">
+                        <table class="w-full text-left border-collapse min-w-[500px] border-2 border-brand-dark">
+                            <thead>
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark">
+                                    <th class="px-6 py-4 font-bold border-r-2 border-brand-dark">Admin Details</th>
+                                    <th class="px-6 py-4 font-bold border-r-2 border-brand-dark">Credentials</th>
+                                    <th class="px-6 py-4 font-bold text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="owner-users-table" class="text-sm font-bold text-brand-dark">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: STUDENTS -->
+            <div id="owner-tab-students" class="owner-tab-content hidden-page animate-fade-in">
+                <!-- Action Bar -->
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-white border-2 border-brand-dark p-4">
+                    <div class="relative w-full sm:w-80">
+                        <svg class="absolute left-4 top-4 text-brand-dark" xmlns="http://www.w3.org/2000/svg" width="18"
+                            height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg>
+                        <input type="text" id="owner-filter-class" placeholder="Filter By Class..."
+                            class="input-flat w-full pl-12 font-bold" oninput="window.updateDataUI()">
+                    </div>
+                    <div class="flex gap-4 w-full sm:w-auto">
+                        <button onclick="window.openStudentModal('manual')"
+                            class="flex-1 sm:flex-none bg-white border-2 border-brand-dark text-brand-dark font-clash font-black px-6 py-3 hard-transition capitalize hover:bg-brand-dark hover:text-white">
+                            + Manual Entry
+                        </button>
+                        <button onclick="window.openStudentModal('csv')"
+                            class="flex-1 sm:flex-none bg-brand-golden border-2 border-brand-dark text-brand-dark font-clash font-black px-6 py-3 hard-transition capitalize flex justify-center items-center gap-2 hover:bg-brand-dark hover:text-brand-golden">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="17 8 12 3 7 8" />
+                                <line x1="12" x2="12" y1="3" y2="15" />
+                            </svg>
+                            Bulk Import
+                        </button>
+                    </div>
+                </div>
+
+                <div class="border-2 border-brand-dark overflow-hidden bg-white p-4">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[700px] border-2 border-brand-dark">
+                            <thead>
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark">
+                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Ad.No</th>
+                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Name</th>
+                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Class</th>
+                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Admin</th>
+                                    <th class="px-6 py-5 font-bold text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="owner-students-table" class="text-sm font-bold text-brand-dark">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: REASONS -->
+            <div id="owner-tab-reasons" class="owner-tab-content hidden-page max-w-3xl mx-auto w-full animate-fade-in">
+                <div class="border-2 border-brand-dark overflow-hidden flex flex-col bg-white">
+                    <div class="p-6 sm:p-8 border-b-2 border-brand-dark bg-brand-golden">
+                        <h3 class="font-clash font-black text-xl text-brand-dark mb-4 capitalize">Add Standardized
+                            Reason</h3>
+                        <form onsubmit="window.addReason(event)" class="flex flex-col sm:flex-row gap-4">
+                            <input type="text" id="new-reason-text" class="input-flat flex-grow text-base font-bold"
+                                placeholder="E.g. Medical, Monthly Leave" required>
+                            <button type="submit"
+                                class="bg-brand-dark text-white border-2 border-brand-dark font-clash font-black px-8 py-3.5 hard-transition capitalize hover:bg-white hover:text-brand-dark">Add
+                                Reason</button>
+                        </form>
+                    </div>
+
+                    <div class="overflow-y-auto max-h-[500px] p-4">
+                        <table class="w-full text-left border-collapse border-2 border-brand-dark">
+                            <thead>
+                                <tr
+                                    class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark sticky top-0 z-10">
+                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Defined Reasons</th>
+                                    <th class="px-6 py-5 font-bold text-center w-32">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="owner-reasons-table" class="text-base font-bold text-brand-dark">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 4. ADMIN DASHBOARD -->
+        <div id="page-admin" class="app-page hidden-page space-y-6 sm:space-y-10">
+            <div class="mb-4 animate-fade-in">
+                <h2 class="text-4xl sm:text-5xl font-clash font-black text-brand-dark tracking-tight capitalize">Admin
+                    <span class="text-brand-blue">Console</span>
+                </h2>
+                <p class="text-brand-dark font-bold text-base mt-2 capitalize">Manage Student Records And Export Data.
+                </p>
+            </div>
+
+            <!-- Brutalist Tabs Navigation -->
+            <div
+                class="flex border-b-2 border-brand-dark mb-8 overflow-x-auto no-scrollbar animate-fade-in stagger-1 relative z-10">
+                <button onclick="window.switchAdminTab('admin-tab-manage')" id="btn-admin-tab-manage"
+                    class="tab-btn active px-6 py-4 text-sm capitalize whitespace-nowrap">
+                    Manage Leaves
+                </button>
+                <button onclick="window.switchAdminTab('admin-tab-database')" id="btn-admin-tab-database"
+                    class="tab-btn px-6 py-4 text-sm capitalize whitespace-nowrap">
+                    Database & Export
+                </button>
+            </div>
+
+            <!-- TAB 1: MANAGE LEAVES (Requests vs Direct Entry) -->
+            <div id="admin-tab-manage" class="admin-tab-content max-w-4xl mx-auto w-full animate-fade-in stagger-2">
+
+                <!-- Admin View Toggles -->
+                <div class="admin-toggles flex flex-col sm:flex-row gap-4 mb-8">
+                    <label class="flex-1 cursor-pointer">
+                        <input type="radio" name="admin_entry_type" value="requests" class="peer sr-only" checked
+                            onchange="window.toggleAdminEntryView()">
+                        <div
+                            class="border-2 border-brand-dark bg-white p-4 sm:p-5 text-center peer-checked:bg-brand-golden font-clash font-black hard-transition capitalize text-sm">
+                            Student Requests</div>
+                    </label>
+                    <label class="flex-1 cursor-pointer">
+                        <input type="radio" name="admin_entry_type" value="monthly" class="peer sr-only"
+                            onchange="window.toggleAdminEntryView()">
+                        <div
+                            class="border-2 border-brand-dark bg-white p-4 sm:p-5 text-center peer-checked:bg-brand-blue peer-checked:text-white font-clash font-black hard-transition capitalize text-sm">
+                            Direct Entry / Monthly Minus</div>
+                    </label>
+                </div>
+
+                <!-- Sub-View: Student Requests -->
+                <div id="admin-view-requests" class="border-2 border-brand-dark p-4 bg-white animate-fade-in">
+                    <div
+                        class="p-4 sm:p-6 border-b-2 border-brand-dark bg-brand-golden flex justify-between items-center mb-4">
+                        <h3 class="font-clash font-black text-xl text-brand-dark capitalize">Pending Requests</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[700px] border-2 border-brand-dark">
+                            <thead>
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark">
+                                    <th class="px-4 sm:px-6 py-4 font-bold border-r-2 border-brand-dark">Student Details
+                                    </th>
+                                    <th class="px-4 sm:px-6 py-4 font-bold border-r-2 border-brand-dark">Dates</th>
+                                    <th class="px-4 sm:px-6 py-4 font-bold border-r-2 border-brand-dark">Reason & Total
+                                    </th>
+                                    <th class="px-4 sm:px-6 py-4 font-bold text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-requests-table" class="text-sm font-bold text-brand-dark">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Sub-View: Direct Entry (Monthly Minus) -->
+                <div id="admin-view-monthly"
+                    class="border-2 border-brand-dark p-6 sm:p-10 bg-white hidden-page animate-fade-in">
+                    <form id="form-record-leave" onsubmit="window.recordLeave(event)" class="space-y-6">
+                        <div class="p-5 sm:p-6 bg-brand-blue border-2 border-brand-dark relative overflow-hidden mb-8">
+                            <label class="block text-sm font-black text-white mb-3 capitalize">
+                                Lookup Admission No.
+                            </label>
+                            <input type="text" id="leave-adno" class="input-flat w-full font-black text-xl text-center"
+                                placeholder="----" onblur="window.autoFillStudent()">
+
+                            <div
+                                class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 bg-white border-2 border-brand-dark p-4">
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-black text-brand-grey capitalize mb-1">Name</label>
+                                    <input type="text" id="leave-student-name"
+                                        class="w-full bg-transparent border-none p-0 text-brand-dark text-lg font-bold focus:ring-0 cursor-default"
+                                        readonly placeholder="-">
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-black text-brand-grey capitalize mb-1">Class</label>
+                                    <input type="text" id="leave-student-class"
+                                        class="w-full bg-transparent border-none p-0 text-brand-dark text-lg font-bold focus:ring-0 cursor-default"
+                                        readonly placeholder="-">
+                                </div>
+                            </div>
+                            <input type="hidden" id="leave-student-id">
+                        </div>
+
+                        <div class="p-6 bg-white border-2 border-brand-watermelon">
+                            <label class="block text-sm font-black text-brand-watermelon mb-2 capitalize">Late Leave
+                                Entering (Monthly)</label>
+                            <p class="text-xs text-brand-dark font-bold mb-4 capitalize">Select "Monthly Leave" And
+                                Enter Deduction Value Manually. Type 1 For Half Day (0.5), Type 2 For Full Day (1.0)</p>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
+                                <div>
+                                    <label class="block text-xs font-black text-brand-dark mb-2 capitalize">Select
+                                        Reason Type</label>
+                                    <select id="leave-reason" class="input-flat w-full text-sm font-bold" required>
+                                        <option value="Monthly Leave" selected>Monthly Leave</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-black text-brand-dark mb-2 capitalize">Deduction
+                                        Multiplier</label>
+                                    <input type="number" id="monthly-late-val" min="1" max="2"
+                                        class="input-flat w-full text-base font-black text-center" placeholder="1 or 2"
+                                        required oninput="window.calculateLeavePreview()">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-black text-brand-dark mb-2 capitalize">Date
+                                        Applied</label>
+                                    <input type="date" id="leave-start" class="input-flat w-full text-sm font-bold"
+                                        required
+                                        onchange="document.getElementById('leave-end').value = this.value; window.calculateLeavePreview()">
+                                </div>
+                                <div class="hidden-page">
+                                    <input type="date" id="leave-end">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center justify-between border-t-2 border-brand-dark pt-8 mt-4">
+                            <div class="text-sm font-bold text-brand-dark text-center sm:text-left capitalize">
+                                Deducting:<br><span id="preview-calc-days"
+                                    class="text-5xl font-clash font-black text-brand-watermelon leading-none">0</span>
+                                <span class="text-xs font-black ml-1 capitalize">Days</span>
+                            </div>
+                            <button type="submit" id="btn-submit-leave"
+                                class="w-full sm:w-auto bg-brand-dark text-white border-2 border-brand-dark hover:bg-white hover:text-brand-dark font-clash font-black px-8 py-4 hard-transition capitalize text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none">
+                                Execute Deduction
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M5 12h14" />
+                                    <path d="m12 5 7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 2: DATABASE & EXPORT -->
+            <div id="admin-tab-database" class="admin-tab-content hidden-page animate-fade-in stagger-2">
+                <div class="border-2 border-brand-dark overflow-hidden bg-white p-4">
+                    <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                        <div class="relative w-full sm:w-80">
+                            <svg class="absolute left-4 top-3.5 sm:top-4 text-brand-dark"
+                                xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.3-4.3" />
+                            </svg>
+                            <input type="text" id="filter-class" placeholder="Filter By Class..."
+                                class="input-flat w-full pl-12 text-sm font-bold" oninput="window.updateDataUI()">
+                        </div>
+                        <button
+                            class="w-full sm:w-auto bg-brand-golden border-2 border-brand-dark text-brand-dark px-6 py-3.5 text-sm font-clash font-black hover:bg-brand-dark hover:text-brand-golden hard-transition capitalize flex items-center justify-center gap-2"
+                            onclick="window.print()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="6 9 6 2 18 2 18 9" />
+                                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                                <rect width="12" height="8" x="6" y="14" />
+                            </svg>
+                            Print Report
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[700px] border-2 border-brand-dark">
+                            <thead>
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark">
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Ad.No
+                                    </th>
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Name &
+                                        Class</th>
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Dates
+                                    </th>
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Status
+                                    </th>
+                                    <th
+                                        class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark text-center">
+                                        Days</th>
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold text-center no-print">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-leaves-table" class="text-sm sm:text-base font-bold text-brand-dark">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. STUDENT DASHBOARD -->
+        <div id="page-user" class="app-page hidden-page space-y-6 sm:space-y-10">
+            <div class="mb-6 animate-fade-in">
+                <h2 class="text-4xl sm:text-5xl font-clash font-black text-brand-dark tracking-tight capitalize">Student
+                    <span class="text-brand-blue">Ledger</span>
+                </h2>
+                <p class="text-brand-dark font-bold text-sm sm:text-base mt-2 capitalize">Apply For Leaves And Monitor
+                    Your Attendance.</p>
+            </div>
+
+            <!-- Brutalist Tabs Navigation -->
+            <div
+                class="flex border-b-2 border-brand-dark mb-8 overflow-x-auto no-scrollbar animate-fade-in stagger-1 relative z-10">
+                <button onclick="window.switchUserTab('user-tab-apply')" id="btn-user-tab-apply"
+                    class="tab-btn active px-4 sm:px-6 py-3 sm:py-4 text-sm capitalize whitespace-nowrap">
+                    Apply For Leave
+                </button>
+                <button onclick="window.switchUserTab('user-tab-history')" id="btn-user-tab-history"
+                    class="tab-btn px-4 sm:px-6 py-3 sm:py-4 text-sm capitalize whitespace-nowrap">
+                    Dashboard & History
+                </button>
+            </div>
+
+            <!-- TAB 1: APPLY LEAVE -->
+            <div id="user-tab-apply" class="user-tab-content max-w-2xl mx-auto w-full animate-fade-in stagger-2">
+                <div class="border-2 border-brand-dark p-6 sm:p-10 bg-white">
+                    <form id="form-user-apply-leave" onsubmit="window.submitUserLeaveRequest(event)" class="space-y-6">
+
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-brand-dark text-white p-4 border-2 border-brand-dark">
+                            <div>
+                                <label
+                                    class="block text-[10px] font-black text-brand-grey capitalize mb-1">Ad.No</label>
+                                <p id="apply-adno" class="font-mono text-base font-bold">-</p>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-black text-brand-grey capitalize mb-1">Name</label>
+                                <p id="apply-name" class="text-base font-bold truncate">-</p>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-black text-brand-grey capitalize mb-1">Class</label>
+                                <p id="apply-class" class="text-base font-bold">-</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Reason For
+                                Leave</label>
+                            <select id="user-leave-reason" class="input-flat w-full text-sm font-bold" required>
+                                <option value="" disabled selected>Select A Reason...</option>
+                                <!-- Populated by JS -->
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-[#FAFAFB] p-4 border-2 border-brand-dark">
+                            <div>
+                                <label class="block text-[11px] font-black text-brand-dark mb-2 capitalize">Start
+                                    Date</label>
+                                <input type="date" id="user-leave-start" class="input-flat w-full text-sm font-bold"
+                                    required onchange="window.renderUserDateRows()">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-black text-brand-dark mb-2 capitalize">End
+                                    Date</label>
+                                <input type="date" id="user-leave-end" class="input-flat w-full text-sm font-bold"
+                                    required onchange="window.renderUserDateRows()">
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Checkbox Container for each day -->
+                        <div id="user-date-rows-wrapper" class="hidden-page border-2 border-brand-dark p-4 bg-white">
+                            <h4
+                                class="text-xs font-black text-brand-blue capitalize mb-4 border-b-2 border-brand-dark pb-2">
+                                Select Halves Per Day</h4>
+                            <div id="user-date-rows-container" class="space-y-3 max-h-60 overflow-y-auto pr-2">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center justify-between border-t-2 border-brand-dark pt-8 mt-4">
+                            <div class="text-sm font-bold text-brand-dark text-center sm:text-left capitalize">
+                                Calculating:<br><span id="user-preview-calc-days"
+                                    class="text-5xl font-clash font-black text-brand-blue leading-none">0</span> <span
+                                    class="text-xs font-black ml-1 capitalize">Days</span>
+                            </div>
+                            <button type="submit" id="btn-submit-user-leave"
+                                class="w-full sm:w-auto bg-brand-blue text-white border-2 border-brand-dark hover:bg-brand-dark hover:text-white font-clash font-black px-8 py-4 hard-transition capitalize text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none mt-4 sm:mt-0">
+                                Submit Request
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M22 2L11 13" />
+                                    <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 2: DASHBOARD & HISTORY -->
+            <div id="user-tab-history" class="user-tab-content hidden-page animate-fade-in stagger-2">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+                    <div class="border-2 border-brand-dark p-6 sm:p-8 bg-white">
+                        <div
+                            class="w-12 h-12 bg-brand-golden border-2 border-brand-dark text-brand-dark flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                        </div>
+                        <p class="text-brand-dark text-[11px] font-black capitalize mb-1">Total Permitted</p>
+                        <p class="text-4xl sm:text-5xl font-clash font-black text-brand-blue">7.5 <span
+                                class="text-xs sm:text-sm text-brand-dark font-bold capitalize ml-1">Days</span></p>
+                    </div>
+                    <div class="border-2 border-brand-dark p-6 sm:p-8 bg-white">
+                        <div
+                            class="w-12 h-12 bg-brand-watermelon border-2 border-brand-dark text-white flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                        </div>
+                        <p class="text-brand-dark text-[11px] font-black capitalize mb-1">Leaves Taken</p>
+                        <p class="text-4xl sm:text-5xl font-clash font-black text-brand-watermelon"><span
+                                id="user-leaves-taken">0</span> <span
+                                class="text-xs sm:text-sm text-brand-dark font-bold capitalize ml-1">Days</span></p>
+                    </div>
+                    <div class="border-2 border-brand-dark p-6 sm:p-8 bg-brand-blue">
+                        <div
+                            class="w-12 h-12 bg-white border-2 border-brand-dark text-brand-dark flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M5 22h14" />
+                                <path d="M5 2h14" />
+                                <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
+                                <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" />
+                            </svg>
+                        </div>
+                        <p class="text-white text-[11px] font-black capitalize mb-1">Available Rest</p>
+                        <p class="text-4xl sm:text-5xl font-clash font-black text-white"><span
+                                id="user-leaves-remain">7.5</span> <span
+                                class="text-xs sm:text-sm text-white font-bold capitalize ml-1">Days</span></p>
+                    </div>
+                </div>
+
+                <div class="border-2 border-brand-dark overflow-hidden bg-white mt-10 p-4">
+                    <div class="mb-6 flex items-center justify-between">
+                        <h3 class="text-xl font-clash font-black text-brand-dark capitalize">Application History</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[600px] border-2 border-brand-dark">
+                            <thead>
+                                <tr
+                                    class="bg-brand-dark text-white text-[10px] sm:text-xs capitalize border-b-2 border-brand-dark">
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Dates
+                                    </th>
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Reason
+                                    </th>
+                                    <th
+                                        class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark text-center">
+                                        Days</th>
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-history-table" class="text-sm sm:text-base font-bold text-brand-dark">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modals -->
+
+    <!-- Owner Student Modal (Manual & Edit) -->
+    <div id="modal-owner-student"
+        class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
+        <div class="bg-white p-8 sm:p-10 border-2 border-brand-dark max-w-md w-full animate-fade-in my-8">
+            <div class="flex justify-between items-center mb-8 border-b-2 border-brand-dark pb-4">
+                <h3 class="text-2xl font-clash font-black text-brand-dark capitalize" id="student-modal-title">Student
+                    Profile</h3>
+                <button onclick="window.closeStudentModal()"
+                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border-2 border-transparent hover:border-brand-dark p-2 transition-colors"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg></button>
+            </div>
+            <form id="owner-form-create-student" onsubmit="window.saveOwnerStudent(event)" class="space-y-6">
+                <input type="hidden" id="owner-student-edit-id">
+                <div>
+                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Assign To Admin</label>
+                    <select id="owner-student-admin" class="input-flat w-full text-base font-bold" required>
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Ad. No.</label>
+                        <input type="text" id="owner-student-adno" class="input-flat w-full text-base font-bold"
+                            required placeholder="1001">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Student Name</label>
+                        <input type="text" id="owner-student-name" class="input-flat w-full text-base font-bold"
+                            required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Class</label>
+                    <input type="text" id="owner-student-class" class="input-flat w-full text-base font-bold" required>
+                </div>
+                <button type="submit" id="student-modal-btn"
+                    class="w-full mt-8 bg-brand-blue text-white border-2 border-brand-dark font-clash font-black py-4 hard-transition capitalize text-lg hover:bg-brand-dark">Save
+                    Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Owner CSV Upload Modal (3 Step) -->
+    <div id="modal-csv-upload"
+        class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all">
+        <div
+            class="bg-brand-light border-2 border-brand-dark max-w-2xl w-full animate-fade-in flex flex-col max-h-[90vh] overflow-hidden">
+            <div class="p-6 sm:p-8 border-b-2 border-brand-dark flex justify-between items-center bg-white">
+                <h3 class="text-xl font-clash font-black text-brand-dark capitalize flex items-center gap-3">
+                    <div class="inline-flex p-2 border-2 border-brand-dark bg-brand-golden text-brand-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" x2="12" y1="3" y2="15" />
+                        </svg>
+                    </div>
+                    Bulk Import
+                </h3>
+                <button onclick="window.closeCsvModal()"
+                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border-2 border-transparent hover:border-brand-dark p-2 transition-colors"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg></button>
+            </div>
+
+            <div class="p-8 sm:p-10 overflow-y-auto flex-grow flex flex-col justify-center items-center"
+                id="csv-step-container">
+
+                <!-- STEP 1 -->
+                <div class="text-center max-w-sm w-full" id="csv-step-1">
+                    <p
+                        class="text-sm text-brand-dark font-black capitalize mb-6 text-center border-b-2 border-brand-dark pb-2 inline-block">
+                        Step 1: Preparation</p>
+
+                    <button onclick="window.downloadCSVTemplate()"
+                        class="w-full bg-white border-2 border-brand-dark text-brand-dark font-clash font-black py-4 text-lg hard-transition mb-10 flex justify-center items-center gap-3 capitalize hover:bg-brand-dark hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" x2="12" y1="15" y2="3" />
+                        </svg>
+                        Mock Template
+                    </button>
+
+                    <div class="text-left mb-8">
+                        <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Assign Batch To
+                            Admin</label>
+                        <select id="owner-csv-admin" class="input-flat w-full text-base font-bold" required>
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                    <button onclick="window.nextCsvStep(2)"
+                        class="w-full bg-brand-blue text-white border-2 border-brand-dark font-clash font-black py-4 text-lg hard-transition capitalize hover:bg-brand-dark">Next
+                        Step</button>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="text-center max-w-sm w-full hidden-page" id="csv-step-2">
+                    <div class="inline-flex p-5 bg-brand-golden border-2 border-brand-dark text-brand-dark mb-4">
+                        <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" x2="12" y1="3" y2="15" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-clash font-black text-brand-dark capitalize mb-2">Bulk CSV Upload</h4>
+                    <p class="text-sm text-brand-dark font-bold mb-8">Upload A CSV File. Format Strictly As:<br><span
+                            class="font-mono text-white bg-brand-dark px-2 py-1 text-xs font-bold mt-2 inline-block">AdNo,
+                            Name, Class</span></p>
+
+                    <input type="file" id="csv-upload-input" accept=".csv" class="hidden-page"
+                        onchange="window.handleCSVSelect(event)">
+
+                    <button onclick="document.getElementById('csv-upload-input').click()"
+                        class="w-full bg-brand-blue border-2 border-brand-dark text-white py-4 font-clash font-black text-lg hard-transition flex justify-center items-center gap-3 capitalize hover:bg-brand-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="12" x2="12" y1="18" y2="12" />
+                            <polyline points="9 15 12 12 15 15" />
+                        </svg>
+                        Choose CSV File
+                    </button>
+                    <button onclick="window.nextCsvStep(1)"
+                        class="mt-6 text-sm text-brand-dark font-black capitalize hover:underline transition-all border-2 border-transparent hover:border-brand-dark px-4 py-2 hover:bg-brand-dark hover:text-white">Go
+                        Back</button>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="w-full hidden-page flex flex-col h-full" id="csv-step-3">
+                    <p
+                        class="text-sm text-brand-dark font-black capitalize mb-4 text-center border-b-2 border-brand-dark pb-2 inline-block mx-auto">
+                        Step 3: Live Edit & Confirm</p>
+                    <div class="overflow-y-auto border-2 border-brand-dark bg-white flex-grow mb-6 min-h-[300px] p-4">
+                        <table class="w-full text-left border-collapse min-w-[500px] border-2 border-brand-dark">
+                            <thead>
+                                <tr
+                                    class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark sticky top-0 z-10">
+                                    <th class="px-4 py-4 font-bold border-r-2 border-brand-dark w-24">Ad.No</th>
+                                    <th class="px-4 py-4 font-bold border-r-2 border-brand-dark">Name</th>
+                                    <th class="px-4 py-4 font-bold border-r-2 border-brand-dark w-32">Class</th>
+                                    <th class="px-4 py-4 font-bold text-center w-12">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="csv-preview-table" class="text-sm font-bold text-brand-dark">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-auto">
+                        <button onclick="window.nextCsvStep(2)"
+                            class="w-full sm:w-1/3 bg-white border-2 border-brand-dark text-brand-dark font-clash font-black py-4 text-lg hard-transition capitalize hover:bg-brand-dark hover:text-white">Cancel</button>
+                        <button onclick="window.submitCSVData()"
+                            class="w-full sm:w-2/3 bg-brand-blue border-2 border-brand-dark text-white font-clash font-black py-4 text-lg hard-transition capitalize hover:bg-brand-dark">Confirm
+                            & Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div id="confirm-modal"
+        class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all">
+        <div class="bg-white p-8 border-2 border-brand-dark max-w-sm w-full animate-fade-in text-center">
+            <div
+                class="w-16 h-16 bg-brand-watermelon border-2 border-brand-dark text-white flex items-center justify-center mb-6 mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m15 9-6 6" />
+                    <path d="m9 9 6 6" />
+                    <circle cx="12" cy="12" r="10" />
+                </svg>
+            </div>
+            <h3 class="text-3xl font-clash font-black text-brand-dark mb-3 capitalize">Delete Record?</h3>
+            <p class="text-brand-dark font-bold text-base mb-8 capitalize">This Action Is Permanent And Cannot Be
+                Undone.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="window.closeConfirm()"
+                    class="px-6 py-3 text-brand-dark font-clash font-black bg-white border-2 border-brand-dark text-lg hard-transition capitalize hover:bg-brand-dark hover:text-white">Cancel</button>
+                <button id="confirm-action-btn"
+                    class="px-8 py-3 text-white font-clash font-black bg-brand-watermelon border-2 border-brand-dark text-lg hard-transition capitalize hover:bg-brand-dark">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Toast UI -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- FIREBASE AND APP LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-analytics.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyDHXYTxECrdvjeFwWNdcGkdHPUWI6Pl4yA",
+            authDomain: "sfadc-leave-app.firebaseapp.com",
+            projectId: "sfadc-leave-app",
+            storageBucket: "sfadc-leave-app.firebasestorage.app",
+            messagingSenderId: "1030679983327",
+            appId: "1:1030679983327:web:880a98f09cdfae8481256a",
+            measurementId: "G-01SLEV02R8"
+        };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'slms-app';
+
+        let db, auth, analytics;
+        let fireUser = null;
+        let appSession = null;
+        let appUsers = [];
+        let appLeaves = [];
+        let appReasons = [];
+        let ownerAuthStep = 1;
+        let currentCsvData = [];
+
+        // Icons
+        const trashIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>`;
+        const editIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>`;
+        const eyeIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>`;
+        const checkIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+        const xIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+
+        // UI Utils
+        window.showToast = function (message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgClass = type === 'error' ? 'bg-brand-watermelon' : 'bg-brand-blue';
+            toast.className = `${bgClass} text-white px-6 py-4 border-2 border-brand-dark text-sm font-bold toast-enter flex items-center gap-3 capitalize`;
+            toast.innerHTML = type === 'error'
+                ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg> ${message}`
+                : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        };
+
+        let confirmCallback = null;
+        window.showConfirm = function (callback) {
+            confirmCallback = callback;
+            document.getElementById('confirm-modal').classList.remove('hidden-page');
+        };
+        window.closeConfirm = function () {
+            confirmCallback = null;
+            document.getElementById('confirm-modal').classList.add('hidden-page');
+        };
+        document.getElementById('confirm-action-btn').addEventListener('click', () => {
+            if (confirmCallback) confirmCallback();
+            window.closeConfirm();
+        });
+
+        // Secret Owner Trigger 
+        let secretClickCount = 0;
+        let secretClickTimer = null;
+        window.triggerOwnerLogin = function () {
+            secretClickCount++;
+            if (secretClickCount >= 3) {
+                window.openLogin('owner');
+                secretClickCount = 0;
+            }
+            clearTimeout(secretClickTimer);
+            secretClickTimer = setTimeout(() => { secretClickCount = 0; }, 1000);
+        };
+
+        // Dropdown Logic
+        window.toggleUserMenu = function () {
+            const el = document.getElementById('user-dropdown');
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                setTimeout(() => el.classList.remove('opacity-0'), 10);
+            } else {
+                el.classList.add('opacity-0');
+                setTimeout(() => el.classList.add('hidden'), 200);
+            }
+        };
+
+        document.addEventListener('click', (e) => {
+            const btn = document.getElementById('nav-avatar');
+            const drop = document.getElementById('user-dropdown');
+            if (btn && drop && !btn.contains(e.target) && !drop.contains(e.target)) {
+                drop.classList.add('opacity-0');
+                setTimeout(() => drop.classList.add('hidden'), 200);
+            }
+        });
+
+        // Navigation
+        window.showPage = function (pageId) {
+            document.querySelectorAll('.app-page').forEach(page => page.classList.add('hidden-page'));
+            document.getElementById(pageId).classList.remove('hidden-page');
+
+            const navCont = document.getElementById('nav-user-container');
+
+            if (pageId === 'page-home' || pageId === 'page-login') {
+                navCont.classList.add('hidden-page');
+            } else {
+                navCont.classList.remove('hidden-page');
+                if (appSession) {
+                    const disp = appSession.name || appSession.username || appSession.adNo;
+                    document.getElementById('nav-avatar').innerText = disp.charAt(0).toUpperCase();
+                    document.getElementById('dropdown-role').innerText = appSession.role;
+                    document.getElementById('dropdown-name').innerText = disp;
+                }
+            }
+            updateDataUI();
+        };
+
+        window.openLogin = function (role) {
+            document.getElementById('active-role').value = role;
+            document.getElementById('login-subtitle').innerText = `${role} Access`;
+            document.getElementById('login-form').reset();
+            ownerAuthStep = 1;
+
+            const userContainer = document.getElementById('login-username-container');
+            const passContainer = document.getElementById('login-password-container');
+            const passcodeContainer = document.getElementById('login-passcode-container');
+            const userLabel = document.getElementById('login-username-label');
+            const btnText = document.getElementById('login-btn-text');
+            const passInp = document.getElementById('login-password');
+
+            userContainer.classList.remove('hidden-page');
+            passcodeContainer.classList.add('hidden-page');
+
+            if (role === 'owner') {
+                passContainer.classList.remove('hidden-page');
+                passInp.required = true;
+                userLabel.innerText = "Username";
+                btnText.innerText = "Next Step";
+            } else if (role === 'user') {
+                passContainer.classList.add('hidden-page');
+                passInp.required = false;
+                userLabel.innerText = "Admission Number";
+                btnText.innerText = "Access Portal";
+            } else {
+                passContainer.classList.remove('hidden-page');
+                passInp.required = true;
+                userLabel.innerText = "Username";
+                btnText.innerText = "Access Portal";
+            }
+
+            window.showPage('page-login');
+        };
+
+        window.handleLogout = function () {
+            appSession = null;
+            document.getElementById('user-dropdown').classList.add('hidden');
+            window.showPage('page-home');
+            window.showToast("Securely Logged Out.");
+        };
+
+        window.switchOwnerTab = function (tabId) {
+            document.querySelectorAll('.owner-tab-content').forEach(t => t.classList.add('hidden-page'));
+            document.querySelectorAll('#page-owner .tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden-page');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        };
+
+        window.switchAdminTab = function (tabId) {
+            document.querySelectorAll('.admin-tab-content').forEach(t => t.classList.add('hidden-page'));
+            document.querySelectorAll('#page-admin .tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden-page');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        };
+
+        window.switchUserTab = function (tabId) {
+            document.querySelectorAll('.user-tab-content').forEach(t => t.classList.add('hidden-page'));
+            document.querySelectorAll('#page-user .tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.remove('hidden-page');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        };
+
+        window.toggleAdminEntryView = function () {
+            const val = document.querySelector('input[name="admin_entry_type"]:checked').value;
+            if (val === 'requests') {
+                document.getElementById('admin-view-requests').classList.remove('hidden-page');
+                document.getElementById('admin-view-monthly').classList.add('hidden-page');
+            } else {
+                document.getElementById('admin-view-requests').classList.add('hidden-page');
+                document.getElementById('admin-view-monthly').classList.remove('hidden-page');
+            }
+        };
+
+        // Firebase Init
+        const app = initializeApp(firebaseConfig);
+        analytics = getAnalytics(app);
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (e) {
+                window.showToast("Database Auth Failed.", "error");
+            }
+        };
+
+        initAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            fireUser = user;
+            if (user) setupDatabaseListeners();
+        });
+
+        function setupDatabaseListeners() {
+            if (!fireUser) return;
+            const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'slms_users');
+            const leavesRef = collection(db, 'artifacts', appId, 'public', 'data', 'slms_leaves');
+            const reasonsRef = collection(db, 'artifacts', appId, 'public', 'data', 'slms_reasons');
+
+            onSnapshot(usersRef, async (snapshot) => {
+                appUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                updateDataUI();
+            });
+            onSnapshot(leavesRef, (snapshot) => {
+                appLeaves = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                updateDataUI();
+            });
+            onSnapshot(reasonsRef, (snapshot) => {
+                appReasons = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                updateDataUI();
+            });
+        }
+
+        // Auth
+        window.processLogin = function (event) {
+            event.preventDefault();
+            const role = document.getElementById('active-role').value;
+            const u = document.getElementById('login-username').value;
+            const p = document.getElementById('login-password').value;
+            const passcode = document.getElementById('login-passcode').value;
+
+            if (role === 'owner') {
+                if (ownerAuthStep === 1) {
+                    // Hardcoded Owner Bypass Phase 1
+                    if (u === 'aslan' && p === '340') {
+                        ownerAuthStep = 2;
+                        document.getElementById('login-username-container').classList.add('hidden-page');
+                        document.getElementById('login-password-container').classList.add('hidden-page');
+                        document.getElementById('login-passcode-container').classList.remove('hidden-page');
+                        document.getElementById('login-passcode').required = true;
+                        document.getElementById('login-passcode').focus();
+                        document.getElementById('login-btn-text').innerText = "Verify Passcode";
+                    } else { window.showToast("Invalid Owner Credentials.", "error"); }
+                    return;
+                } else if (ownerAuthStep === 2) {
+                    // Hardcoded Owner Bypass Phase 2
+                    if (passcode === 'Suhail@340') {
+                        appSession = { id: 'master-owner', role: 'owner', name: 'Master Owner', username: 'aslan' };
+                        window.showPage('page-owner');
+                    } else { window.showToast("Invalid Passcode.", "error"); }
+                    return;
+                }
+            } else if (role === 'user') {
+                const matchedUser = appUsers.find(user => user.role === 'user' && user.adNo === u);
+                if (matchedUser) {
+                    appSession = matchedUser;
+                    window.showPage('page-user');
+                    // Pre-fill user apply form
+                    document.getElementById('apply-adno').innerText = matchedUser.adNo;
+                    document.getElementById('apply-name').innerText = matchedUser.name;
+                    document.getElementById('apply-class').innerText = matchedUser.className;
+                } else { window.showToast("Invalid Admission Number.", "error"); }
+            } else {
+                const matchedUser = appUsers.find(user => user.role === 'admin' && user.username === u && user.password === p);
+                if (matchedUser) {
+                    appSession = matchedUser;
+                    window.showPage('page-admin');
+                } else { window.showToast("Invalid Credentials.", "error"); }
+            }
+        };
+
+        window.toggleLoginPass = function () {
+            const pass = document.getElementById('login-password');
+            if (pass.type === 'password') pass.type = 'text';
+            else pass.type = 'password';
+        }
+
+        // --- Owner Logic ---
+        window.createAdmin = async function (event) {
+            event.preventDefault();
+            if (!fireUser) return;
+            const data = {
+                name: document.getElementById('admin-name').value,
+                phone: document.getElementById('admin-phone').value,
+                place: document.getElementById('admin-place').value,
+                username: document.getElementById('admin-user').value,
+                password: document.getElementById('admin-pass').value,
+                role: 'admin'
+            };
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_users'), data);
+                window.showToast("Admin Account Created!");
+                event.target.reset();
+            } catch (e) { window.showToast("Error Creating Admin", "error"); }
+        };
+
+        window.togglePass = function (id, pass) {
+            const el = document.getElementById('pass-' + id);
+            if (el.innerText === '••••••••') { el.innerText = pass; } else { el.innerText = '••••••••'; }
+        };
+
+        // Modals for Students
+        window.openStudentModal = function (type, studentId = null) {
+            if (type === 'manual' || type === 'edit') {
+                document.getElementById('modal-owner-student').classList.remove('hidden-page');
+                const form = document.getElementById('owner-form-create-student');
+                form.reset();
+                document.getElementById('owner-student-edit-id').value = '';
+                document.getElementById('student-modal-title').innerText = "Add Student";
+
+                if (type === 'edit' && studentId) {
+                    document.getElementById('student-modal-title').innerText = "Edit Student";
+                    const student = appUsers.find(u => u.id === studentId);
+                    if (student) {
+                        document.getElementById('owner-student-edit-id').value = student.id;
+                        document.getElementById('owner-student-adno').value = student.adNo;
+                        document.getElementById('owner-student-name').value = student.name;
+                        document.getElementById('owner-student-class').value = student.className;
+                        document.getElementById('owner-student-admin').value = student.adminId;
+                    }
+                }
+            } else if (type === 'csv') {
+                document.getElementById('modal-csv-upload').classList.remove('hidden-page');
+                window.nextCsvStep(1);
+            }
+        };
+
+        window.closeStudentModal = function () {
+            document.getElementById('modal-owner-student').classList.add('hidden-page');
+        };
+
+        window.saveOwnerStudent = async function (event) {
+            event.preventDefault();
+            if (!fireUser) return;
+            const editId = document.getElementById('owner-student-edit-id').value;
+            const adNo = document.getElementById('owner-student-adno').value;
+            const adminId = document.getElementById('owner-student-admin').value;
+
+            if (!adminId) return window.showToast("Select An Admin.", "error");
+
+            if (!editId && appUsers.some(u => u.adNo === adNo && u.role === 'user')) {
+                return window.showToast("Admission Number Already Exists!", "error");
+            }
+
+            const data = {
+                adNo: adNo,
+                name: document.getElementById('owner-student-name').value,
+                className: document.getElementById('owner-student-class').value,
+                role: 'user',
+                adminId: adminId
+            };
+
+            try {
+                if (editId) {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_users', editId), data);
+                    window.showToast("Student Updated!");
+                } else {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_users'), data);
+                    window.showToast("Student Profile Created!");
+                }
+                window.closeStudentModal();
+            } catch (e) { window.showToast("Error Saving Student", "error"); }
+        };
+
+        // CSV Upload UI logic
+        window.closeCsvModal = function () { document.getElementById('modal-csv-upload').classList.add('hidden-page'); };
+
+        window.nextCsvStep = function (step) {
+            if (step === 2) {
+                const aId = document.getElementById('owner-csv-admin').value;
+                if (!aId) return window.showToast("Assign An Admin First.", "error");
+            }
+            [1, 2, 3].forEach(i => document.getElementById(`csv-step-${i}`).classList.add('hidden-page'));
+            document.getElementById(`csv-step-${step}`).classList.remove('hidden-page');
+        };
+
+        window.downloadCSVTemplate = function () {
+            const content = "AdNo,Name,Class\n1001,John Doe,10A\n1002,Jane Smith,10B";
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.setAttribute('download', "SLMS_Bulk_Template.csv");
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        };
+
+        window.handleCSVSelect = function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const rows = e.target.result.split('\n').map(r => r.split(','));
+                currentCsvData = [];
+                for (let i = 0; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (row.length >= 3) {
+                        const adNo = row[0].trim();
+                        if (adNo.toLowerCase() === 'adno' || adNo === '') continue;
+                        currentCsvData.push({ adNo: adNo, name: row[1].trim(), className: row[2].trim(), tempId: Math.random() });
+                    }
+                }
+                renderCsvPreview();
+                window.nextCsvStep(3);
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        };
+
+        function renderCsvPreview() {
+            const tbody = document.getElementById('csv-preview-table');
+            let html = '';
+            currentCsvData.forEach((row, i) => {
+                html += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light" id="csv-row-${i}">
+                    <td class="p-2 border-r-2 border-brand-dark/20"><input type="text" class="input-flat w-full text-xs p-2 font-bold shadow-none" value="${row.adNo}" onchange="currentCsvData[${i}].adNo=this.value"></td>
+                    <td class="p-2 border-r-2 border-brand-dark/20"><input type="text" class="input-flat w-full text-xs p-2 font-bold shadow-none" value="${row.name}" onchange="currentCsvData[${i}].name=this.value"></td>
+                    <td class="p-2 border-r-2 border-brand-dark/20"><input type="text" class="input-flat w-full text-xs p-2 font-bold shadow-none" value="${row.className}" onchange="currentCsvData[${i}].className=this.value"></td>
+                    <td class="p-2 text-center">
+                        <button onclick="removeCsvRow(${i})" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all">${trashIcon}</button>
+                    </td>
+                </tr>`;
+            });
+            if (currentCsvData.length === 0) html = '<tr><td colspan="4" class="text-center py-6 text-xs text-brand-dark font-bold capitalize">No Valid Data Found.</td></tr>';
+            tbody.innerHTML = html;
+        }
+
+        window.removeCsvRow = function (i) {
+            currentCsvData.splice(i, 1);
+            renderCsvPreview();
+        };
+
+        window.submitCSVData = async function () {
+            if (!fireUser || currentCsvData.length === 0) return;
+            const adminId = document.getElementById('owner-csv-admin').value;
+            let count = 0, skipCount = 0;
+
+            for (let row of currentCsvData) {
+                if (appUsers.some(u => u.adNo === row.adNo && u.role === 'user')) {
+                    skipCount++; continue;
+                }
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_users'), {
+                    adNo: row.adNo, name: row.name, className: row.className, adminId: adminId, role: 'user'
+                });
+                count++;
+            }
+            window.showToast(`Upload Complete! Added ${count}. (Skipped ${skipCount} Duplicates)`);
+            window.closeCsvModal();
+        };
+
+        // Reasons
+        window.addReason = async function (event) {
+            event.preventDefault();
+            if (!fireUser) return;
+            const text = document.getElementById('new-reason-text').value;
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_reasons'), { text: text });
+                window.showToast("Reason Added!");
+                event.target.reset();
+            } catch (e) { window.showToast("Error Adding", "error"); }
+        };
+
+        window.deleteReason = function (docId) {
+            window.showConfirm(async () => {
+                try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_reasons', docId)); window.showToast("Deleted."); } catch (e) { }
+            });
+        };
+        window.deleteUser = function (docId) {
+            window.showConfirm(async () => {
+                try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_users', docId)); window.showToast("Deleted."); } catch (e) { }
+            });
+        };
+
+        // --- Admin Leave Logic ---
+        window.autoFillStudent = function () {
+            const adNo = document.getElementById('leave-adno').value;
+            const nameInp = document.getElementById('leave-student-name');
+            const classInp = document.getElementById('leave-student-class');
+            const idInp = document.getElementById('leave-student-id');
+            const btn = document.getElementById('btn-submit-leave');
+
+            const student = appUsers.find(u => u.adNo === adNo && u.role === 'user');
+            if (student) {
+                if (student.adminId !== appSession.id) {
+                    nameInp.value = "UNAUTHORIZED";
+                    classInp.value = "-";
+                    idInp.value = "";
+                    btn.disabled = true;
+                    window.showToast("Student Is Assigned To Another Admin.", "error");
+                    return;
+                }
+                nameInp.value = student.name;
+                classInp.value = student.className;
+                idInp.value = student.id;
+                btn.disabled = false;
+            } else {
+                nameInp.value = "";
+                classInp.value = "";
+                idInp.value = "";
+                if (adNo !== "") window.showToast("Student Not Found", "error");
+                btn.disabled = true;
+            }
+        };
+
+        window.handleReasonChange = function () {
+            const val = document.getElementById('leave-reason').value;
+            const cnt = document.getElementById('monthly-leave-late-container');
+            if (val === 'Monthly Leave') {
+                cnt.classList.remove('hidden-page');
+            } else {
+                cnt.classList.add('hidden-page');
+                document.getElementById('monthly-late-val').value = '';
+            }
+            window.calculateLeavePreview();
+        };
+
+        window.calculateLeavePreview = function () {
+            // Only used for monthly minus now
+            const reason = document.getElementById('leave-reason').value;
+            let d = 0;
+
+            if (reason === 'Monthly Leave') {
+                const late = document.getElementById('monthly-late-val').value;
+                if (late == '1') d = 0.5;
+                else if (late == '2') d = 1.0;
+            }
+            document.getElementById('preview-calc-days').innerText = d;
+            return d;
+        };
+
+        window.recordLeave = async function (event) {
+            // Direct Entry (Monthly Leave)
+            event.preventDefault();
+            if (!fireUser) return;
+            const studentId = document.getElementById('leave-student-id').value;
+            if (!studentId) return window.showToast("Valid Admission No Required", "error");
+
+            const days = window.calculateLeavePreview();
+            if (days <= 0) return window.showToast("Invalid Leave Duration Calculated.", "error");
+
+            const student = appUsers.find(u => u.id === studentId);
+            const data = {
+                studentId: student.id,
+                adNo: student.adNo,
+                studentName: student.name,
+                className: student.className,
+                start: document.getElementById('leave-start').value,
+                end: document.getElementById('leave-end').value || document.getElementById('leave-start').value,
+                days: days,
+                reason: document.getElementById('leave-reason').value,
+                recordedBy: appSession.name,
+                adminId: appSession.id,
+                status: 'approved'
+            };
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_leaves'), data);
+                window.showToast("Leave Deducted Successfully!");
+                event.target.reset();
+                window.handleReasonChange(); // reset ui
+                document.getElementById('preview-calc-days').innerText = '0';
+                window.autoFillStudent();
+            } catch (e) { window.showToast("Error Recording Leave", "error"); }
+        };
+
+        window.updateLeaveStatus = async function (docId, newStatus) {
+            if (!fireUser) return;
+            try {
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_leaves', docId), { status: newStatus });
+                window.showToast("Request " + newStatus);
+            } catch (e) { window.showToast("Error Updating Status", "error"); }
+        }
+
+        window.deleteLeave = function (docId) {
+            window.showConfirm(async () => {
+                try { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_leaves', docId)); window.showToast("Deleted."); } catch (e) { }
+            });
+        };
+
+        // --- User Apply Leave Logic ---
+        window.renderUserDateRows = function () {
+            const start = document.getElementById('user-leave-start').value;
+            const end = document.getElementById('user-leave-end').value;
+            const wrap = document.getElementById('user-date-rows-wrapper');
+            const cont = document.getElementById('user-date-rows-container');
+
+            if (!start || !end) {
+                wrap.classList.add('hidden-page');
+                cont.innerHTML = '';
+                document.getElementById('user-preview-calc-days').innerText = '0';
+                return;
+            }
+
+            const d1 = new Date(start); const d2 = new Date(end);
+            if (d2 < d1) {
+                wrap.classList.remove('hidden-page');
+                cont.innerHTML = '<p class="text-brand-watermelon text-xs font-bold capitalize">End Date Cannot Be Before Start Date.</p>';
+                document.getElementById('user-preview-calc-days').innerText = '0';
+                return;
+            }
+
+            wrap.classList.remove('hidden-page');
+            let html = '';
+            let cur = new Date(d1);
+            while (cur <= d2) {
+                const dateStr = cur.toISOString().split('T')[0];
+                html += `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-brand-dark/10 pb-2 mb-2">
+                        <span class="text-sm font-bold text-brand-dark font-mono">${dateStr}</span>
+                        <div class="flex items-center gap-4">
+                            <label class="flex items-center gap-2 text-xs font-bold capitalize cursor-pointer hover:text-brand-blue">
+                                <input type="checkbox" class="user-leave-cb" data-date="${dateStr}" data-type="morn" checked onchange="window.calcUserTotal()"> Morning
+                            </label>
+                            <label class="flex items-center gap-2 text-xs font-bold capitalize cursor-pointer hover:text-brand-blue">
+                                <input type="checkbox" class="user-leave-cb" data-date="${dateStr}" data-type="after" checked onchange="window.calcUserTotal()"> Afternoon
+                            </label>
+                        </div>
+                    </div>
+                `;
+                cur.setDate(cur.getDate() + 1);
+            }
+            cont.innerHTML = html;
+            window.calcUserTotal();
+        };
+
+        window.calcUserTotal = function () {
+            const cbs = document.querySelectorAll('.user-leave-cb:checked');
+            const total = cbs.length * 0.5;
+            document.getElementById('user-preview-calc-days').innerText = total;
+            return total;
+        };
+
+        window.submitUserLeaveRequest = async function (event) {
+            event.preventDefault();
+            if (!fireUser || !appSession) return;
+
+            const totalDays = window.calcUserTotal();
+            if (totalDays <= 0) return window.showToast("Cannot Apply For 0 Days.", "error");
+
+            const reason = document.getElementById('user-leave-reason').value;
+            const start = document.getElementById('user-leave-start').value;
+            const end = document.getElementById('user-leave-end').value;
+
+            let details = [];
+            document.querySelectorAll('.user-leave-cb:checked').forEach(cb => {
+                details.push({ date: cb.dataset.date, half: cb.dataset.type });
+            });
+
+            const data = {
+                studentId: appSession.id,
+                adNo: appSession.adNo,
+                studentName: appSession.name,
+                className: appSession.className,
+                adminId: appSession.adminId,
+                start: start,
+                end: end,
+                days: totalDays,
+                reason: reason,
+                status: 'pending',
+                recordedBy: appSession.name,
+                details: JSON.stringify(details)
+            };
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_leaves'), data);
+                window.showToast("Leave Request Submitted To Admin!");
+                event.target.reset();
+                document.getElementById('user-date-rows-wrapper').classList.add('hidden-page');
+                document.getElementById('user-date-rows-container').innerHTML = '';
+                document.getElementById('user-preview-calc-days').innerText = '0';
+                window.switchUserTab('user-tab-history');
+            } catch (e) { window.showToast("Error Submitting Request", "error"); }
+        };
+
+        // --- Render UI ---
+        window.updateDataUI = function () {
+            if (!appSession) return;
+
+            let adminOptions = '<option value="" disabled selected>Choose An Admin...</option>';
+            appUsers.filter(u => u.role === 'admin').forEach(a => {
+                adminOptions += `<option value="${a.id}">${a.name} (${a.username})</option>`;
+            });
+            let adminMap = {};
+            appUsers.filter(u => u.role === 'admin').forEach(a => adminMap[a.id] = a.name);
+
+            let reasonOptions = '<option value="" disabled selected>Select A Reason...</option>';
+            appReasons.forEach(r => { reasonOptions += `<option value="${r.text}">${r.text}</option>`; });
+            if (appReasons.length === 0) reasonOptions = '<option value="" disabled selected>No Reasons Defined.</option>';
+
+            if (appSession.role === 'owner') {
+                ['owner-student-admin', 'owner-csv-admin'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) { const cur = el.value; el.innerHTML = adminOptions; if (cur) el.value = cur; }
+                });
+
+                const tbody = document.getElementById('owner-users-table');
+                let html = '';
+                appUsers.filter(u => u.role === 'admin').forEach(u => {
+                    html += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light">
+                        <td class="px-6 py-5 font-bold text-brand-dark border-r-2 border-brand-dark/20">${u.name} <br><span class="text-[10px] text-brand-dark/70 capitalize font-bold mt-1 inline-block">${u.place || '-'}</span></td>
+                        <td class="px-6 py-5 font-mono text-sm text-brand-dark font-bold border-r-2 border-brand-dark/20">${u.username}</td>
+                        <td class="px-6 py-5 font-mono text-sm text-brand-dark flex items-center gap-3 border-r-2 border-brand-dark/20">
+                            <span id="pass-${u.id}">••••••••</span>
+                            <button onclick="togglePass('${u.id}', '${u.password}')" class="text-brand-dark hover:scale-110 hover:text-brand-blue transition">${eyeIcon}</button>
+                        </td>
+                        <td class="px-6 py-5 text-center">
+                            <button onclick="window.deleteUser('${u.id}')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all" title="Delete Admin">${trashIcon}</button>
+                        </td>
+                    </tr>`;
+                });
+                if (html === '') html = '<tr><td colspan="4" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Admins Registered.</td></tr>';
+                tbody.innerHTML = html;
+
+                const stBody = document.getElementById('owner-students-table');
+                let shtml = '';
+                const sfilter = document.getElementById('owner-filter-class').value.toLowerCase();
+                appUsers.filter(u => u.role === 'user' && u.className.toLowerCase().includes(sfilter)).forEach(u => {
+                    shtml += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light">
+                        <td class="px-6 py-4 font-mono text-xs font-bold text-brand-dark border-r-2 border-brand-dark/20">${u.adNo}</td>
+                        <td class="px-6 py-4 font-bold text-brand-dark border-r-2 border-brand-dark/20">${u.name}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-brand-dark border-r-2 border-brand-dark/20">${u.className}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-brand-dark border-r-2 border-brand-dark/20">${adminMap[u.adminId] || '-'}</td>
+                        <td class="px-6 py-4 text-center flex justify-center gap-3">
+                            <button onclick="window.openStudentModal('edit', '${u.id}')" class="bg-brand-golden text-brand-dark border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark hover:text-brand-golden transition-all">${editIcon}</button>
+                            <button onclick="window.deleteUser('${u.id}')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all">${trashIcon}</button>
+                        </td>
+                    </tr>`;
+                });
+                if (shtml === '') shtml = '<tr><td colspan="5" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Students Found.</td></tr>';
+                stBody.innerHTML = shtml;
+
+                const rbody = document.getElementById('owner-reasons-table');
+                let rhtml = '';
+                appReasons.forEach(r => {
+                    rhtml += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light">
+                        <td class="px-6 py-4 text-brand-dark font-bold border-r-2 border-brand-dark/20">${r.text}</td>
+                        <td class="px-6 py-4 text-center">
+                            <button onclick="window.deleteReason('${r.id}')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all">${trashIcon}</button>
+                        </td>
+                    </tr>`;
+                });
+                if (rhtml === '') rhtml = '<tr><td colspan="2" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Reasons Defined.</td></tr>';
+                rbody.innerHTML = rhtml;
+            }
+
+            if (appSession.role === 'admin') {
+                // Populate Requests View
+                const reqBody = document.getElementById('admin-requests-table');
+                let reqHtml = '';
+                appLeaves.filter(l => l.adminId === appSession.id && l.status === 'pending').forEach(l => {
+                    reqHtml += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light">
+                        <td class="px-4 sm:px-6 py-5 border-r-2 border-brand-dark/20">
+                            <span class="font-mono text-[11px] font-bold text-brand-grey">${l.adNo || '-'}</span><br>
+                            <span class="font-bold text-brand-dark">${l.studentName}</span><br>
+                            <span class="text-brand-dark text-[10px] font-bold capitalize">${l.className}</span>
+                        </td>
+                        <td class="px-4 sm:px-6 py-5 text-brand-dark font-mono text-xs font-bold border-r-2 border-brand-dark/20">${l.start}<br>to<br>${l.end}</td>
+                        <td class="px-4 sm:px-6 py-5 border-r-2 border-brand-dark/20">
+                            <span class="font-bold text-sm block mb-1 truncate max-w-[150px]">${l.reason}</span>
+                            <span class="bg-brand-dark text-white px-2 py-0.5 text-[10px] font-black capitalize border border-brand-dark">${l.days} Days</span>
+                        </td>
+                        <td class="px-4 sm:px-6 py-5 text-center flex flex-col sm:flex-row justify-center gap-2">
+                            <button onclick="window.updateLeaveStatus('${l.id}', 'approved')" class="bg-brand-blue text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all text-xs font-black flex items-center gap-1 capitalize">${checkIcon} Accept</button>
+                            <button onclick="window.updateLeaveStatus('${l.id}', 'rejected')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all text-xs font-black flex items-center gap-1 capitalize">${xIcon} Reject</button>
+                        </td>
+                    </tr>`;
+                });
+                if (reqHtml === '') reqHtml = '<tr><td colspan="4" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Pending Requests.</td></tr>';
+                reqBody.innerHTML = reqHtml;
+
+
+                // Populate Database View
+                const tbody = document.getElementById('admin-leaves-table');
+                const filterClass = document.getElementById('filter-class').value.toLowerCase();
+                let html = '';
+
+                appLeaves.filter(l => l.className.toLowerCase().includes(filterClass) && (l.adminId === appSession.id || l.recordedBy === appSession.name)).forEach(l => {
+                    const stat = l.status || 'approved';
+                    const statColor = stat === 'pending' ? 'bg-brand-golden text-brand-dark' : stat === 'rejected' ? 'bg-brand-watermelon text-white' : 'bg-brand-blue text-white';
+
+                    html += `<tr class="border-b-2 border-brand-dark/20 hover:bg-[#FAFAFB]">
+                        <td class="px-6 py-5 font-mono text-[11px] font-bold text-brand-dark border-r-2 border-brand-dark/20">${l.adNo || '-'}</td>
+                        <td class="px-6 py-5 border-r-2 border-brand-dark/20">
+                            <span class="font-bold text-brand-dark">${l.studentName}</span><br>
+                            <span class="text-brand-grey text-[10px] font-bold capitalize">${l.className}</span>
+                        </td>
+                        <td class="px-6 py-5 text-brand-dark text-[10px] font-mono font-bold uppercase border-r-2 border-brand-dark/20">${l.start} <br> ${l.end}</td>
+                        <td class="px-6 py-5 text-center border-r-2 border-brand-dark/20"><span class="${statColor} border-2 border-brand-dark px-2 py-0.5 text-[10px] font-black capitalize">${stat}</span></td>
+                        <td class="px-6 py-5 text-center border-r-2 border-brand-dark/20"><span class="bg-white text-brand-dark px-3 py-1 text-[11px] font-black capitalize border-2 border-brand-dark">${l.days}</span></td>
+                        <td class="px-6 py-5 text-center no-print">
+                            <button onclick="window.deleteLeave('${l.id}')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all">${trashIcon}</button>
+                        </td>
+                    </tr>`;
+                });
+                if (html === '') html = '<tr><td colspan="6" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Records Found.</td></tr>';
+                tbody.innerHTML = html;
+            }
+
+            if (appSession.role === 'user') {
+                const uReasonSelect = document.getElementById('user-leave-reason');
+                if (uReasonSelect) {
+                    const currentVal = uReasonSelect.value;
+                    uReasonSelect.innerHTML = reasonOptions;
+                    if (currentVal && appReasons.some(r => r.text === currentVal)) uReasonSelect.value = currentVal;
+                }
+
+                const myLeaves = appLeaves.filter(l => l.studentId === appSession.id);
+                const tbody = document.getElementById('user-history-table');
+
+                let totalTaken = 0;
+                let html = '';
+                myLeaves.forEach(l => {
+                    const stat = l.status || 'approved';
+                    if (stat === 'approved') totalTaken += l.days;
+
+                    const statColor = stat === 'pending' ? 'bg-brand-golden text-brand-dark' : stat === 'rejected' ? 'bg-brand-watermelon text-white' : 'bg-brand-blue text-white';
+
+                    html += `<tr class="border-b-2 border-brand-dark/20 hover:bg-[#FAFAFB]">
+                        <td class="px-6 py-5 border-r-2 border-brand-dark/20 text-brand-dark font-mono font-bold text-xs">${l.start}<br>to<br>${l.end}</td>
+                        <td class="px-6 py-5 text-brand-dark font-bold text-sm border-r-2 border-brand-dark/20">${l.reason}</td>
+                        <td class="px-6 py-5 font-black text-brand-blue border-r-2 border-brand-dark/20 text-xl text-center">${l.days}</td>
+                        <td class="px-6 py-5 text-center">
+                            <span class="${statColor} border-2 border-brand-dark px-3 py-1 text-[10px] font-black capitalize">${stat}</span>
+                        </td>
+                    </tr>`;
+                });
+                if (html === '') html = '<tr><td colspan="4" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Leave Records Found.</td></tr>';
+                tbody.innerHTML = html;
+
+                document.getElementById('user-leaves-taken').innerText = totalTaken;
+                document.getElementById('user-leaves-remain').innerText = Math.max(0, 7.5 - totalTaken);
+            }
+        }
+
+        window.showPage('page-home');
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }).catch((err) => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
+</body>
+
+</html>
