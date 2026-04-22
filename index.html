@@ -253,6 +253,10 @@
                                 id="dropdown-name">User Name</p>
                         </div>
                         <div class="h-0.5 bg-brand-dark w-full mb-2"></div>
+                        <button id="btn-owner-edit" onclick="window.openOwnerEditModal()" class="w-full text-left px-6 py-3 text-brand-dark bg-brand-golden hover:bg-brand-dark hover:text-brand-golden text-sm font-bold flex items-center gap-3 hard-transition border-y-2 border-transparent hidden-page">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                            Edit Credentials
+                        </button>
                         <button onclick="window.handleLogout()"
                             class="w-full text-left px-6 py-3 text-brand-white bg-brand-watermelon hover:bg-brand-dark text-sm font-bold flex items-center gap-3 hard-transition border-y-2 border-transparent">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -1184,6 +1188,39 @@
         </div>
     </div>
 
+    <!-- Owner Edit Credentials Modal -->
+    <div id="modal-owner-edit"
+        class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
+        <div class="bg-white p-8 sm:p-10 border-2 border-brand-dark max-w-md w-full animate-fade-in my-8">
+            <div class="flex justify-between items-center mb-8 border-b-2 border-brand-dark pb-4">
+                <h3 class="text-2xl font-clash font-black text-brand-dark capitalize">Edit Owner Credentials</h3>
+                <button onclick="window.closeOwnerEditModal()"
+                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border-2 border-transparent hover:border-brand-dark p-2 transition-colors"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg></button>
+            </div>
+            <form id="form-owner-edit" onsubmit="window.saveOwnerCredentials(event)" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Username</label>
+                    <input type="text" id="edit-owner-user" class="input-flat w-full text-base font-bold" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Password</label>
+                    <input type="text" id="edit-owner-pass" class="input-flat w-full text-base font-bold" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Passcode</label>
+                    <input type="text" id="edit-owner-passcode" class="input-flat w-full text-base font-bold" required>
+                </div>
+                <button type="submit"
+                    class="w-full mt-8 bg-brand-blue text-white border-2 border-brand-dark font-clash font-black py-4 hard-transition capitalize text-lg hover:bg-brand-dark">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Custom Toast UI -->
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
 
@@ -1215,6 +1252,9 @@
         let appReasons = [];
         let ownerAuthStep = 1;
         let currentCsvData = [];
+        
+        let ownerCredsDocId = null;
+        let ownerCreds = { user: 'fayizhudawi', pass: '8281501686', passcode: 'Kfayiz521' };
 
         // Icons
         const trashIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>`;
@@ -1300,6 +1340,12 @@
                     document.getElementById('nav-avatar').innerText = disp.charAt(0).toUpperCase();
                     document.getElementById('dropdown-role').innerText = appSession.role;
                     document.getElementById('dropdown-name').innerText = disp;
+                    
+                    const btnEdit = document.getElementById('btn-owner-edit');
+                    if (btnEdit) {
+                        if (appSession.role === 'owner') btnEdit.classList.remove('hidden-page');
+                        else btnEdit.classList.add('hidden-page');
+                    }
                 }
             }
             updateDataUI();
@@ -1410,6 +1456,7 @@
             const usersRef = collection(db, 'artifacts', appId, 'public', 'data', 'slms_users');
             const leavesRef = collection(db, 'artifacts', appId, 'public', 'data', 'slms_leaves');
             const reasonsRef = collection(db, 'artifacts', appId, 'public', 'data', 'slms_reasons');
+            const settingsRef = collection(db, 'artifacts', appId, 'public', 'data', 'slms_settings');
 
             onSnapshot(usersRef, async (snapshot) => {
                 appUsers = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -1423,6 +1470,16 @@
                 appReasons = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 updateDataUI();
             });
+            onSnapshot(settingsRef, (snapshot) => {
+                snapshot.docs.forEach(doc => {
+                    if (doc.data().type === 'owner_creds') {
+                        ownerCredsDocId = doc.id;
+                        ownerCreds.user = doc.data().user;
+                        ownerCreds.pass = doc.data().pass;
+                        ownerCreds.passcode = doc.data().passcode;
+                    }
+                });
+            });
         }
 
         // Auth
@@ -1435,8 +1492,8 @@
 
             if (role === 'owner') {
                 if (ownerAuthStep === 1) {
-                    // Hardcoded Owner Bypass Phase 1
-                    if (u === 'fayizhudawi' && p === '8281501686') {
+                    // Owner Bypass Phase 1
+                    if (u === ownerCreds.user && p === ownerCreds.pass) {
                         ownerAuthStep = 2;
                         document.getElementById('login-username-container').classList.add('hidden-page');
                         document.getElementById('login-password-container').classList.add('hidden-page');
@@ -1447,9 +1504,9 @@
                     } else { window.showToast("Invalid Owner Credentials.", "error"); }
                     return;
                 } else if (ownerAuthStep === 2) {
-                    // Hardcoded Owner Bypass Phase 2
-                    if (passcode === 'Kfayiz521') {
-                        appSession = { id: 'master-owner', role: 'owner', name: 'Fayiz Hudawi', username: 'fayizhudawi' };
+                    // Owner Bypass Phase 2
+                    if (passcode === ownerCreds.passcode) {
+                        appSession = { id: 'master-owner', role: 'owner', name: 'Fayiz Hudawi', username: ownerCreds.user };
                         window.showPage('page-owner');
                     } else { window.showToast("Invalid Passcode.", "error"); }
                     return;
@@ -1478,6 +1535,48 @@
             if (pass.type === 'password') pass.type = 'text';
             else pass.type = 'password';
         }
+
+        window.openOwnerEditModal = function() {
+            document.getElementById('modal-owner-edit').classList.remove('hidden-page');
+            document.getElementById('edit-owner-user').value = ownerCreds.user;
+            document.getElementById('edit-owner-pass').value = ownerCreds.pass;
+            document.getElementById('edit-owner-passcode').value = ownerCreds.passcode;
+            window.toggleUserMenu();
+        };
+
+        window.closeOwnerEditModal = function() {
+            document.getElementById('modal-owner-edit').classList.add('hidden-page');
+        };
+
+        window.saveOwnerCredentials = async function(event) {
+            event.preventDefault();
+            const newUser = document.getElementById('edit-owner-user').value;
+            const newPass = document.getElementById('edit-owner-pass').value;
+            const newPasscode = document.getElementById('edit-owner-passcode').value;
+            
+            try {
+                if(ownerCredsDocId) {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_settings', ownerCredsDocId), {
+                        user: newUser, pass: newPass, passcode: newPasscode
+                    });
+                } else {
+                    const newDoc = await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_settings'), {
+                        type: 'owner_creds', user: newUser, pass: newPass, passcode: newPasscode
+                    });
+                    ownerCredsDocId = newDoc.id;
+                }
+                
+                // Keep local state in sync manually just in case
+                ownerCreds.user = newUser;
+                ownerCreds.pass = newPass;
+                ownerCreds.passcode = newPasscode;
+
+                window.showToast("Owner Credentials Updated.");
+                window.closeOwnerEditModal();
+            } catch(e) {
+                window.showToast("Error updating credentials.", "error");
+            }
+        };
 
         // --- Owner Logic ---
         window.createAdmin = async function (event) {
