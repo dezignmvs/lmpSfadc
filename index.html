@@ -754,7 +754,43 @@
 
             <!-- TAB 2: DATABASE & EXPORT -->
             <div id="admin-tab-database" class="admin-tab-content hidden-page animate-fade-in stagger-2">
-                <div class="border-2 border-brand-dark overflow-hidden bg-white p-4">
+                <div class="border-2 border-brand-dark overflow-hidden bg-white p-4">    
+                    <!-- CLASS WISE SUMMARY -->
+<div class="mb-8 border-2 border-brand-dark bg-brand-golden p-4">
+    
+    <h3 class="text-2xl font-clash font-black text-brand-dark mb-4 capitalize">
+        Class Wise Summary
+    </h3>
+
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse border-2 border-brand-dark bg-white">
+
+            <thead>
+                <tr class="bg-brand-dark text-white text-xs capitalize">
+
+                    <th class="px-4 py-4 border-r-2 border-brand-dark">
+                        Class / Batch
+                    </th>
+
+                    <th class="px-4 py-4 border-r-2 border-brand-dark text-center">
+                        Total Students
+                    </th>
+
+                    <th class="px-4 py-4 text-center">
+                        Total Leaves Recorded
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody id="class-summary-table"
+                class="text-sm font-bold text-brand-dark">
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
                     <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
                         <div class="relative w-full sm:w-80">
                             <svg class="absolute left-4 top-3.5 sm:top-4 text-brand-dark"
@@ -1975,7 +2011,72 @@
         };
 
         // --- Render UI ---
-        window.updateDataUI = function () {
+        window.renderClassWiseSummary = function () {
+
+    const table = document.getElementById("class-summary-table");
+
+    if (!table) return;
+
+    table.innerHTML = "";
+
+    const classSummary = {};
+
+    // LOOP THROUGH STUDENTS
+    appData.students.forEach(student => {
+
+        const className = student.class || "Unknown";
+
+        if (!classSummary[className]) {
+
+            classSummary[className] = {
+                students: 0,
+                leaves: 0
+            };
+        }
+
+        classSummary[className].students++;
+
+        // FIND LEAVES OF THIS STUDENT
+        const studentLeaves = appData.leaves.filter(
+            leave =>
+                leave.studentId === student.id &&
+                leave.status === "Approved"
+        );
+
+        studentLeaves.forEach(leave => {
+
+            classSummary[className].leaves += Number(leave.days || 0);
+
+        });
+    });
+
+    // RENDER TABLE
+    Object.keys(classSummary).forEach(className => {
+
+        const summary = classSummary[className];
+
+        table.innerHTML += `
+
+            <tr class="border-b-2 border-brand-dark">
+
+                <td class="px-4 py-4 border-r-2 border-brand-dark font-black">
+                    ${className}
+                </td>
+
+                <td class="px-4 py-4 border-r-2 border-brand-dark text-center">
+                    ${summary.students}
+                </td>
+
+                <td class="px-4 py-4 text-center text-brand-watermelon font-black">
+                    ${summary.leaves.toFixed(1)} Days
+                </td>
+
+            </tr>
+
+        `;
+    });
+};
+        window.updateDataUI = function () { window.renderClassWiseSummary();
             if (!appSession) return;
 
             let adminOptions = '<option value="" disabled selected>Choose An Admin...</option>';
