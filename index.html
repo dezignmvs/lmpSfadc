@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192x192.png">
 
     <!-- iOS Web App Configurations -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SFADC Leaves">
     <link rel="apple-touch-icon" href="icon-192x192.png">
@@ -55,14 +55,14 @@
         }
 
         /* Neo-Brutalist Transitions (Flat) */
-        .hard-transition {
+        .transition-all duration-300 ease-in-out {
             transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         /* Modern Flat Inputs */
         .input-flat {
             background-color: #FFFFFF;
-            border: 2px solid #111827;
+            border: 1px solid #D1D5DB;
             color: #111827;
             border-radius: 0px;
             padding: 0.875rem 1rem;
@@ -86,8 +86,8 @@
             width: 1.25rem;
             height: 1.25rem;
             cursor: pointer;
-            border-radius: 0;
-            border: 2px solid #111827;
+            border-radius: 0.25rem;
+            border: 1px solid #D1D5DB;
         }
 
         /* Animations */
@@ -151,7 +151,7 @@
         }
 
         .tab-btn.active {
-            border: 2px solid #111827;
+            border: 1px solid #D1D5DB;
             border-bottom-color: #FAFAFB;
             background: #FAFAFB;
             color: #111827;
@@ -162,7 +162,7 @@
         .tab-btn:hover:not(.active) {
             color: #111827;
             background: #e5e7eb;
-            border: 2px solid #111827;
+            border: 1px solid #D1D5DB;
         }
 
         /* Hide scrollbar for tabs */
@@ -221,13 +221,13 @@
 <body class="min-h-screen flex flex-col selection:bg-brand-golden selection:text-brand-dark relative">
 
     <!-- Top Navigation (Neo-Brutalist Flat) -->
-    <nav class="bg-brand-white border-b-2 border-brand-dark sticky top-0 z-40">
+    <nav class="bg-brand-white border-b border-gray-200 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
             <!-- Left: Logo & Text -->
             <div class="flex items-center gap-3 cursor-pointer group animate-fade-in"
                 onclick="window.showPage('page-home')">
-                <div class="w-4 h-4 bg-brand-golden border-2 border-brand-dark"></div>
-                <h1 class="text-[16px] sm:text-xl font-clash font-bold text-brand-dark capitalize">
+                <div class="w-4 h-4 bg-brand-golden border border-gray-200 rounded-xl shadow-sm"></div>
+                <h1 class="text-[16px] sm:text-xl font-sans font-bold text-brand-dark capitalize">
                     Leave Management System <span class="hidden sm:inline text-brand-blue">| SFADC Odamala</span>
                 </h1>
             </div>
@@ -235,30 +235,30 @@
             <!-- Right: Actions -->
             <div class="flex items-center gap-4">
                 <a href="https://sfadc.in" target="_blank"
-                    class="hidden sm:flex border-2 border-brand-dark bg-brand-dark text-white px-5 py-2.5 text-sm font-bold hard-transition hover:bg-white hover:text-brand-dark capitalize">
+                    class="hidden sm:flex border border-gray-200 rounded-xl shadow-sm bg-brand-dark text-white px-5 py-2.5 text-sm font-bold transition-all duration-300 ease-in-out hover:bg-white hover:text-brand-dark capitalize">
                     SEP Live Score
                 </a>
 
                 <div class="relative hidden-page animate-fade-in" id="nav-user-container">
                     <button id="nav-avatar" onclick="toggleUserMenu()"
-                        class="w-12 h-12 bg-brand-golden text-brand-dark font-clash font-bold flex items-center justify-center border-2 border-brand-dark hard-transition hover:bg-brand-dark hover:text-brand-golden text-lg">
+                        class="w-12 h-12 bg-brand-golden text-brand-dark font-sans font-bold flex items-center justify-center border border-gray-200 rounded-xl shadow-sm transition-all duration-300 ease-in-out hover:bg-gray-800 hover:text-white text-lg">
                         U
                     </button>
 
                     <div id="user-dropdown"
-                        class="absolute right-0 mt-4 w-64 bg-brand-white border-2 border-brand-dark py-3 hidden opacity-0 transition-all duration-200 z-50 origin-top-right">
+                        class="absolute right-0 mt-4 w-64 bg-brand-white border border-gray-200 rounded-xl shadow-sm py-3 hidden opacity-0 transition-all duration-200 z-50 origin-top-right">
                         <div class="px-6 py-3 mb-2">
-                            <p class="text-xs text-brand-blue font-black mb-1 capitalize" id="dropdown-role">Role</p>
-                            <p class="text-base font-clash font-bold text-brand-dark truncate capitalize"
+                            <p class="text-xs text-brand-blue font-semibold mb-1 capitalize" id="dropdown-role">Role</p>
+                            <p class="text-base font-sans font-bold text-brand-dark truncate capitalize"
                                 id="dropdown-name">User Name</p>
                         </div>
                         <div class="h-0.5 bg-brand-dark w-full mb-2"></div>
-                        <button id="btn-owner-edit" onclick="window.openOwnerEditModal()" class="w-full text-left px-6 py-3 text-brand-dark bg-brand-golden hover:bg-brand-dark hover:text-brand-golden text-sm font-bold flex items-center gap-3 hard-transition border-y-2 border-transparent hidden-page">
+                        <button id="btn-owner-edit" onclick="window.openOwnerEditModal()" class="w-full text-left px-6 py-3 text-brand-dark bg-brand-golden hover:bg-gray-800 hover:text-white text-sm font-bold flex items-center gap-3 transition-all duration-300 ease-in-out border-y border-transparent hidden-page">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                             Edit Credentials
                         </button>
                         <button onclick="window.handleLogout()"
-                            class="w-full text-left px-6 py-3 text-brand-white bg-brand-watermelon hover:bg-brand-dark text-sm font-bold flex items-center gap-3 hard-transition border-y-2 border-transparent">
+                            class="w-full text-left px-6 py-3 text-brand-white bg-brand-watermelon hover:bg-gray-800 text-sm font-bold flex items-center gap-3 transition-all duration-300 ease-in-out border-y border-transparent">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -278,15 +278,15 @@
 
         <!-- 1. HOME / LANDING -->
         <div id="page-home" class="app-page max-w-lg mx-auto mt-12 sm:mt-20 text-center">
-            <div class="mb-12 animate-fade-in border-2 border-brand-dark bg-white p-8">
+            <div class="mb-12 animate-fade-in border border-gray-200 rounded-xl shadow-sm bg-white p-8">
                 <div
-                    class="inline-flex items-center justify-center w-16 h-16 bg-brand-golden border-2 border-brand-dark text-brand-dark mb-6">
+                    class="inline-flex items-center justify-center w-16 h-16 bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark mb-6">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     </svg>
                 </div>
-                <h2 class="text-4xl sm:text-5xl font-clash font-black text-brand-dark mb-4 capitalize">Access <span
+                <h2 class="text-4xl sm:text-5xl font-sans font-semibold text-brand-dark mb-4 capitalize">Access <span
                         class="text-brand-blue">Portal</span></h2>
                 <p class="text-brand-dark text-base font-bold capitalize">Select Your Authorized Role To Manage Leaves.
                 </p>
@@ -295,9 +295,9 @@
             <div class="space-y-6 max-w-sm mx-auto">
                 <!-- Admin Button -->
                 <button onclick="window.openLogin('admin')"
-                    class="hard-transition animate-fade-in stagger-1 group relative w-full flex items-center justify-between p-5 bg-brand-blue text-white border-2 border-brand-dark hover:bg-brand-dark">
+                    class="transition-all duration-300 ease-in-out animate-fade-in stagger-1 group relative w-full flex items-center justify-between p-5 bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-800">
                     <div class="flex items-center gap-4">
-                        <div class="p-3 bg-white border-2 border-brand-dark text-brand-blue">
+                        <div class="p-3 bg-white border border-gray-200 rounded-xl shadow-sm text-brand-blue">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -308,7 +308,7 @@
                             </svg>
                         </div>
                         <div class="text-left">
-                            <h3 class="font-clash font-black text-lg capitalize">Admin</h3>
+                            <h3 class="font-sans font-semibold text-lg capitalize">Admin</h3>
                             <p class="text-xs font-bold mt-0.5 opacity-90 capitalize">Manage Records & System</p>
                         </div>
                     </div>
@@ -321,9 +321,9 @@
 
                 <!-- Student Button -->
                 <button onclick="window.openLogin('user')"
-                    class="hard-transition animate-fade-in stagger-2 group relative w-full flex items-center justify-between p-5 bg-brand-golden text-brand-dark border-2 border-brand-dark hover:bg-brand-dark hover:text-brand-golden">
+                    class="transition-all duration-300 ease-in-out animate-fade-in stagger-2 group relative w-full flex items-center justify-between p-5 bg-brand-golden text-brand-dark border border-gray-200 rounded-xl shadow-sm hover:bg-gray-800 hover:text-white">
                     <div class="flex items-center gap-4">
-                        <div class="p-3 bg-white border-2 border-brand-dark text-brand-dark">
+                        <div class="p-3 bg-white border border-gray-200 rounded-xl shadow-sm text-brand-dark">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -332,7 +332,7 @@
                             </svg>
                         </div>
                         <div class="text-left">
-                            <h3 class="font-clash font-black text-lg capitalize">Student</h3>
+                            <h3 class="font-sans font-semibold text-lg capitalize">Student</h3>
                             <p class="text-xs font-bold mt-0.5 opacity-90 capitalize">View Personal Ledger</p>
                         </div>
                     </div>
@@ -349,7 +349,7 @@
         <div id="page-login" class="app-page hidden-page max-w-md mx-auto mt-12 sm:mt-20 animate-fade-in">
             <div class="text-center mb-8">
                 <!-- Secret Trigger Icon for Owner Login -->
-                <div class="inline-flex p-4 bg-brand-golden border-2 border-brand-dark text-brand-dark mb-6 cursor-pointer hard-transition hover:bg-brand-dark hover:text-brand-golden select-none"
+                <div class="inline-flex p-4 bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark mb-6 cursor-pointer transition-all duration-300 ease-in-out hover:bg-gray-800 hover:text-white select-none"
                     onclick="window.triggerOwnerLogin()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -357,24 +357,24 @@
                         <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                     </svg>
                 </div>
-                <h2 class="text-4xl font-clash font-black text-brand-dark capitalize">Sign In</h2>
+                <h2 class="text-4xl font-sans font-semibold text-brand-dark capitalize">Sign In</h2>
                 <p id="login-subtitle" class="text-sm text-brand-blue font-bold mt-3 capitalize"></p>
             </div>
 
             <form id="login-form" onsubmit="window.processLogin(event)"
-                class="bg-white p-8 sm:p-10 border-2 border-brand-dark">
+                class="bg-white p-8 sm:p-10 border border-gray-200 rounded-xl shadow-sm">
                 <input type="hidden" id="active-role">
 
                 <div id="login-username-container" class="animate-fade-in stagger-1 mb-5">
                     <label id="login-username-label"
-                        class="block text-sm font-black text-brand-dark mb-2 capitalize">Username</label>
+                        class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Username</label>
                     <input type="text" id="login-username" class="input-flat w-full text-base font-bold"
                         placeholder="Enter Your Detail" required>
                 </div>
 
                 <div id="login-password-container" class="animate-fade-in stagger-2 mb-6">
                     <div class="flex justify-between items-center mb-2">
-                        <label class="block text-sm font-black text-brand-dark capitalize">Password</label>
+                        <label class="block text-sm font-semibold text-brand-dark capitalize">Password</label>
                     </div>
                     <div class="relative">
                         <input type="password" id="login-password" class="input-flat w-full text-base font-bold"
@@ -392,7 +392,7 @@
                 </div>
 
                 <div id="login-passcode-container" class="hidden-page animate-fade-in mb-6">
-                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize flex items-center gap-2">
+                    <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
@@ -402,19 +402,19 @@
                         Security Passcode
                     </label>
                     <input type="password" id="login-passcode"
-                        class="input-flat w-full text-center tracking-[0.4em] font-black text-xl">
+                        class="input-flat w-full text-center tracking-[0.4em] font-semibold text-xl">
                 </div>
 
                 <div class="animate-fade-in stagger-3">
                     <button type="submit"
-                        class="w-full bg-brand-blue text-white border-2 border-brand-dark font-clash font-black text-xl py-4 hard-transition hover:bg-brand-dark mt-2 capitalize">
+                        class="w-full bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold text-xl py-4 transition-all duration-300 ease-in-out hover:bg-gray-800 mt-2 capitalize">
                         <span id="login-btn-text">Login</span>
                     </button>
                 </div>
 
                 <div class="mt-8 text-center animate-fade-in stagger-3">
                     <button type="button" onclick="window.showPage('page-home')"
-                        class="text-brand-dark font-bold hard-transition capitalize text-sm border-2 border-brand-dark px-4 py-2 hover:bg-brand-dark hover:text-white">Go
+                        class="text-brand-dark font-bold transition-all duration-300 ease-in-out capitalize text-sm border border-gray-200 rounded-xl shadow-sm px-4 py-2 hover:bg-gray-800 hover:text-white">Go
                         Back</button>
                 </div>
             </form>
@@ -424,7 +424,7 @@
         <div id="page-owner" class="app-page hidden-page space-y-6 sm:space-y-10">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-2 animate-fade-in">
                 <div>
-                    <h2 class="text-4xl sm:text-5xl font-clash font-black text-brand-dark capitalize">Owner <span
+                    <h2 class="text-4xl sm:text-5xl font-sans font-semibold text-brand-dark capitalize">Owner <span
                             class="text-brand-blue">Terminal</span></h2>
                     <p class="text-brand-dark font-bold mt-2 text-base capitalize">System Administration And Global
                         Settings.</p>
@@ -433,7 +433,7 @@
 
             <!-- Brutalist Tabs Navigation -->
             <div
-                class="flex border-b-2 border-brand-dark mb-8 overflow-x-auto no-scrollbar animate-fade-in stagger-1 relative z-10">
+                class="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar animate-fade-in stagger-1 relative z-10">
                 <button onclick="window.switchOwnerTab('owner-tab-admins')" id="btn-owner-tab-admins"
                     class="tab-btn active px-6 py-4 text-sm capitalize">
                     Manage Admins
@@ -451,8 +451,8 @@
             <!-- TAB 1: ADMINS -->
             <div id="owner-tab-admins"
                 class="owner-tab-content grid grid-cols-1 lg:grid-cols-3 gap-8 animate-fade-in stagger-2">
-                <div class="lg:col-span-1 border-2 border-brand-dark p-6 sm:p-8 bg-white h-fit">
-                    <h3 class="font-clash font-black text-xl text-brand-dark mb-6 capitalize">Create Admin</h3>
+                <div class="lg:col-span-1 border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8 bg-white h-fit">
+                    <h3 class="font-sans font-semibold text-xl text-brand-dark mb-6 capitalize">Create Admin</h3>
                     <form id="form-create-admin" onsubmit="window.createAdmin(event)" class="space-y-5">
                         <div>
                             <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Full Name</label>
@@ -468,7 +468,7 @@
                                 <input type="text" id="admin-place" class="input-flat w-full font-bold" required>
                             </div>
                         </div>
-                        <div class="pt-4 border-t-2 border-brand-dark space-y-5">
+                        <div class="pt-4 border-t border-gray-200 space-y-5">
                             <div>
                                 <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Username</label>
                                 <input type="text" id="admin-user" class="input-flat w-full font-bold" required>
@@ -479,22 +479,22 @@
                             </div>
                         </div>
                         <button type="submit"
-                            class="w-full mt-4 bg-brand-blue text-white border-2 border-brand-dark font-clash font-black py-4 hard-transition capitalize hover:bg-brand-dark">
+                            class="w-full mt-4 bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold py-4 transition-all duration-300 ease-in-out capitalize hover:bg-gray-800">
                             Register Admin
                         </button>
                     </form>
                 </div>
 
-                <div class="lg:col-span-2 border-2 border-brand-dark overflow-hidden flex flex-col bg-white h-fit">
-                    <div class="p-6 border-b-2 border-brand-dark bg-brand-golden">
-                        <h3 class="font-clash font-black text-xl text-brand-dark capitalize">Registered Admins</h3>
+                <div class="lg:col-span-2 border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col bg-white h-fit">
+                    <div class="p-6 border-b border-gray-200 bg-brand-golden">
+                        <h3 class="font-sans font-semibold text-xl text-brand-dark capitalize">Registered Admins</h3>
                     </div>
                     <div class="overflow-x-auto flex-grow p-4 bg-white">
-                        <table class="w-full text-left border-collapse min-w-[500px] border-2 border-brand-dark">
+                        <table class="w-full text-left border-collapse min-w-[500px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
-                                <tr class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark">
-                                    <th class="px-6 py-4 font-bold border-r-2 border-brand-dark">Admin Details</th>
-                                    <th class="px-6 py-4 font-bold border-r-2 border-brand-dark">Credentials</th>
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
+                                    <th class="px-6 py-4 font-bold border-r border-gray-200">Admin Details</th>
+                                    <th class="px-6 py-4 font-bold border-r border-gray-200">Credentials</th>
                                     <th class="px-6 py-4 font-bold text-center">Actions</th>
                                 </tr>
                             </thead>
@@ -510,7 +510,7 @@
             <div id="owner-tab-students" class="owner-tab-content hidden-page animate-fade-in">
                 <!-- Action Bar -->
                 <div
-                    class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-white border-2 border-brand-dark p-4">
+                    class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-white border border-gray-200 rounded-xl shadow-sm p-4">
                     <div class="relative w-full sm:w-80">
                         <svg class="absolute left-4 top-4 text-brand-dark" xmlns="http://www.w3.org/2000/svg" width="18"
                             height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -523,11 +523,11 @@
                     </div>
                     <div class="flex gap-4 w-full sm:w-auto">
                         <button onclick="window.openStudentModal('manual')"
-                            class="flex-1 sm:flex-none bg-white border-2 border-brand-dark text-brand-dark font-clash font-black px-6 py-3 hard-transition capitalize hover:bg-brand-dark hover:text-white">
+                            class="flex-1 sm:flex-none bg-white border border-gray-200 rounded-xl shadow-sm text-brand-dark font-sans font-semibold px-6 py-3 transition-all duration-300 ease-in-out capitalize hover:bg-gray-800 hover:text-white">
                             + Manual Entry
                         </button>
                         <button onclick="window.openStudentModal('csv')"
-                            class="flex-1 sm:flex-none bg-brand-golden border-2 border-brand-dark text-brand-dark font-clash font-black px-6 py-3 hard-transition capitalize flex justify-center items-center gap-2 hover:bg-brand-dark hover:text-brand-golden">
+                            class="flex-1 sm:flex-none bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark font-sans font-semibold px-6 py-3 transition-all duration-300 ease-in-out capitalize flex justify-center items-center gap-2 hover:bg-gray-800 hover:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -540,15 +540,15 @@
                     </div>
                 </div>
 
-                <div class="border-2 border-brand-dark overflow-hidden bg-white p-4">
+                <div class="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white p-4">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px] border-2 border-brand-dark">
+                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
-                                <tr class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark">
-                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Ad.No</th>
-                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Name</th>
-                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Class</th>
-                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Admin</th>
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200">Ad.No</th>
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200">Name</th>
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200">Class</th>
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200">Admin</th>
                                     <th class="px-6 py-5 font-bold text-center">Actions</th>
                                 </tr>
                             </thead>
@@ -562,25 +562,25 @@
 
             <!-- TAB 3: REASONS -->
             <div id="owner-tab-reasons" class="owner-tab-content hidden-page max-w-3xl mx-auto w-full animate-fade-in">
-                <div class="border-2 border-brand-dark overflow-hidden flex flex-col bg-white">
-                    <div class="p-6 sm:p-8 border-b-2 border-brand-dark bg-brand-golden">
-                        <h3 class="font-clash font-black text-xl text-brand-dark mb-4 capitalize">Add Standardized
+                <div class="border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col bg-white">
+                    <div class="p-6 sm:p-8 border-b border-gray-200 bg-brand-golden">
+                        <h3 class="font-sans font-semibold text-xl text-brand-dark mb-4 capitalize">Add Standardized
                             Reason</h3>
                         <form onsubmit="window.addReason(event)" class="flex flex-col sm:flex-row gap-4">
                             <input type="text" id="new-reason-text" class="input-flat flex-grow text-base font-bold"
                                 placeholder="E.g. Medical, Monthly Leave" required>
                             <button type="submit"
-                                class="bg-brand-dark text-white border-2 border-brand-dark font-clash font-black px-8 py-3.5 hard-transition capitalize hover:bg-white hover:text-brand-dark">Add
+                                class="bg-brand-dark text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold px-8 py-3.5 transition-all duration-300 ease-in-out capitalize hover:bg-white hover:text-brand-dark">Add
                                 Reason</button>
                         </form>
                     </div>
 
                     <div class="overflow-y-auto max-h-[500px] p-4">
-                        <table class="w-full text-left border-collapse border-2 border-brand-dark">
+                        <table class="w-full text-left border-collapse border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr
-                                    class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark sticky top-0 z-10">
-                                    <th class="px-6 py-5 font-bold border-r-2 border-brand-dark">Defined Reasons</th>
+                                    class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200 sticky top-0 z-10">
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200">Defined Reasons</th>
                                     <th class="px-6 py-5 font-bold text-center w-32">Actions</th>
                                 </tr>
                             </thead>
@@ -597,7 +597,7 @@
         <!-- 4. ADMIN DASHBOARD -->
         <div id="page-admin" class="app-page hidden-page space-y-6 sm:space-y-10">
             <div class="mb-4 animate-fade-in">
-                <h2 class="text-4xl sm:text-5xl font-clash font-black text-brand-dark tracking-tight capitalize">Admin
+                <h2 class="text-4xl sm:text-5xl font-sans font-semibold text-brand-dark tracking-tight capitalize">Admin
                     <span class="text-brand-blue">Console</span>
                 </h2>
                 <p class="text-brand-dark font-bold text-base mt-2 capitalize">Manage Student Records And Export Data.
@@ -606,7 +606,7 @@
 
             <!-- Brutalist Tabs Navigation -->
             <div
-                class="flex border-b-2 border-brand-dark mb-8 overflow-x-auto no-scrollbar animate-fade-in stagger-1 relative z-10">
+                class="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar animate-fade-in stagger-1 relative z-10">
                 <button onclick="window.switchAdminTab('admin-tab-manage')" id="btn-admin-tab-manage"
                     class="tab-btn active px-6 py-4 text-sm capitalize whitespace-nowrap">
                     Manage Leaves
@@ -626,32 +626,32 @@
                         <input type="radio" name="admin_entry_type" value="requests" class="peer sr-only" checked
                             onchange="window.toggleAdminEntryView()">
                         <div
-                            class="border-2 border-brand-dark bg-white p-4 sm:p-5 text-center peer-checked:bg-brand-golden font-clash font-black hard-transition capitalize text-sm">
+                            class="border border-gray-200 rounded-xl shadow-sm bg-white p-4 sm:p-5 text-center peer-checked:bg-brand-golden font-sans font-semibold transition-all duration-300 ease-in-out capitalize text-sm">
                             Student Requests</div>
                     </label>
                     <label class="flex-1 cursor-pointer">
                         <input type="radio" name="admin_entry_type" value="monthly" class="peer sr-only"
                             onchange="window.toggleAdminEntryView()">
                         <div
-                            class="border-2 border-brand-dark bg-white p-4 sm:p-5 text-center peer-checked:bg-brand-blue peer-checked:text-white font-clash font-black hard-transition capitalize text-sm">
+                            class="border border-gray-200 rounded-xl shadow-sm bg-white p-4 sm:p-5 text-center peer-checked:bg-brand-blue peer-checked:text-white font-sans font-semibold transition-all duration-300 ease-in-out capitalize text-sm">
                             Direct Entry / Monthly Minus</div>
                     </label>
                 </div>
 
                 <!-- Sub-View: Student Requests -->
-                <div id="admin-view-requests" class="border-2 border-brand-dark p-4 bg-white animate-fade-in">
+                <div id="admin-view-requests" class="border border-gray-200 rounded-xl shadow-sm p-4 bg-white animate-fade-in">
                     <div
-                        class="p-4 sm:p-6 border-b-2 border-brand-dark bg-brand-golden flex justify-between items-center mb-4">
-                        <h3 class="font-clash font-black text-xl text-brand-dark capitalize">Pending Requests</h3>
+                        class="p-4 sm:p-6 border-b border-gray-200 bg-brand-golden flex justify-between items-center mb-4">
+                        <h3 class="font-sans font-semibold text-xl text-brand-dark capitalize">Pending Requests</h3>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px] border-2 border-brand-dark">
+                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
-                                <tr class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark">
-                                    <th class="px-4 sm:px-6 py-4 font-bold border-r-2 border-brand-dark">Student Details
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
+                                    <th class="px-4 sm:px-6 py-4 font-bold border-r border-gray-200">Student Details
                                     </th>
-                                    <th class="px-4 sm:px-6 py-4 font-bold border-r-2 border-brand-dark">Dates</th>
-                                    <th class="px-4 sm:px-6 py-4 font-bold border-r-2 border-brand-dark">Reason & Total
+                                    <th class="px-4 sm:px-6 py-4 font-bold border-r border-gray-200">Dates</th>
+                                    <th class="px-4 sm:px-6 py-4 font-bold border-r border-gray-200">Reason & Total
                                     </th>
                                     <th class="px-4 sm:px-6 py-4 font-bold text-center">Action</th>
                                 </tr>
@@ -665,27 +665,27 @@
 
                 <!-- Sub-View: Direct Entry (Monthly Minus) -->
                 <div id="admin-view-monthly"
-                    class="border-2 border-brand-dark p-6 sm:p-10 bg-white hidden-page animate-fade-in">
+                    class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-10 bg-white hidden-page animate-fade-in">
                     <form id="form-record-leave" onsubmit="window.recordLeave(event)" class="space-y-6">
-                        <div class="p-5 sm:p-6 bg-brand-blue border-2 border-brand-dark relative overflow-hidden mb-8">
-                            <label class="block text-sm font-black text-white mb-3 capitalize">
+                        <div class="p-5 sm:p-6 bg-brand-blue border border-gray-200 rounded-xl shadow-sm relative overflow-hidden mb-8">
+                            <label class="block text-sm font-semibold text-white mb-3 capitalize">
                                 Lookup Admission No.
                             </label>
-                            <input type="text" id="leave-adno" class="input-flat w-full font-black text-xl text-center"
+                            <input type="text" id="leave-adno" class="input-flat w-full font-semibold text-xl text-center"
                                 placeholder="----" onblur="window.autoFillStudent()">
 
                             <div
-                                class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 bg-white border-2 border-brand-dark p-4">
+                                class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 bg-white border border-gray-200 rounded-xl shadow-sm p-4">
                                 <div>
                                     <label
-                                        class="block text-[10px] font-black text-brand-grey capitalize mb-1">Name</label>
+                                        class="block text-[10px] font-semibold text-brand-grey capitalize mb-1">Name</label>
                                     <input type="text" id="leave-student-name"
                                         class="w-full bg-transparent border-none p-0 text-brand-dark text-lg font-bold focus:ring-0 cursor-default"
                                         readonly placeholder="-">
                                 </div>
                                 <div>
                                     <label
-                                        class="block text-[10px] font-black text-brand-grey capitalize mb-1">Class</label>
+                                        class="block text-[10px] font-semibold text-brand-grey capitalize mb-1">Class</label>
                                     <input type="text" id="leave-student-class"
                                         class="w-full bg-transparent border-none p-0 text-brand-dark text-lg font-bold focus:ring-0 cursor-default"
                                         readonly placeholder="-">
@@ -694,31 +694,31 @@
                             <input type="hidden" id="leave-student-id">
                         </div>
 
-                        <div class="p-6 bg-white border-2 border-brand-watermelon">
-                            <label class="block text-sm font-black text-brand-watermelon mb-2 capitalize">Late Leave
+                        <div class="p-6 bg-white border border-red-200 rounded-xl shadow-sm">
+                            <label class="block text-sm font-semibold text-brand-watermelon mb-2 capitalize">Late Leave
                                 Entering (Monthly)</label>
                             <p class="text-xs text-brand-dark font-bold mb-4 capitalize">Select "Monthly Leave" And
                                 Enter Deduction Value Manually. Type 1 For Half Day (0.5), Type 2 For Full Day (1.0)</p>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
                                 <div>
-                                    <label class="block text-xs font-black text-brand-dark mb-2 capitalize">Select
+                                    <label class="block text-xs font-semibold text-brand-dark mb-2 capitalize">Select
                                         Reason Type</label>
                                     <select id="leave-reason" class="input-flat w-full text-sm font-bold" required>
                                         <option value="Monthly Leave" selected>Monthly Leave</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-black text-brand-dark mb-2 capitalize">Deduction
+                                    <label class="block text-xs font-semibold text-brand-dark mb-2 capitalize">Deduction
                                         Multiplier</label>
                                     <input type="number" id="monthly-late-val" min="1" max="2"
-                                        class="input-flat w-full text-base font-black text-center" placeholder="1 or 2"
+                                        class="input-flat w-full text-base font-semibold text-center" placeholder="1 or 2"
                                         required oninput="window.calculateLeavePreview()">
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-xs font-black text-brand-dark mb-2 capitalize">Date
+                                    <label class="block text-xs font-semibold text-brand-dark mb-2 capitalize">Date
                                         Applied</label>
                                     <input type="date" id="leave-start" class="input-flat w-full text-sm font-bold"
                                         required
@@ -731,14 +731,14 @@
                         </div>
 
                         <div
-                            class="flex flex-col sm:flex-row sm:items-center justify-between border-t-2 border-brand-dark pt-8 mt-4">
+                            class="flex flex-col sm:flex-row sm:items-center justify-between border-t border-gray-200 pt-8 mt-4">
                             <div class="text-sm font-bold text-brand-dark text-center sm:text-left capitalize">
                                 Deducting:<br><span id="preview-calc-days"
-                                    class="text-5xl font-clash font-black text-brand-watermelon leading-none">0</span>
-                                <span class="text-xs font-black ml-1 capitalize">Days</span>
+                                    class="text-5xl font-sans font-semibold text-brand-watermelon leading-none">0</span>
+                                <span class="text-xs font-semibold ml-1 capitalize">Days</span>
                             </div>
                             <button type="submit" id="btn-submit-leave"
-                                class="w-full sm:w-auto bg-brand-dark text-white border-2 border-brand-dark hover:bg-white hover:text-brand-dark font-clash font-black px-8 py-4 hard-transition capitalize text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none">
+                                class="w-full sm:w-auto bg-brand-dark text-white border border-gray-200 rounded-xl shadow-sm hover:bg-white hover:text-brand-dark font-sans font-semibold px-8 py-4 transition-all duration-300 ease-in-out capitalize text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none">
                                 Execute Deduction
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
@@ -754,43 +754,7 @@
 
             <!-- TAB 2: DATABASE & EXPORT -->
             <div id="admin-tab-database" class="admin-tab-content hidden-page animate-fade-in stagger-2">
-                <div class="border-2 border-brand-dark overflow-hidden bg-white p-4">    
-                    <!-- CLASS WISE SUMMARY -->
-<div class="mb-8 border-2 border-brand-dark bg-brand-golden p-4">
-    
-    <h3 class="text-2xl font-clash font-black text-brand-dark mb-4 capitalize">
-        Class Wise Summary
-    </h3>
-
-    <div class="overflow-x-auto">
-        <table class="w-full border-collapse border-2 border-brand-dark bg-white">
-
-            <thead>
-                <tr class="bg-brand-dark text-white text-xs capitalize">
-
-                    <th class="px-4 py-4 border-r-2 border-brand-dark">
-                        Class / Batch
-                    </th>
-
-                    <th class="px-4 py-4 border-r-2 border-brand-dark text-center">
-                        Total Students
-                    </th>
-
-                    <th class="px-4 py-4 text-center">
-                        Total Leaves Recorded
-                    </th>
-
-                </tr>
-            </thead>
-
-            <tbody id="class-summary-table"
-                class="text-sm font-bold text-brand-dark">
-
-            </tbody>
-
-        </table>
-    </div>
-</div>
+                <div class="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white p-4">
                     <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
                         <div class="relative w-full sm:w-80">
                             <svg class="absolute left-4 top-3.5 sm:top-4 text-brand-dark"
@@ -804,7 +768,7 @@
                                 class="input-flat w-full pl-12 text-sm font-bold" oninput="window.updateDataUI()">
                         </div>
                         <button
-                            class="w-full sm:w-auto bg-brand-golden border-2 border-brand-dark text-brand-dark px-6 py-3.5 text-sm font-clash font-black hover:bg-brand-dark hover:text-brand-golden hard-transition capitalize flex items-center justify-center gap-2"
+                            class="w-full sm:w-auto bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark px-6 py-3.5 text-sm font-sans font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 ease-in-out capitalize flex items-center justify-center gap-2"
                             onclick="window.print()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
@@ -817,19 +781,19 @@
                         </button>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px] border-2 border-brand-dark">
+                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
-                                <tr class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark">
-                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Ad.No
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Ad.No
                                     </th>
-                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Name &
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Name &
                                         Class</th>
-                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Dates
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Dates
                                     </th>
-                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Status
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Status
                                     </th>
                                     <th
-                                        class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark text-center">
+                                        class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200 text-center">
                                         Days</th>
                                     <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold text-center no-print">Actions</th>
                                 </tr>
@@ -846,7 +810,7 @@
         <!-- 5. STUDENT DASHBOARD -->
         <div id="page-user" class="app-page hidden-page space-y-6 sm:space-y-10">
             <div class="mb-6 animate-fade-in">
-                <h2 class="text-4xl sm:text-5xl font-clash font-black text-brand-dark tracking-tight capitalize">Student
+                <h2 class="text-4xl sm:text-5xl font-sans font-semibold text-brand-dark tracking-tight capitalize">Student
                     <span class="text-brand-blue">Ledger</span>
                 </h2>
                 <p class="text-brand-dark font-bold text-sm sm:text-base mt-2 capitalize">Apply For Leaves And Monitor
@@ -855,7 +819,7 @@
 
             <!-- Brutalist Tabs Navigation -->
             <div
-                class="flex border-b-2 border-brand-dark mb-8 overflow-x-auto no-scrollbar animate-fade-in stagger-1 relative z-10">
+                class="flex border-b border-gray-200 mb-8 overflow-x-auto no-scrollbar animate-fade-in stagger-1 relative z-10">
                 <button onclick="window.switchUserTab('user-tab-apply')" id="btn-user-tab-apply"
                     class="tab-btn active px-4 sm:px-6 py-3 sm:py-4 text-sm capitalize whitespace-nowrap">
                     Apply For Leave
@@ -868,29 +832,29 @@
 
             <!-- TAB 1: APPLY LEAVE -->
             <div id="user-tab-apply" class="user-tab-content max-w-2xl mx-auto w-full animate-fade-in stagger-2">
-                <div class="border-2 border-brand-dark p-6 sm:p-10 bg-white">
+                <div class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-10 bg-white">
                     <form id="form-user-apply-leave" onsubmit="window.submitUserLeaveRequest(event)" class="space-y-6">
 
                         <div
-                            class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-brand-dark text-white p-4 border-2 border-brand-dark">
+                            class="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-brand-dark text-white p-4 border border-gray-200 rounded-xl shadow-sm">
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-brand-grey capitalize mb-1">Ad.No</label>
+                                    class="block text-[10px] font-semibold text-brand-grey capitalize mb-1">Ad.No</label>
                                 <p id="apply-adno" class="font-mono text-base font-bold">-</p>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-black text-brand-grey capitalize mb-1">Name</label>
+                                <label class="block text-[10px] font-semibold text-brand-grey capitalize mb-1">Name</label>
                                 <p id="apply-name" class="text-base font-bold truncate">-</p>
                             </div>
                             <div>
                                 <label
-                                    class="block text-[10px] font-black text-brand-grey capitalize mb-1">Class</label>
+                                    class="block text-[10px] font-semibold text-brand-grey capitalize mb-1">Class</label>
                                 <p id="apply-class" class="text-base font-bold">-</p>
                             </div>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Reason For
+                            <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Reason For
                                 Leave</label>
                             <select id="user-leave-reason" class="input-flat w-full text-sm font-bold" required>
                                 <option value="" disabled selected>Select A Reason...</option>
@@ -898,15 +862,15 @@
                             </select>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-[#FAFAFB] p-4 border-2 border-brand-dark">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-[#FAFAFB] p-4 border border-gray-200 rounded-xl shadow-sm">
                             <div>
-                                <label class="block text-[11px] font-black text-brand-dark mb-2 capitalize">Start
+                                <label class="block text-[11px] font-semibold text-brand-dark mb-2 capitalize">Start
                                     Date</label>
                                 <input type="date" id="user-leave-start" class="input-flat w-full text-sm font-bold"
                                     required onchange="window.renderUserDateRows()">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-black text-brand-dark mb-2 capitalize">End
+                                <label class="block text-[11px] font-semibold text-brand-dark mb-2 capitalize">End
                                     Date</label>
                                 <input type="date" id="user-leave-end" class="input-flat w-full text-sm font-bold"
                                     required onchange="window.renderUserDateRows()">
@@ -914,9 +878,9 @@
                         </div>
 
                         <!-- Dynamic Checkbox Container for each day -->
-                        <div id="user-date-rows-wrapper" class="hidden-page border-2 border-brand-dark p-4 bg-white">
+                        <div id="user-date-rows-wrapper" class="hidden-page border border-gray-200 rounded-xl shadow-sm p-4 bg-white">
                             <h4
-                                class="text-xs font-black text-brand-blue capitalize mb-4 border-b-2 border-brand-dark pb-2">
+                                class="text-xs font-semibold text-brand-blue capitalize mb-4 border-b border-gray-200 pb-2">
                                 Select Halves Per Day</h4>
                             <div id="user-date-rows-container" class="space-y-3 max-h-60 overflow-y-auto pr-2">
                                 <!-- Populated dynamically by JS -->
@@ -924,14 +888,14 @@
                         </div>
 
                         <div
-                            class="flex flex-col sm:flex-row sm:items-center justify-between border-t-2 border-brand-dark pt-8 mt-4">
+                            class="flex flex-col sm:flex-row sm:items-center justify-between border-t border-gray-200 pt-8 mt-4">
                             <div class="text-sm font-bold text-brand-dark text-center sm:text-left capitalize">
                                 Calculating:<br><span id="user-preview-calc-days"
-                                    class="text-5xl font-clash font-black text-brand-blue leading-none">0</span> <span
-                                    class="text-xs font-black ml-1 capitalize">Days</span>
+                                    class="text-5xl font-sans font-semibold text-brand-blue leading-none">0</span> <span
+                                    class="text-xs font-semibold ml-1 capitalize">Days</span>
                             </div>
                             <button type="submit" id="btn-submit-user-leave"
-                                class="w-full sm:w-auto bg-brand-blue text-white border-2 border-brand-dark hover:bg-brand-dark hover:text-white font-clash font-black px-8 py-4 hard-transition capitalize text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none mt-4 sm:mt-0">
+                                class="w-full sm:w-auto bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-800 hover:text-white font-sans font-semibold px-8 py-4 transition-all duration-300 ease-in-out capitalize text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none mt-4 sm:mt-0">
                                 Submit Request
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
@@ -948,9 +912,9 @@
             <!-- TAB 2: DASHBOARD & HISTORY -->
             <div id="user-tab-history" class="user-tab-content hidden-page animate-fade-in stagger-2">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-                    <div class="border-2 border-brand-dark p-6 sm:p-8 bg-white">
+                    <div class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8 bg-white">
                         <div
-                            class="w-12 h-12 bg-brand-golden border-2 border-brand-dark text-brand-dark flex items-center justify-center mb-6">
+                            class="w-12 h-12 bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark flex items-center justify-center mb-6">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -958,13 +922,13 @@
                                 <polyline points="12 6 12 12 16 14" />
                             </svg>
                         </div>
-                        <p class="text-brand-dark text-[11px] font-black capitalize mb-1">Total Permitted</p>
-                        <p class="text-4xl sm:text-5xl font-clash font-black text-brand-blue">7.5 <span
+                        <p class="text-brand-dark text-[11px] font-semibold capitalize mb-1">Total Permitted</p>
+                        <p class="text-4xl sm:text-5xl font-sans font-semibold text-brand-blue">7.5 <span
                                 class="text-xs sm:text-sm text-brand-dark font-bold capitalize ml-1">Days</span></p>
                     </div>
-                    <div class="border-2 border-brand-dark p-6 sm:p-8 bg-white">
+                    <div class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8 bg-white">
                         <div
-                            class="w-12 h-12 bg-brand-watermelon border-2 border-brand-dark text-white flex items-center justify-center mb-6">
+                            class="w-12 h-12 bg-brand-watermelon border border-gray-200 rounded-xl shadow-sm text-white flex items-center justify-center mb-6">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -972,14 +936,14 @@
                                 <polyline points="22 4 12 14.01 9 11.01" />
                             </svg>
                         </div>
-                        <p class="text-brand-dark text-[11px] font-black capitalize mb-1">Leaves Taken</p>
-                        <p class="text-4xl sm:text-5xl font-clash font-black text-brand-watermelon"><span
+                        <p class="text-brand-dark text-[11px] font-semibold capitalize mb-1">Leaves Taken</p>
+                        <p class="text-4xl sm:text-5xl font-sans font-semibold text-brand-watermelon"><span
                                 id="user-leaves-taken">0</span> <span
                                 class="text-xs sm:text-sm text-brand-dark font-bold capitalize ml-1">Days</span></p>
                     </div>
-                    <div class="border-2 border-brand-dark p-6 sm:p-8 bg-brand-blue">
+                    <div class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8 bg-brand-blue">
                         <div
-                            class="w-12 h-12 bg-white border-2 border-brand-dark text-brand-dark flex items-center justify-center mb-6">
+                            class="w-12 h-12 bg-white border border-gray-200 rounded-xl shadow-sm text-brand-dark flex items-center justify-center mb-6">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -989,28 +953,28 @@
                                 <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" />
                             </svg>
                         </div>
-                        <p class="text-white text-[11px] font-black capitalize mb-1">Available Rest</p>
-                        <p class="text-4xl sm:text-5xl font-clash font-black text-white"><span
+                        <p class="text-white text-[11px] font-semibold capitalize mb-1">Available Rest</p>
+                        <p class="text-4xl sm:text-5xl font-sans font-semibold text-white"><span
                                 id="user-leaves-remain">7.5</span> <span
                                 class="text-xs sm:text-sm text-white font-bold capitalize ml-1">Days</span></p>
                     </div>
                 </div>
 
-                <div class="border-2 border-brand-dark overflow-hidden bg-white mt-10 p-4">
+                <div class="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white mt-10 p-4">
                     <div class="mb-6 flex items-center justify-between">
-                        <h3 class="text-xl font-clash font-black text-brand-dark capitalize">Application History</h3>
+                        <h3 class="text-xl font-sans font-semibold text-brand-dark capitalize">Application History</h3>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[600px] border-2 border-brand-dark">
+                        <table class="w-full text-left border-collapse min-w-[600px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr
-                                    class="bg-brand-dark text-white text-[10px] sm:text-xs capitalize border-b-2 border-brand-dark">
-                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Dates
+                                    class="bg-brand-dark text-white text-[10px] sm:text-xs capitalize border-b border-gray-200">
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Dates
                                     </th>
-                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark">Reason
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Reason
                                     </th>
                                     <th
-                                        class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r-2 border-brand-dark text-center">
+                                        class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200 text-center">
                                         Days</th>
                                     <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold text-center">Status</th>
                                 </tr>
@@ -1031,12 +995,12 @@
     <!-- Owner Student Modal (Manual & Edit) -->
     <div id="modal-owner-student"
         class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
-        <div class="bg-white p-8 sm:p-10 border-2 border-brand-dark max-w-md w-full animate-fade-in my-8">
-            <div class="flex justify-between items-center mb-8 border-b-2 border-brand-dark pb-4">
-                <h3 class="text-2xl font-clash font-black text-brand-dark capitalize" id="student-modal-title">Student
+        <div class="bg-white p-8 sm:p-10 border border-gray-200 rounded-xl shadow-sm max-w-md w-full animate-fade-in my-8">
+            <div class="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
+                <h3 class="text-2xl font-sans font-semibold text-brand-dark capitalize" id="student-modal-title">Student
                     Profile</h3>
                 <button onclick="window.closeStudentModal()"
-                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border-2 border-transparent hover:border-brand-dark p-2 transition-colors"><svg
+                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border border-transparent rounded-xl hover:border-brand-dark p-2 transition-colors"><svg
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18" />
@@ -1046,29 +1010,29 @@
             <form id="owner-form-create-student" onsubmit="window.saveOwnerStudent(event)" class="space-y-6">
                 <input type="hidden" id="owner-student-edit-id">
                 <div>
-                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Assign To Admin</label>
+                    <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Assign To Admin</label>
                     <select id="owner-student-admin" class="input-flat w-full text-base font-bold" required>
                         <!-- Populated by JS -->
                     </select>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Ad. No.</label>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Ad. No.</label>
                         <input type="text" id="owner-student-adno" class="input-flat w-full text-base font-bold"
                             required placeholder="1001">
                     </div>
                     <div>
-                        <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Student Name</label>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Student Name</label>
                         <input type="text" id="owner-student-name" class="input-flat w-full text-base font-bold"
                             required>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Class</label>
+                    <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Class</label>
                     <input type="text" id="owner-student-class" class="input-flat w-full text-base font-bold" required>
                 </div>
                 <button type="submit" id="student-modal-btn"
-                    class="w-full mt-8 bg-brand-blue text-white border-2 border-brand-dark font-clash font-black py-4 hard-transition capitalize text-lg hover:bg-brand-dark">Save
+                    class="w-full mt-8 bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold py-4 transition-all duration-300 ease-in-out capitalize text-lg hover:bg-gray-800">Save
                     Profile</button>
             </form>
         </div>
@@ -1078,10 +1042,10 @@
     <div id="modal-csv-upload"
         class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all">
         <div
-            class="bg-brand-light border-2 border-brand-dark max-w-2xl w-full animate-fade-in flex flex-col max-h-[90vh] overflow-hidden">
-            <div class="p-6 sm:p-8 border-b-2 border-brand-dark flex justify-between items-center bg-white">
-                <h3 class="text-xl font-clash font-black text-brand-dark capitalize flex items-center gap-3">
-                    <div class="inline-flex p-2 border-2 border-brand-dark bg-brand-golden text-brand-dark">
+            class="bg-brand-light border border-gray-200 rounded-xl shadow-sm max-w-2xl w-full animate-fade-in flex flex-col max-h-[90vh] overflow-hidden">
+            <div class="p-6 sm:p-8 border-b border-gray-200 flex justify-between items-center bg-white">
+                <h3 class="text-xl font-sans font-semibold text-brand-dark capitalize flex items-center gap-3">
+                    <div class="inline-flex p-2 border border-gray-200 rounded-xl shadow-sm bg-brand-golden text-brand-dark">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -1092,7 +1056,7 @@
                     Bulk Import
                 </h3>
                 <button onclick="window.closeCsvModal()"
-                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border-2 border-transparent hover:border-brand-dark p-2 transition-colors"><svg
+                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border border-transparent rounded-xl hover:border-brand-dark p-2 transition-colors"><svg
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18" />
@@ -1106,11 +1070,11 @@
                 <!-- STEP 1 -->
                 <div class="text-center max-w-sm w-full" id="csv-step-1">
                     <p
-                        class="text-sm text-brand-dark font-black capitalize mb-6 text-center border-b-2 border-brand-dark pb-2 inline-block">
+                        class="text-sm text-brand-dark font-semibold capitalize mb-6 text-center border-b border-gray-200 pb-2 inline-block">
                         Step 1: Preparation</p>
 
                     <button onclick="window.downloadCSVTemplate()"
-                        class="w-full bg-white border-2 border-brand-dark text-brand-dark font-clash font-black py-4 text-lg hard-transition mb-10 flex justify-center items-center gap-3 capitalize hover:bg-brand-dark hover:text-white">
+                        class="w-full bg-white border border-gray-200 rounded-xl shadow-sm text-brand-dark font-sans font-semibold py-4 text-lg transition-all duration-300 ease-in-out mb-10 flex justify-center items-center gap-3 capitalize hover:bg-gray-800 hover:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -1121,20 +1085,20 @@
                     </button>
 
                     <div class="text-left mb-8">
-                        <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Assign Batch To
+                        <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Assign Batch To
                             Admin</label>
                         <select id="owner-csv-admin" class="input-flat w-full text-base font-bold" required>
                             <!-- Populated by JS -->
                         </select>
                     </div>
                     <button onclick="window.nextCsvStep(2)"
-                        class="w-full bg-brand-blue text-white border-2 border-brand-dark font-clash font-black py-4 text-lg hard-transition capitalize hover:bg-brand-dark">Next
+                        class="w-full bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold py-4 text-lg transition-all duration-300 ease-in-out capitalize hover:bg-gray-800">Next
                         Step</button>
                 </div>
 
                 <!-- STEP 2 -->
                 <div class="text-center max-w-sm w-full hidden-page" id="csv-step-2">
-                    <div class="inline-flex p-5 bg-brand-golden border-2 border-brand-dark text-brand-dark mb-4">
+                    <div class="inline-flex p-5 bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark mb-4">
                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -1142,7 +1106,7 @@
                             <line x1="12" x2="12" y1="3" y2="15" />
                         </svg>
                     </div>
-                    <h4 class="text-xl font-clash font-black text-brand-dark capitalize mb-2">Bulk CSV Upload</h4>
+                    <h4 class="text-xl font-sans font-semibold text-brand-dark capitalize mb-2">Bulk CSV Upload</h4>
                     <p class="text-sm text-brand-dark font-bold mb-8">Upload A CSV File. Format Strictly As:<br><span
                             class="font-mono text-white bg-brand-dark px-2 py-1 text-xs font-bold mt-2 inline-block">AdNo,
                             Name, Class</span></p>
@@ -1151,7 +1115,7 @@
                         onchange="window.handleCSVSelect(event)">
 
                     <button onclick="document.getElementById('csv-upload-input').click()"
-                        class="w-full bg-brand-blue border-2 border-brand-dark text-white py-4 font-clash font-black text-lg hard-transition flex justify-center items-center gap-3 capitalize hover:bg-brand-dark">
+                        class="w-full bg-brand-blue border border-gray-200 rounded-xl shadow-sm text-white py-4 font-sans font-semibold text-lg transition-all duration-300 ease-in-out flex justify-center items-center gap-3 capitalize hover:bg-gray-800">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
@@ -1162,23 +1126,23 @@
                         Choose CSV File
                     </button>
                     <button onclick="window.nextCsvStep(1)"
-                        class="mt-6 text-sm text-brand-dark font-black capitalize hover:underline transition-all border-2 border-transparent hover:border-brand-dark px-4 py-2 hover:bg-brand-dark hover:text-white">Go
+                        class="mt-6 text-sm text-brand-dark font-semibold capitalize hover:underline transition-all border border-transparent rounded-xl hover:border-brand-dark px-4 py-2 hover:bg-gray-800 hover:text-white">Go
                         Back</button>
                 </div>
 
                 <!-- STEP 3 -->
                 <div class="w-full hidden-page flex flex-col h-full" id="csv-step-3">
                     <p
-                        class="text-sm text-brand-dark font-black capitalize mb-4 text-center border-b-2 border-brand-dark pb-2 inline-block mx-auto">
+                        class="text-sm text-brand-dark font-semibold capitalize mb-4 text-center border-b border-gray-200 pb-2 inline-block mx-auto">
                         Step 3: Live Edit & Confirm</p>
-                    <div class="overflow-y-auto border-2 border-brand-dark bg-white flex-grow mb-6 min-h-[300px] p-4">
-                        <table class="w-full text-left border-collapse min-w-[500px] border-2 border-brand-dark">
+                    <div class="overflow-y-auto border border-gray-200 rounded-xl shadow-sm bg-white flex-grow mb-6 min-h-[300px] p-4">
+                        <table class="w-full text-left border-collapse min-w-[500px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr
-                                    class="bg-brand-dark text-white text-xs capitalize border-b-2 border-brand-dark sticky top-0 z-10">
-                                    <th class="px-4 py-4 font-bold border-r-2 border-brand-dark w-24">Ad.No</th>
-                                    <th class="px-4 py-4 font-bold border-r-2 border-brand-dark">Name</th>
-                                    <th class="px-4 py-4 font-bold border-r-2 border-brand-dark w-32">Class</th>
+                                    class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200 sticky top-0 z-10">
+                                    <th class="px-4 py-4 font-bold border-r border-gray-200 w-24">Ad.No</th>
+                                    <th class="px-4 py-4 font-bold border-r border-gray-200">Name</th>
+                                    <th class="px-4 py-4 font-bold border-r border-gray-200 w-32">Class</th>
                                     <th class="px-4 py-4 font-bold text-center w-12">Action</th>
                                 </tr>
                             </thead>
@@ -1189,9 +1153,9 @@
                     </div>
                     <div class="flex flex-col sm:flex-row gap-4 mt-auto">
                         <button onclick="window.nextCsvStep(2)"
-                            class="w-full sm:w-1/3 bg-white border-2 border-brand-dark text-brand-dark font-clash font-black py-4 text-lg hard-transition capitalize hover:bg-brand-dark hover:text-white">Cancel</button>
+                            class="w-full sm:w-1/3 bg-white border border-gray-200 rounded-xl shadow-sm text-brand-dark font-sans font-semibold py-4 text-lg transition-all duration-300 ease-in-out capitalize hover:bg-gray-800 hover:text-white">Cancel</button>
                         <button onclick="window.submitCSVData()"
-                            class="w-full sm:w-2/3 bg-brand-blue border-2 border-brand-dark text-white font-clash font-black py-4 text-lg hard-transition capitalize hover:bg-brand-dark">Confirm
+                            class="w-full sm:w-2/3 bg-brand-blue border border-gray-200 rounded-xl shadow-sm text-white font-sans font-semibold py-4 text-lg transition-all duration-300 ease-in-out capitalize hover:bg-gray-800">Confirm
                             & Upload</button>
                     </div>
                 </div>
@@ -1202,9 +1166,9 @@
     <!-- Confirm Modal -->
     <div id="confirm-modal"
         class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all">
-        <div class="bg-white p-8 border-2 border-brand-dark max-w-sm w-full animate-fade-in text-center">
+        <div class="bg-white p-8 border border-gray-200 rounded-xl shadow-sm max-w-sm w-full animate-fade-in text-center">
             <div
-                class="w-16 h-16 bg-brand-watermelon border-2 border-brand-dark text-white flex items-center justify-center mb-6 mx-auto">
+                class="w-16 h-16 bg-brand-watermelon border border-gray-200 rounded-xl shadow-sm text-white flex items-center justify-center mb-6 mx-auto">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m15 9-6 6" />
@@ -1212,14 +1176,14 @@
                     <circle cx="12" cy="12" r="10" />
                 </svg>
             </div>
-            <h3 class="text-3xl font-clash font-black text-brand-dark mb-3 capitalize">Delete Record?</h3>
+            <h3 class="text-3xl font-sans font-semibold text-brand-dark mb-3 capitalize">Delete Record?</h3>
             <p class="text-brand-dark font-bold text-base mb-8 capitalize">This Action Is Permanent And Cannot Be
                 Undone.</p>
             <div class="flex justify-center gap-4">
                 <button onclick="window.closeConfirm()"
-                    class="px-6 py-3 text-brand-dark font-clash font-black bg-white border-2 border-brand-dark text-lg hard-transition capitalize hover:bg-brand-dark hover:text-white">Cancel</button>
+                    class="px-6 py-3 text-brand-dark font-sans font-semibold bg-white border border-gray-200 rounded-xl shadow-sm text-lg transition-all duration-300 ease-in-out capitalize hover:bg-gray-800 hover:text-white">Cancel</button>
                 <button id="confirm-action-btn"
-                    class="px-8 py-3 text-white font-clash font-black bg-brand-watermelon border-2 border-brand-dark text-lg hard-transition capitalize hover:bg-brand-dark">Delete</button>
+                    class="px-8 py-3 text-white font-sans font-semibold bg-brand-watermelon border border-gray-200 rounded-xl shadow-sm text-lg transition-all duration-300 ease-in-out capitalize hover:bg-gray-800">Delete</button>
             </div>
         </div>
     </div>
@@ -1227,11 +1191,11 @@
     <!-- Owner Edit Credentials Modal -->
     <div id="modal-owner-edit"
         class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
-        <div class="bg-white p-8 sm:p-10 border-2 border-brand-dark max-w-md w-full animate-fade-in my-8">
-            <div class="flex justify-between items-center mb-8 border-b-2 border-brand-dark pb-4">
-                <h3 class="text-2xl font-clash font-black text-brand-dark capitalize">Edit Owner Credentials</h3>
+        <div class="bg-white p-8 sm:p-10 border border-gray-200 rounded-xl shadow-sm max-w-md w-full animate-fade-in my-8">
+            <div class="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
+                <h3 class="text-2xl font-sans font-semibold text-brand-dark capitalize">Edit Owner Credentials</h3>
                 <button onclick="window.closeOwnerEditModal()"
-                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border-2 border-transparent hover:border-brand-dark p-2 transition-colors"><svg
+                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border border-transparent rounded-xl hover:border-brand-dark p-2 transition-colors"><svg
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18" />
@@ -1240,19 +1204,19 @@
             </div>
             <form id="form-owner-edit" onsubmit="window.saveOwnerCredentials(event)" class="space-y-6">
                 <div>
-                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Username</label>
+                    <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Username</label>
                     <input type="text" id="edit-owner-user" class="input-flat w-full text-base font-bold" required>
                 </div>
                 <div>
-                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Password</label>
+                    <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Password</label>
                     <input type="text" id="edit-owner-pass" class="input-flat w-full text-base font-bold" required>
                 </div>
                 <div>
-                    <label class="block text-sm font-black text-brand-dark mb-2 capitalize">Passcode</label>
+                    <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Passcode</label>
                     <input type="text" id="edit-owner-passcode" class="input-flat w-full text-base font-bold" required>
                 </div>
                 <button type="submit"
-                    class="w-full mt-8 bg-brand-blue text-white border-2 border-brand-dark font-clash font-black py-4 hard-transition capitalize text-lg hover:bg-brand-dark">Save Changes</button>
+                    class="w-full mt-8 bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold py-4 transition-all duration-300 ease-in-out capitalize text-lg hover:bg-gray-800">Save Changes</button>
             </form>
         </div>
     </div>
@@ -1304,7 +1268,7 @@
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             const bgClass = type === 'error' ? 'bg-brand-watermelon' : 'bg-brand-blue';
-            toast.className = `${bgClass} text-white px-6 py-4 border-2 border-brand-dark text-sm font-bold toast-enter flex items-center gap-3 capitalize`;
+            toast.className = `${bgClass} text-white px-6 py-4 border border-gray-200 rounded-xl shadow-sm text-sm font-bold toast-enter flex items-center gap-3 capitalize`;
             toast.innerHTML = type === 'error'
                 ? `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg> ${message}`
                 : `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ${message}`;
@@ -1751,12 +1715,12 @@
             const tbody = document.getElementById('csv-preview-table');
             let html = '';
             currentCsvData.forEach((row, i) => {
-                html += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light" id="csv-row-${i}">
-                    <td class="p-2 border-r-2 border-brand-dark/20"><input type="text" class="input-flat w-full text-xs p-2 font-bold shadow-none" value="${row.adNo}" onchange="currentCsvData[${i}].adNo=this.value"></td>
-                    <td class="p-2 border-r-2 border-brand-dark/20"><input type="text" class="input-flat w-full text-xs p-2 font-bold shadow-none" value="${row.name}" onchange="currentCsvData[${i}].name=this.value"></td>
-                    <td class="p-2 border-r-2 border-brand-dark/20"><input type="text" class="input-flat w-full text-xs p-2 font-bold shadow-none" value="${row.className}" onchange="currentCsvData[${i}].className=this.value"></td>
+                html += `<tr class="border-b border-gray-200/20 hover:bg-brand-light" id="csv-row-${i}">
+                    <td class="p-2 border-r border-gray-200/20"><input type="text" class="input-flat w-full text-xs p-2 font-bold shadow-none" value="${row.adNo}" onchange="currentCsvData[${i}].adNo=this.value"></td>
+                    <td class="p-2 border-r border-gray-200/20"><input type="text" class="input-flat w-full text-xs p-2 font-bold shadow-none" value="${row.name}" onchange="currentCsvData[${i}].name=this.value"></td>
+                    <td class="p-2 border-r border-gray-200/20"><input type="text" class="input-flat w-full text-xs p-2 font-bold shadow-none" value="${row.className}" onchange="currentCsvData[${i}].className=this.value"></td>
                     <td class="p-2 text-center">
-                        <button onclick="removeCsvRow(${i})" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all">${trashIcon}</button>
+                        <button onclick="removeCsvRow(${i})" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all">${trashIcon}</button>
                     </td>
                 </tr>`;
             });
@@ -1943,7 +1907,7 @@
             while (cur <= d2) {
                 const dateStr = cur.toISOString().split('T')[0];
                 html += `
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-brand-dark/10 pb-2 mb-2">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200/10 pb-2 mb-2">
                         <span class="text-sm font-bold text-brand-dark font-mono">${dateStr}</span>
                         <div class="flex items-center gap-4">
                             <label class="flex items-center gap-2 text-xs font-bold capitalize cursor-pointer hover:text-brand-blue">
@@ -2011,72 +1975,7 @@
         };
 
         // --- Render UI ---
-        window.renderClassWiseSummary = function () {
-
-    const table = document.getElementById("class-summary-table");
-
-    if (!table) return;
-
-    table.innerHTML = "";
-
-    const classSummary = {};
-
-    // LOOP THROUGH STUDENTS
-    appData.students.forEach(student => {
-
-        const className = student.class || "Unknown";
-
-        if (!classSummary[className]) {
-
-            classSummary[className] = {
-                students: 0,
-                leaves: 0
-            };
-        }
-
-        classSummary[className].students++;
-
-        // FIND LEAVES OF THIS STUDENT
-        const studentLeaves = appData.leaves.filter(
-            leave =>
-                leave.studentId === student.id &&
-                leave.status === "Approved"
-        );
-
-        studentLeaves.forEach(leave => {
-
-            classSummary[className].leaves += Number(leave.days || 0);
-
-        });
-    });
-
-    // RENDER TABLE
-    Object.keys(classSummary).forEach(className => {
-
-        const summary = classSummary[className];
-
-        table.innerHTML += `
-
-            <tr class="border-b-2 border-brand-dark">
-
-                <td class="px-4 py-4 border-r-2 border-brand-dark font-black">
-                    ${className}
-                </td>
-
-                <td class="px-4 py-4 border-r-2 border-brand-dark text-center">
-                    ${summary.students}
-                </td>
-
-                <td class="px-4 py-4 text-center text-brand-watermelon font-black">
-                    ${summary.leaves.toFixed(1)} Days
-                </td>
-
-            </tr>
-
-        `;
-    });
-};
-        window.updateDataUI = function () { window.renderClassWiseSummary();
+        window.updateDataUI = function () {
             if (!appSession) return;
 
             let adminOptions = '<option value="" disabled selected>Choose An Admin...</option>';
@@ -2099,15 +1998,15 @@
                 const tbody = document.getElementById('owner-users-table');
                 let html = '';
                 appUsers.filter(u => u.role === 'admin').forEach(u => {
-                    html += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light">
-                        <td class="px-6 py-5 font-bold text-brand-dark border-r-2 border-brand-dark/20">${u.name} <br><span class="text-[10px] text-brand-dark/70 capitalize font-bold mt-1 inline-block">${u.place || '-'}</span></td>
-                        <td class="px-6 py-5 font-mono text-sm text-brand-dark font-bold border-r-2 border-brand-dark/20">${u.username}</td>
-                        <td class="px-6 py-5 font-mono text-sm text-brand-dark flex items-center gap-3 border-r-2 border-brand-dark/20">
+                    html += `<tr class="border-b border-gray-200/20 hover:bg-brand-light">
+                        <td class="px-6 py-5 font-bold text-brand-dark border-r border-gray-200/20">${u.name} <br><span class="text-[10px] text-brand-dark/70 capitalize font-bold mt-1 inline-block">${u.place || '-'}</span></td>
+                        <td class="px-6 py-5 font-mono text-sm text-brand-dark font-bold border-r border-gray-200/20">${u.username}</td>
+                        <td class="px-6 py-5 font-mono text-sm text-brand-dark flex items-center gap-3 border-r border-gray-200/20">
                             <span id="pass-${u.id}">••••••••</span>
                             <button onclick="togglePass('${u.id}', '${u.password}')" class="text-brand-dark hover:scale-110 hover:text-brand-blue transition">${eyeIcon}</button>
                         </td>
                         <td class="px-6 py-5 text-center">
-                            <button onclick="window.deleteUser('${u.id}')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all" title="Delete Admin">${trashIcon}</button>
+                            <button onclick="window.deleteUser('${u.id}')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all" title="Delete Admin">${trashIcon}</button>
                         </td>
                     </tr>`;
                 });
@@ -2117,15 +2016,15 @@
                 const stBody = document.getElementById('owner-students-table');
                 let shtml = '';
                 const sfilter = document.getElementById('owner-filter-class').value.toLowerCase();
-                appUsers.filter(u => u.role === 'user' && u.className.toLowerCase().includes(sfilter)).forEach(u => {
-                    shtml += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light">
-                        <td class="px-6 py-4 font-mono text-xs font-bold text-brand-dark border-r-2 border-brand-dark/20">${u.adNo}</td>
-                        <td class="px-6 py-4 font-bold text-brand-dark border-r-2 border-brand-dark/20">${u.name}</td>
-                        <td class="px-6 py-4 text-xs font-bold text-brand-dark border-r-2 border-brand-dark/20">${u.className}</td>
-                        <td class="px-6 py-4 text-xs font-bold text-brand-dark border-r-2 border-brand-dark/20">${adminMap[u.adminId] || '-'}</td>
+                appUsers.filter(u => u.role === 'user' && (u.className || '').toLowerCase().includes(sfilter)).forEach(u => {
+                    shtml += `<tr class="border-b border-gray-200/20 hover:bg-brand-light">
+                        <td class="px-6 py-4 font-mono text-xs font-bold text-brand-dark border-r border-gray-200/20">${u.adNo}</td>
+                        <td class="px-6 py-4 font-bold text-brand-dark border-r border-gray-200/20">${u.name}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-brand-dark border-r border-gray-200/20">${u.className}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-brand-dark border-r border-gray-200/20">${adminMap[u.adminId] || '-'}</td>
                         <td class="px-6 py-4 text-center flex justify-center gap-3">
-                            <button onclick="window.openStudentModal('edit', '${u.id}')" class="bg-brand-golden text-brand-dark border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark hover:text-brand-golden transition-all">${editIcon}</button>
-                            <button onclick="window.deleteUser('${u.id}')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all">${trashIcon}</button>
+                            <button onclick="window.openStudentModal('edit', '${u.id}')" class="bg-brand-golden text-brand-dark border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 hover:text-white transition-all">${editIcon}</button>
+                            <button onclick="window.deleteUser('${u.id}')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all">${trashIcon}</button>
                         </td>
                     </tr>`;
                 });
@@ -2135,10 +2034,10 @@
                 const rbody = document.getElementById('owner-reasons-table');
                 let rhtml = '';
                 appReasons.forEach(r => {
-                    rhtml += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light">
-                        <td class="px-6 py-4 text-brand-dark font-bold border-r-2 border-brand-dark/20">${r.text}</td>
+                    rhtml += `<tr class="border-b border-gray-200/20 hover:bg-brand-light">
+                        <td class="px-6 py-4 text-brand-dark font-bold border-r border-gray-200/20">${r.text}</td>
                         <td class="px-6 py-4 text-center">
-                            <button onclick="window.deleteReason('${r.id}')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all">${trashIcon}</button>
+                            <button onclick="window.deleteReason('${r.id}')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all">${trashIcon}</button>
                         </td>
                     </tr>`;
                 });
@@ -2147,24 +2046,35 @@
             }
 
             if (appSession.role === 'admin') {
+                const adminReasonSelect = document.getElementById('leave-reason');
+                if (adminReasonSelect) {
+                    const currentVal = adminReasonSelect.value;
+                    let customOptions = '<option value="Monthly Leave">Monthly Leave</option>';
+                    appReasons.forEach(r => { customOptions += `<option value="${r.text}">${r.text}</option>`; });
+                    adminReasonSelect.innerHTML = customOptions;
+                    if (currentVal && (currentVal === 'Monthly Leave' || appReasons.some(r => r.text === currentVal))) {
+                        adminReasonSelect.value = currentVal;
+                    }
+                }
+
                 // Populate Requests View
                 const reqBody = document.getElementById('admin-requests-table');
                 let reqHtml = '';
                 appLeaves.filter(l => l.adminId === appSession.id && l.status === 'pending').forEach(l => {
-                    reqHtml += `<tr class="border-b-2 border-brand-dark/20 hover:bg-brand-light">
-                        <td class="px-4 sm:px-6 py-5 border-r-2 border-brand-dark/20">
+                    reqHtml += `<tr class="border-b border-gray-200/20 hover:bg-brand-light">
+                        <td class="px-4 sm:px-6 py-5 border-r border-gray-200/20">
                             <span class="font-mono text-[11px] font-bold text-brand-grey">${l.adNo || '-'}</span><br>
                             <span class="font-bold text-brand-dark">${l.studentName}</span><br>
                             <span class="text-brand-dark text-[10px] font-bold capitalize">${l.className}</span>
                         </td>
-                        <td class="px-4 sm:px-6 py-5 text-brand-dark font-mono text-xs font-bold border-r-2 border-brand-dark/20">${l.start}<br>to<br>${l.end}</td>
-                        <td class="px-4 sm:px-6 py-5 border-r-2 border-brand-dark/20">
+                        <td class="px-4 sm:px-6 py-5 text-brand-dark font-mono text-xs font-bold border-r border-gray-200/20">${l.start}<br>to<br>${l.end}</td>
+                        <td class="px-4 sm:px-6 py-5 border-r border-gray-200/20">
                             <span class="font-bold text-sm block mb-1 truncate max-w-[150px]">${l.reason}</span>
-                            <span class="bg-brand-dark text-white px-2 py-0.5 text-[10px] font-black capitalize border border-brand-dark">${l.days} Days</span>
+                            <span class="bg-brand-dark text-white px-2 py-0.5 text-[10px] font-semibold capitalize border border-brand-dark">${l.days} Days</span>
                         </td>
                         <td class="px-4 sm:px-6 py-5 text-center flex flex-col sm:flex-row justify-center gap-2">
-                            <button onclick="window.updateLeaveStatus('${l.id}', 'approved')" class="bg-brand-blue text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all text-xs font-black flex items-center gap-1 capitalize">${checkIcon} Accept</button>
-                            <button onclick="window.updateLeaveStatus('${l.id}', 'rejected')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all text-xs font-black flex items-center gap-1 capitalize">${xIcon} Reject</button>
+                            <button onclick="window.updateLeaveStatus('${l.id}', 'approved')" class="bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all text-xs font-semibold flex items-center gap-1 capitalize">${checkIcon} Accept</button>
+                            <button onclick="window.updateLeaveStatus('${l.id}', 'rejected')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all text-xs font-semibold flex items-center gap-1 capitalize">${xIcon} Reject</button>
                         </td>
                     </tr>`;
                 });
@@ -2177,21 +2087,21 @@
                 const filterClass = document.getElementById('filter-class').value.toLowerCase();
                 let html = '';
 
-                appLeaves.filter(l => l.className.toLowerCase().includes(filterClass) && (l.adminId === appSession.id || l.recordedBy === appSession.name)).forEach(l => {
+                appLeaves.filter(l => (l.className || '').toLowerCase().includes(filterClass) && (l.adminId === appSession.id || l.recordedBy === appSession.name)).forEach(l => {
                     const stat = l.status || 'approved';
                     const statColor = stat === 'pending' ? 'bg-brand-golden text-brand-dark' : stat === 'rejected' ? 'bg-brand-watermelon text-white' : 'bg-brand-blue text-white';
 
-                    html += `<tr class="border-b-2 border-brand-dark/20 hover:bg-[#FAFAFB]">
-                        <td class="px-6 py-5 font-mono text-[11px] font-bold text-brand-dark border-r-2 border-brand-dark/20">${l.adNo || '-'}</td>
-                        <td class="px-6 py-5 border-r-2 border-brand-dark/20">
+                    html += `<tr class="border-b border-gray-200/20 hover:bg-[#FAFAFB]">
+                        <td class="px-6 py-5 font-mono text-[11px] font-bold text-brand-dark border-r border-gray-200/20">${l.adNo || '-'}</td>
+                        <td class="px-6 py-5 border-r border-gray-200/20">
                             <span class="font-bold text-brand-dark">${l.studentName}</span><br>
                             <span class="text-brand-grey text-[10px] font-bold capitalize">${l.className}</span>
                         </td>
-                        <td class="px-6 py-5 text-brand-dark text-[10px] font-mono font-bold uppercase border-r-2 border-brand-dark/20">${l.start} <br> ${l.end}</td>
-                        <td class="px-6 py-5 text-center border-r-2 border-brand-dark/20"><span class="${statColor} border-2 border-brand-dark px-2 py-0.5 text-[10px] font-black capitalize">${stat}</span></td>
-                        <td class="px-6 py-5 text-center border-r-2 border-brand-dark/20"><span class="bg-white text-brand-dark px-3 py-1 text-[11px] font-black capitalize border-2 border-brand-dark">${l.days}</span></td>
+                        <td class="px-6 py-5 text-brand-dark text-[10px] font-mono font-bold uppercase border-r border-gray-200/20">${l.start} <br> ${l.end}</td>
+                        <td class="px-6 py-5 text-center border-r border-gray-200/20"><span class="${statColor} border border-gray-200 rounded-xl shadow-sm px-2 py-0.5 text-[10px] font-semibold capitalize">${stat}</span></td>
+                        <td class="px-6 py-5 text-center border-r border-gray-200/20"><span class="bg-white text-brand-dark px-3 py-1 text-[11px] font-semibold capitalize border border-gray-200 rounded-xl shadow-sm">${l.days}</span></td>
                         <td class="px-6 py-5 text-center no-print">
-                            <button onclick="window.deleteLeave('${l.id}')" class="bg-brand-watermelon text-white border-2 border-brand-dark px-3 py-1.5 hover:bg-brand-dark transition-all">${trashIcon}</button>
+                            <button onclick="window.deleteLeave('${l.id}')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all">${trashIcon}</button>
                         </td>
                     </tr>`;
                 });
@@ -2218,12 +2128,12 @@
 
                     const statColor = stat === 'pending' ? 'bg-brand-golden text-brand-dark' : stat === 'rejected' ? 'bg-brand-watermelon text-white' : 'bg-brand-blue text-white';
 
-                    html += `<tr class="border-b-2 border-brand-dark/20 hover:bg-[#FAFAFB]">
-                        <td class="px-6 py-5 border-r-2 border-brand-dark/20 text-brand-dark font-mono font-bold text-xs">${l.start}<br>to<br>${l.end}</td>
-                        <td class="px-6 py-5 text-brand-dark font-bold text-sm border-r-2 border-brand-dark/20">${l.reason}</td>
-                        <td class="px-6 py-5 font-black text-brand-blue border-r-2 border-brand-dark/20 text-xl text-center">${l.days}</td>
+                    html += `<tr class="border-b border-gray-200/20 hover:bg-[#FAFAFB]">
+                        <td class="px-6 py-5 border-r border-gray-200/20 text-brand-dark font-mono font-bold text-xs">${l.start}<br>to<br>${l.end}</td>
+                        <td class="px-6 py-5 text-brand-dark font-bold text-sm border-r border-gray-200/20">${l.reason}</td>
+                        <td class="px-6 py-5 font-semibold text-brand-blue border-r border-gray-200/20 text-xl text-center">${l.days}</td>
                         <td class="px-6 py-5 text-center">
-                            <span class="${statColor} border-2 border-brand-dark px-3 py-1 text-[10px] font-black capitalize">${stat}</span>
+                            <span class="${statColor} border border-gray-200 rounded-xl shadow-sm px-3 py-1 text-[10px] font-semibold capitalize">${stat}</span>
                         </td>
                     </tr>`;
                 });
