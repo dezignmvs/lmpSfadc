@@ -45,175 +45,118 @@
         rel="stylesheet">
     <style>
         body {
-            background-color: #FAFAFB;
+            background-color: #f3f4f6;
+            background-image: radial-gradient(at 0% 0%, rgba(17, 15, 161, 0.03) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(255, 228, 0, 0.03) 0, transparent 50%);
             color: #111827;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         .hidden-page {
             display: none !important;
         }
 
-        /* Neo-Brutalist Transitions (Flat) */
-        .transition-all duration-300 ease-in-out {
-            transition: background-color 0.2s ease, color 0.2s ease;
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .premium-shadow {
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
         }
 
         /* Modern Flat Inputs */
         .input-flat {
             background-color: #FFFFFF;
-            border: 1px solid #D1D5DB;
+            border: 1px solid #E5E7EB;
             color: #111827;
-            border-radius: 0px;
-            padding: 0.875rem 1rem;
-            transition: all 0.2s ease;
+            border-radius: 12px;
+            padding: 0.875rem 1.25rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .input-flat:focus {
             outline: none;
-            background-color: #F3F4F6;
+            border-color: #110fa1;
+            box-shadow: 0 0 0 4px rgba(17, 15, 161, 0.1);
         }
 
         .input-flat:disabled {
-            background-color: #e5e7eb;
+            background-color: #f9fafb;
             cursor: not-allowed;
-            opacity: 0.8;
+            opacity: 0.7;
         }
 
         /* Checkbox styling */
         input[type="checkbox"] {
             accent-color: #110fa1;
-            width: 1.25rem;
-            height: 1.25rem;
+            width: 1.35rem;
+            height: 1.35rem;
             cursor: pointer;
-            border-radius: 0.25rem;
-            border: 1px solid #D1D5DB;
+            border-radius: 6px;
         }
 
         /* Animations */
         @keyframes slideUp {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .toast-enter {
-            animation: slideUp 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: slideUp 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .animate-fade-in {
-            animation: fadeInUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
 
-        .stagger-1 {
-            opacity: 0;
-            animation-delay: 50ms;
-        }
+        .stagger-1 { opacity: 0; animation-delay: 100ms; }
+        .stagger-2 { opacity: 0; animation-delay: 200ms; }
+        .stagger-3 { opacity: 0; animation-delay: 300ms; }
 
-        .stagger-2 {
-            opacity: 0;
-            animation-delay: 100ms;
-        }
-
-        .stagger-3 {
-            opacity: 0;
-            animation-delay: 150ms;
-        }
-
-        /* Brutalist Tabs */
+        /* Premium Tabs */
         .tab-btn {
-            border: 2px solid transparent;
             color: #6B7280;
-            background: transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.2s;
-            margin-bottom: -2px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
 
         .tab-btn.active {
-            border: 1px solid #D1D5DB;
-            border-bottom-color: #FAFAFB;
-            background: #FAFAFB;
-            color: #111827;
-            font-weight: 700;
-            z-index: 10;
+            background: #110fa1;
+            color: #FFFFFF;
+            box-shadow: 0 10px 20px -5px rgba(17, 15, 161, 0.3);
         }
 
         .tab-btn:hover:not(.active) {
-            color: #111827;
-            background: #e5e7eb;
-            border: 1px solid #D1D5DB;
+            background: rgba(17, 15, 161, 0.05);
+            color: #110fa1;
         }
 
-        /* Hide scrollbar for tabs */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        .grayscale-effect {
+            filter: grayscale(100%) brightness(0.9) !important;
+        }
+        .grayscale-effect button, .grayscale-effect input, .grayscale-effect select {
+            cursor: not-allowed !important;
         }
 
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        /* Card Styles */
+        .sem-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        /* Print Optimization */
-        @media print {
-
-            nav,
-            button,
-            input,
-            select,
-            .no-print,
-            .tab-btn,
-            .admin-toggles {
-                display: none !important;
-            }
-
-            body {
-                background-color: #FFFFFF;
-            }
-
-            .app-page,
-            .admin-tab-content {
-                display: none !important;
-            }
-
-            #page-admin,
-            #admin-tab-database {
-                display: block !important;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                border: 2px solid #111827 !important;
-            }
-
-            th,
-            td {
-                border-bottom: 2px solid #111827;
-                padding: 8px;
-                text-align: left;
-            }
+        .sem-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
@@ -221,53 +164,57 @@
 <body class="min-h-screen flex flex-col selection:bg-brand-golden selection:text-brand-dark relative">
 
     <!-- Top Navigation (Neo-Brutalist Flat) -->
-    <nav class="bg-brand-white border-b border-gray-200 sticky top-0 z-40">
+    <nav class="glass-panel border-b border-white/20 sticky top-0 z-40 premium-shadow">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
             <!-- Left: Logo & Text -->
             <div class="flex items-center gap-3 cursor-pointer group animate-fade-in"
                 onclick="window.showPage('page-home')">
-                <div class="w-4 h-4 bg-brand-golden border border-gray-200 rounded-xl shadow-sm"></div>
-                <h1 class="text-[16px] sm:text-xl font-sans font-bold text-brand-dark capitalize">
-                    Leave Management System <span class="hidden sm:inline text-brand-blue">| SFADC Odamala</span>
+                <div class="w-5 h-5 bg-brand-golden rounded-lg shadow-lg shadow-brand-golden/30 transform group-hover:rotate-12 transition-transform duration-500"></div>
+                <h1 class="text-[17px] sm:text-xl font-sans font-black text-brand-dark tracking-tight">
+                    Leave System <span class="hidden sm:inline text-brand-blue opacity-80">| SFADC</span>
                 </h1>
             </div>
 
             <!-- Right: Actions -->
             <div class="flex items-center gap-4">
                 <a href="https://sfadc.in" target="_blank"
-                    class="hidden sm:flex border border-gray-200 rounded-xl shadow-sm bg-brand-dark text-white px-5 py-2.5 text-sm font-bold transition-all duration-300 ease-in-out hover:bg-white hover:text-brand-dark capitalize">
+                    class="hidden sm:flex bg-brand-dark text-white px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all duration-300 hover:bg-brand-blue hover:scale-105">
                     SEP Live Score
                 </a>
 
                 <div class="relative hidden-page animate-fade-in" id="nav-user-container">
                     <button id="nav-avatar" onclick="toggleUserMenu()"
-                        class="w-12 h-12 bg-brand-golden text-brand-dark font-sans font-bold flex items-center justify-center border border-gray-200 rounded-xl shadow-sm transition-all duration-300 ease-in-out hover:bg-gray-800 hover:text-white text-lg">
+                        class="w-12 h-12 bg-brand-golden text-brand-dark font-sans font-black flex items-center justify-center rounded-2xl shadow-lg shadow-brand-golden/20 transition-all duration-300 hover:scale-110 text-lg">
                         U
                     </button>
 
                     <div id="user-dropdown"
-                        class="absolute right-0 mt-4 w-64 bg-brand-white border border-gray-200 rounded-xl shadow-sm py-3 hidden opacity-0 transition-all duration-200 z-50 origin-top-right">
-                        <div class="px-6 py-3 mb-2">
-                            <p class="text-xs text-brand-blue font-semibold mb-1 capitalize" id="dropdown-role">Role</p>
-                            <p class="text-base font-sans font-bold text-brand-dark truncate capitalize"
-                                id="dropdown-name">User Name</p>
+                        class="absolute right-0 mt-4 w-72 glass-panel premium-shadow rounded-3xl py-4 hidden opacity-0 transition-all duration-300 z-50 origin-top-right border border-white/50">
+                        <div class="px-8 py-4 mb-2">
+                            <p class="text-[10px] text-brand-blue font-black uppercase tracking-widest mb-1 opacity-60" id="dropdown-role">Role</p>
+                            <p class="text-lg font-sans font-black text-brand-dark truncate capitalize" id="dropdown-name">User Name</p>
                         </div>
-                        <div class="h-0.5 bg-brand-dark w-full mb-2"></div>
-                        <button id="btn-owner-edit" onclick="window.openOwnerEditModal()" class="w-full text-left px-6 py-3 text-brand-dark bg-brand-golden hover:bg-gray-800 hover:text-white text-sm font-bold flex items-center gap-3 transition-all duration-300 ease-in-out border-y border-transparent hidden-page">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
-                            Edit Credentials
-                        </button>
-                        <button onclick="window.handleLogout()"
-                            class="w-full text-left px-6 py-3 text-brand-white bg-brand-watermelon hover:bg-gray-800 text-sm font-bold flex items-center gap-3 transition-all duration-300 ease-in-out border-y border-transparent">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                                <polyline points="16 17 21 12 16 7" />
-                                <line x1="21" x2="9" y1="12" y2="12" />
-                            </svg>
-                            Logout Securely
-                        </button>
+                        <div class="px-4 space-y-2">
+                            <button id="btn-owner-edit" onclick="window.openOwnerEditModal()" class="w-full text-left px-6 py-4 text-brand-dark bg-brand-golden rounded-2xl text-sm font-black flex items-center gap-3 transition-all duration-300 hover:scale-[1.02] hidden-page shadow-lg shadow-brand-golden/10">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                Edit Credentials
+                            </button>
+                            <button id="btn-install-app" onclick="window.installPWA()" class="w-full text-left px-6 py-4 text-brand-dark bg-brand-blue/10 rounded-2xl text-sm font-black flex items-center gap-3 transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-brand-blue/5 hidden-page">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-blue"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                                Install App
+                            </button>
+                            <button onclick="window.handleLogout()"
+                                class="w-full text-left px-6 py-4 text-white bg-brand-watermelon rounded-2xl text-sm font-black flex items-center gap-3 transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-brand-watermelon/10">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                    <polyline points="16 17 21 12 16 7" />
+                                    <line x1="21" x2="9" y1="12" y2="12" />
+                                </svg>
+                                Logout Securely
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -276,72 +223,40 @@
 
     <main class="flex-grow max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 mt-4 overflow-x-hidden">
 
-        <!-- 1. HOME / LANDING -->
-        <div id="page-home" class="app-page max-w-lg mx-auto mt-12 sm:mt-20 text-center">
-            <div class="mb-12 animate-fade-in border border-gray-200 rounded-xl shadow-sm bg-white p-8">
-                <div
-                    class="inline-flex items-center justify-center w-16 h-16 bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    </svg>
+        <!-- PAGE: HOME -->
+        <div id="page-home" class="app-page w-full max-w-4xl mx-auto flex flex-col items-center justify-center animate-fade-in stagger-1 min-h-[60vh]">
+            <div class="glass-panel premium-shadow rounded-[48px] p-8 sm:p-16 w-full border border-white/60 text-center relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-brand-blue/5 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-brand-golden/10 rounded-full blur-3xl"></div>
+
+                <div class="w-24 h-24 bg-brand-golden rounded-[32px] shadow-2xl shadow-brand-golden/30 flex items-center justify-center mx-auto mb-10 transform hover:rotate-6 transition-transform duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-dark"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 </div>
-                <h2 class="text-4xl sm:text-5xl font-sans font-semibold text-brand-dark mb-4 capitalize">Access <span
-                        class="text-brand-blue">Portal</span></h2>
-                <p class="text-brand-dark text-base font-bold capitalize">Select Your Authorized Role To Manage Leaves.
-                </p>
-            </div>
 
-            <div class="space-y-6 max-w-sm mx-auto">
-                <!-- Admin Button -->
-                <button onclick="window.openLogin('admin')"
-                    class="transition-all duration-300 ease-in-out animate-fade-in stagger-1 group relative w-full flex items-center justify-between p-5 bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm hover:bg-gray-800">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-white border border-gray-200 rounded-xl shadow-sm text-brand-blue">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                                <circle cx="9" cy="7" r="4" />
-                                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                            </svg>
-                        </div>
-                        <div class="text-left">
-                            <h3 class="font-sans font-semibold text-lg capitalize">Admin</h3>
-                            <p class="text-xs font-bold mt-0.5 opacity-90 capitalize">Manage Records & System</p>
-                        </div>
-                    </div>
-                    <svg class="text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="m9 18 6-6-6-6" />
-                    </svg>
-                </button>
+                <h2 class="text-5xl sm:text-7xl font-sans font-black text-brand-dark mb-6 tracking-tighter leading-none">Access <span class="text-brand-blue">Portal</span></h2>
+                <p class="text-brand-grey font-bold text-xl mb-16 opacity-80">Select your role to manage leaves</p>
 
-                <!-- Student Button -->
-                <button onclick="window.openLogin('user')"
-                    class="transition-all duration-300 ease-in-out animate-fade-in stagger-2 group relative w-full flex items-center justify-between p-5 bg-brand-golden text-brand-dark border border-gray-200 rounded-xl shadow-sm hover:bg-gray-800 hover:text-white">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-white border border-gray-200 rounded-xl shadow-sm text-brand-dark">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                                <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                            </svg>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <button onclick="window.openLogin('admin')"
+                        class="group p-8 bg-brand-blue rounded-[32px] border border-white/10 shadow-2xl shadow-brand-blue/30 text-left hover:scale-[1.03] transition-all duration-500 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 w-48 h-48 bg-white/5 rounded-full -mr-24 -mt-24 group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         </div>
-                        <div class="text-left">
-                            <h3 class="font-sans font-semibold text-lg capitalize">Student</h3>
-                            <p class="text-xs font-bold mt-0.5 opacity-90 capitalize">View Personal Ledger</p>
+                        <h3 class="text-2xl font-black text-white mb-2">Admin Portal</h3>
+                        <p class="text-white/50 text-xs font-black uppercase tracking-[0.2em]">System & Records</p>
+                    </button>
+
+                    <button onclick="window.openLogin('user')"
+                        class="group p-8 bg-brand-golden rounded-[32px] border border-white/60 shadow-2xl shadow-brand-golden/30 text-left hover:scale-[1.03] transition-all duration-500 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 w-48 h-48 bg-black/5 rounded-full -mr-24 -mt-24 group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="w-16 h-16 bg-brand-dark/10 rounded-2xl flex items-center justify-center mb-6 text-brand-dark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         </div>
-                    </div>
-                    <svg class="text-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="m9 18 6-6-6-6" />
-                    </svg>
-                </button>
+                        <h3 class="text-2xl font-black text-brand-dark mb-2">Student Portal</h3>
+                        <p class="text-brand-dark/40 text-xs font-black uppercase tracking-[0.2em]">Personal Ledger</p>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -362,25 +277,26 @@
             </div>
 
             <form id="login-form" onsubmit="window.processLogin(event)"
-                class="bg-white p-8 sm:p-10 border border-gray-200 rounded-xl shadow-sm">
+                class="glass-panel premium-shadow rounded-[32px] p-8 sm:p-12 border border-white/60 relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-brand-blue/5 rounded-full blur-3xl"></div>
                 <input type="hidden" id="active-role">
 
-                <div id="login-username-container" class="animate-fade-in stagger-1 mb-5">
+                <div id="login-username-container" class="animate-fade-in stagger-1 mb-6">
                     <label id="login-username-label"
-                        class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Username</label>
+                        class="block text-[10px] font-black text-brand-grey uppercase tracking-widest mb-3">Username</label>
                     <input type="text" id="login-username" class="input-flat w-full text-base font-bold"
-                        placeholder="Enter Your Detail" required>
+                        placeholder="Enter your ID" required>
                 </div>
 
-                <div id="login-password-container" class="animate-fade-in stagger-2 mb-6">
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="block text-sm font-semibold text-brand-dark capitalize">Password</label>
+                <div id="login-password-container" class="animate-fade-in stagger-2 mb-8">
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="block text-[10px] font-black text-brand-grey uppercase tracking-widest">Password</label>
                     </div>
                     <div class="relative">
                         <input type="password" id="login-password" class="input-flat w-full text-base font-bold"
-                            placeholder="Enter Your Password">
+                            placeholder="••••••••">
                         <span onclick="window.toggleLoginPass()"
-                            class="absolute right-4 top-3.5 text-brand-dark cursor-pointer hover:opacity-70 transition">
+                            class="absolute right-4 top-3.5 text-brand-dark/40 cursor-pointer hover:text-brand-blue transition">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -391,10 +307,10 @@
                     </div>
                 </div>
 
-                <div id="login-passcode-container" class="hidden-page animate-fade-in mb-6">
-                    <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <div id="login-passcode-container" class="hidden-page animate-fade-in mb-8">
+                    <label class="block text-[10px] font-black text-brand-grey uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-watermelon">
                             <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
                             <path d="M12 9v4" />
                             <path d="M12 17h.01" />
@@ -402,20 +318,21 @@
                         Security Passcode
                     </label>
                     <input type="password" id="login-passcode"
-                        class="input-flat w-full text-center tracking-[0.4em] font-semibold text-xl">
+                        class="input-flat w-full text-center tracking-[0.4em] font-black text-xl bg-brand-watermelon/5 border-brand-watermelon/20 text-brand-watermelon">
                 </div>
 
                 <div class="animate-fade-in stagger-3">
                     <button type="submit"
-                        class="w-full bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold text-xl py-4 transition-all duration-300 ease-in-out hover:bg-gray-800 mt-2 capitalize">
-                        <span id="login-btn-text">Login</span>
+                        class="w-full bg-brand-blue text-white rounded-2xl shadow-xl shadow-brand-blue/30 font-sans font-black text-lg py-5 transition-all duration-300 hover:scale-[1.02] hover:bg-gray-800 uppercase tracking-widest">
+                        <span id="login-btn-text">Sign In Securely</span>
                     </button>
                 </div>
 
                 <div class="mt-8 text-center animate-fade-in stagger-3">
                     <button type="button" onclick="window.showPage('page-home')"
-                        class="text-brand-dark font-bold transition-all duration-300 ease-in-out capitalize text-sm border border-gray-200 rounded-xl shadow-sm px-4 py-2 hover:bg-gray-800 hover:text-white">Go
-                        Back</button>
+                        class="text-brand-grey font-black uppercase tracking-widest text-[10px] hover:text-brand-dark transition-colors">
+                        ← Back to Portal
+                    </button>
                 </div>
             </form>
         </div>
@@ -445,6 +362,10 @@
                 <button onclick="window.switchOwnerTab('owner-tab-reasons')" id="btn-owner-tab-reasons"
                     class="tab-btn px-6 py-4 text-sm capitalize">
                     Leave Reasons
+                </button>
+                <button onclick="window.switchOwnerTab('owner-tab-status')" id="btn-owner-tab-status"
+                    class="tab-btn px-6 py-4 text-sm capitalize">
+                    Leave Status
                 </button>
             </div>
 
@@ -592,6 +513,44 @@
                 </div>
             </div>
 
+            <!-- TAB 4: LEAVE STATUS -->
+            <div id="owner-tab-status" class="owner-tab-content hidden-page max-w-5xl mx-auto w-full animate-fade-in">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-white border border-gray-200 rounded-xl shadow-sm p-4">
+                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                        <div class="relative w-full sm:w-80">
+                            <svg class="absolute left-4 top-4 text-brand-dark" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            <input type="text" id="owner-status-filter" placeholder="Filter By Name or Class..." class="input-flat w-full pl-12 font-bold" oninput="window.updateDataUI()">
+                        </div>
+                        <div class="relative">
+                            <input type="month" id="owner-status-month" class="input-flat font-bold text-sm cursor-pointer w-full" onchange="window.updateDataUI()" title="Filter by Month">
+                        </div>
+                    </div>
+                    <button class="bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark px-6 py-3 text-sm font-sans font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 ease-in-out capitalize flex items-center justify-center gap-2" onclick="window.print()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect width="12" height="8" x="6" y="14" /></svg>
+                        Print Status
+                    </button>
+                </div>
+                <div class="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white p-4">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
+                            <thead>
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200">Ad.No</th>
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200">Student Name</th>
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200">Class</th>
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200 text-center">Permitted</th>
+                                    <th class="px-6 py-5 font-bold border-r border-gray-200 text-center">Taken</th>
+                                    <th class="px-6 py-5 font-bold text-center">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="owner-status-table" class="text-sm font-bold text-brand-dark">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- 4. ADMIN DASHBOARD -->
@@ -634,11 +593,18 @@
                             Student Requests</div>
                     </label>
                     <label class="flex-1 cursor-pointer">
-                        <input type="radio" name="admin_entry_type" value="monthly" class="peer sr-only"
+                        <input type="radio" name="admin_entry_type" value="direct" class="peer sr-only"
                             onchange="window.toggleAdminEntryView()">
                         <div
                             class="border border-gray-200 rounded-xl shadow-sm bg-white p-4 sm:p-5 text-center peer-checked:bg-brand-blue peer-checked:text-white font-sans font-semibold transition-all duration-300 ease-in-out capitalize text-sm">
-                            Direct Entry / Monthly Minus</div>
+                            Direct Entry</div>
+                    </label>
+                    <label class="flex-1 cursor-pointer">
+                        <input type="radio" name="admin_entry_type" value="monthly" class="peer sr-only"
+                            onchange="window.toggleAdminEntryView()">
+                        <div
+                            class="border border-gray-200 rounded-xl shadow-sm bg-white p-4 sm:p-5 text-center peer-checked:bg-brand-watermelon peer-checked:text-white font-sans font-semibold transition-all duration-300 ease-in-out capitalize text-sm">
+                            Monthly Minus</div>
                     </label>
                 </div>
 
@@ -704,14 +670,8 @@
                             <p class="text-xs text-brand-dark font-bold mb-4 capitalize">Select "Monthly Leave" And
                                 Enter Deduction Value Manually. Type 1 For Half Day (0.5), Type 2 For Full Day (1.0)</p>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-4">
-                                <div>
-                                    <label class="block text-xs font-semibold text-brand-dark mb-2 capitalize">Select
-                                        Reason Type</label>
-                                    <select id="leave-reason" class="input-flat w-full text-sm font-bold" required>
-                                        <option value="Monthly Leave" selected>Monthly Leave</option>
-                                    </select>
-                                </div>
+                            <input type="hidden" id="leave-reason" value="Monthly Leave">
+                            <div class="mb-4">
                                 <div>
                                     <label class="block text-xs font-semibold text-brand-dark mb-2 capitalize">Deduction
                                         Multiplier</label>
@@ -743,6 +703,90 @@
                             </div>
                             <button type="submit" id="btn-submit-leave"
                                 class="w-full sm:w-auto bg-brand-dark text-white border border-gray-200 rounded-xl shadow-sm hover:bg-white hover:text-brand-dark font-sans font-semibold px-8 py-4 transition-all duration-300 ease-in-out capitalize text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none">
+                                Execute Deduction
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M5 12h14" />
+                                    <path d="m12 5 7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Sub-View: Direct Entry (Regular Leave) -->
+                <div id="admin-view-direct"
+                    class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-10 bg-white hidden-page animate-fade-in">
+                    <form id="form-admin-direct-leave" onsubmit="window.submitAdminDirectLeaveRequest(event)" class="space-y-6">
+                        <div class="p-5 sm:p-6 bg-brand-golden border border-gray-200 rounded-xl shadow-sm relative overflow-hidden mb-8">
+                            <label class="block text-sm font-semibold text-brand-dark mb-3 capitalize">
+                                Lookup Admission No.
+                            </label>
+                            <input type="text" id="direct-leave-adno" class="input-flat w-full font-semibold text-xl text-center"
+                                placeholder="----" onblur="window.autoFillStudentDirect()">
+
+                            <div
+                                class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 bg-white border border-gray-200 rounded-xl shadow-sm p-4">
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-semibold text-brand-grey capitalize mb-1">Name</label>
+                                    <input type="text" id="direct-leave-student-name"
+                                        class="w-full bg-transparent border-none p-0 text-brand-dark text-lg font-bold focus:ring-0 cursor-default"
+                                        readonly placeholder="-">
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-semibold text-brand-grey capitalize mb-1">Class</label>
+                                    <input type="text" id="direct-leave-student-class"
+                                        class="w-full bg-transparent border-none p-0 text-brand-dark text-lg font-bold focus:ring-0 cursor-default"
+                                        readonly placeholder="-">
+                                </div>
+                            </div>
+                            <input type="hidden" id="direct-leave-student-id">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-brand-dark mb-2 capitalize">Reason For
+                                Leave</label>
+                            <select id="direct-leave-reason" class="input-flat w-full text-sm font-bold" required>
+                                <option value="" disabled selected>Select A Reason...</option>
+                                <!-- Populated by JS -->
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-[#FAFAFB] p-4 border border-gray-200 rounded-xl shadow-sm">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-brand-dark mb-2 capitalize">Start
+                                    Date</label>
+                                <input type="date" id="direct-leave-start" class="input-flat w-full text-sm font-bold"
+                                    required onchange="window.renderAdminDateRows()">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-brand-dark mb-2 capitalize">End
+                                    Date</label>
+                                <input type="date" id="direct-leave-end" class="input-flat w-full text-sm font-bold"
+                                    required onchange="window.renderAdminDateRows()">
+                            </div>
+                        </div>
+
+                        <div id="admin-date-rows-wrapper" class="hidden-page border border-gray-200 rounded-xl shadow-sm p-4 bg-white">
+                            <h4
+                                class="text-xs font-semibold text-brand-blue capitalize mb-4 border-b border-gray-200 pb-2">
+                                Select Halves Per Day</h4>
+                            <div id="admin-date-rows-container" class="space-y-3 max-h-60 overflow-y-auto pr-2">
+                            </div>
+                        </div>
+
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center justify-between border-t border-gray-200 pt-8 mt-4">
+                            <div class="text-sm font-bold text-brand-dark text-center sm:text-left capitalize">
+                                Deducting:<br><span id="admin-preview-calc-days"
+                                    class="text-5xl font-sans font-semibold text-brand-blue leading-none">0</span>
+                                <span class="text-xs font-semibold ml-1 capitalize">Days</span>
+                            </div>
+                            <button type="submit" id="btn-submit-admin-direct-leave"
+                                class="w-full sm:w-auto bg-brand-dark text-white border border-gray-200 rounded-xl shadow-sm hover:bg-white hover:text-brand-dark font-sans font-semibold px-8 py-4 transition-all duration-300 ease-in-out capitalize text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:pointer-events-none mt-4 sm:mt-0">
                                 Execute Deduction
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
@@ -957,75 +1001,79 @@
 
             <!-- TAB 2: DASHBOARD & HISTORY -->
             <div id="user-tab-history" class="user-tab-content hidden-page animate-fade-in stagger-2">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-                    <div class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8 bg-white">
-                        <div
-                            class="w-12 h-12 bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 16 14" />
-                            </svg>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
+                    <!-- Semester 1 Card -->
+                    <div class="sem-card glass-panel premium-shadow rounded-[32px] p-8 sm:p-10 border border-white/60 relative overflow-hidden group">
+                        <div class="absolute -top-12 -right-12 w-32 h-32 bg-brand-golden/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="flex items-center justify-between mb-8">
+                             <div class="w-14 h-14 bg-brand-golden rounded-2xl shadow-lg shadow-brand-golden/20 text-brand-dark flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 2v18"/><path d="M12 8h4"/><path d="M12 12h4"/></svg>
+                             </div>
+                             <div class="text-right">
+                                <span class="block text-[10px] font-black text-brand-grey uppercase tracking-widest mb-1">Status</span>
+                                <span class="text-sm font-bold text-brand-dark">Semester 01</span>
+                             </div>
                         </div>
-                        <p class="text-brand-dark text-[11px] font-semibold capitalize mb-1">Total Permitted</p>
-                        <p class="text-4xl sm:text-5xl font-sans font-semibold text-brand-blue">7.5 <span
-                                class="text-xs sm:text-sm text-brand-dark font-bold capitalize ml-1">Days</span></p>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
+                                <p class="text-[9px] font-black text-brand-grey uppercase mb-2">Permitted</p>
+                                <p class="text-2xl font-sans font-black text-brand-dark">7.5</p>
+                            </div>
+                            <div class="bg-brand-watermelon/5 p-4 rounded-2xl border border-brand-watermelon/10">
+                                <p class="text-[9px] font-black text-brand-watermelon uppercase mb-2">Taken</p>
+                                <p id="user-sem1-taken" class="text-2xl font-sans font-black text-brand-watermelon">0</p>
+                            </div>
+                            <div class="bg-brand-blue/5 p-4 rounded-2xl border border-brand-blue/10">
+                                <p class="text-[9px] font-black text-brand-blue uppercase mb-2">Remaining</p>
+                                <p id="user-sem1-remain" class="text-2xl font-sans font-black text-brand-blue">7.5</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8 bg-white">
-                        <div
-                            class="w-12 h-12 bg-brand-watermelon border border-gray-200 rounded-xl shadow-sm text-white flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                                <polyline points="22 4 12 14.01 9 11.01" />
-                            </svg>
+                    <!-- Semester 2 Card -->
+                    <div class="sem-card bg-brand-dark premium-shadow rounded-[32px] p-8 sm:p-10 border border-white/5 relative overflow-hidden group">
+                        <div class="absolute -top-12 -right-12 w-32 h-32 bg-brand-blue/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="flex items-center justify-between mb-8">
+                             <div class="w-14 h-14 bg-brand-blue rounded-2xl shadow-lg shadow-brand-blue/30 text-white flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 2v18"/><path d="M12 8h4"/><path d="M12 12h4"/></svg>
+                             </div>
+                             <div class="text-right">
+                                <span class="block text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Status</span>
+                                <span class="text-sm font-bold text-white">Semester 02</span>
+                             </div>
                         </div>
-                        <p class="text-brand-dark text-[11px] font-semibold capitalize mb-1">Leaves Taken</p>
-                        <p class="text-4xl sm:text-5xl font-sans font-semibold text-brand-watermelon"><span
-                                id="user-leaves-taken">0</span> <span
-                                class="text-xs sm:text-sm text-brand-dark font-bold capitalize ml-1">Days</span></p>
-                    </div>
-                    <div class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-8 bg-brand-blue">
-                        <div
-                            class="w-12 h-12 bg-white border border-gray-200 rounded-xl shadow-sm text-brand-dark flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M5 22h14" />
-                                <path d="M5 2h14" />
-                                <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
-                                <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" />
-                            </svg>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                                <p class="text-[9px] font-black text-white/40 uppercase mb-2">Permitted</p>
+                                <p class="text-2xl font-sans font-black text-white">7.5</p>
+                            </div>
+                            <div class="bg-brand-golden/10 p-4 rounded-2xl border border-brand-golden/20">
+                                <p class="text-[9px] font-black text-brand-golden uppercase mb-2">Taken</p>
+                                <p id="user-sem2-taken" class="text-2xl font-sans font-black text-brand-golden">0</p>
+                            </div>
+                            <div class="bg-brand-blue/40 p-4 rounded-2xl border border-white/10">
+                                <p class="text-[9px] font-black text-white/60 uppercase mb-2">Remaining</p>
+                                <p id="user-sem2-remain" class="text-2xl font-sans font-black text-white">7.5</p>
+                            </div>
                         </div>
-                        <p class="text-white text-[11px] font-semibold capitalize mb-1">Available Rest</p>
-                        <p class="text-4xl sm:text-5xl font-sans font-semibold text-white"><span
-                                id="user-leaves-remain">7.5</span> <span
-                                class="text-xs sm:text-sm text-white font-bold capitalize ml-1">Days</span></p>
                     </div>
                 </div>
 
-                <div class="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white mt-10 p-4">
-                    <div class="mb-6 flex items-center justify-between">
-                        <h3 class="text-xl font-sans font-semibold text-brand-dark capitalize">Application History</h3>
+                <div class="glass-panel premium-shadow rounded-[32px] overflow-hidden mt-12 border border-white/60">
+                    <div class="px-10 py-8 border-b border-gray-100 flex items-center justify-between bg-white/30">
+                        <h3 class="text-2xl font-sans font-black text-brand-dark tracking-tight">Application Ledger</h3>
+                        <span class="bg-brand-blue/10 text-brand-blue text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">History</span>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[600px] border border-gray-200 rounded-xl shadow-sm">
+                        <table class="w-full text-left border-collapse min-w-[600px]">
                             <thead>
-                                <tr
-                                    class="bg-brand-dark text-white text-[10px] sm:text-xs capitalize border-b border-gray-200">
-                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Dates
-                                    </th>
-                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Reason
-                                    </th>
-                                    <th
-                                        class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200 text-center">
-                                        Days</th>
-                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold text-center">Status</th>
+                                <tr class="bg-brand-dark text-white text-[10px] uppercase tracking-[0.2em]">
+                                    <th class="px-10 py-6 font-black">Dates</th>
+                                    <th class="px-10 py-6 font-black">Reason & Purpose</th>
+                                    <th class="px-10 py-6 font-black text-center">Duration</th>
+                                    <th class="px-10 py-6 font-black text-center">Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="user-history-table" class="text-sm sm:text-base font-bold text-brand-dark">
+                            <tbody id="user-history-table" class="divide-y divide-gray-100 bg-white/20">
                                 <!-- Populated by JS -->
                             </tbody>
                         </table>
@@ -1040,18 +1088,15 @@
 
     <!-- Owner Student Modal (Manual & Edit) -->
     <div id="modal-owner-student"
-        class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
-        <div class="bg-white p-8 sm:p-10 border border-gray-200 rounded-xl shadow-sm max-w-md w-full animate-fade-in my-8">
-            <div class="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
-                <h3 class="text-2xl font-sans font-semibold text-brand-dark capitalize" id="student-modal-title">Student
-                    Profile</h3>
+        class="fixed inset-0 bg-brand-dark/90 backdrop-blur-md z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
+        <div class="glass-panel premium-shadow rounded-[40px] p-8 sm:p-12 border border-white/40 max-w-lg w-full animate-fade-in my-8 relative overflow-hidden">
+             <div class="absolute -top-12 -right-12 w-48 h-48 bg-brand-blue/5 rounded-full blur-3xl"></div>
+            <div class="flex justify-between items-center mb-10">
+                <h3 class="text-3xl font-sans font-black text-brand-dark tracking-tighter" id="student-modal-title">Student Profile</h3>
                 <button onclick="window.closeStudentModal()"
-                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border border-transparent rounded-xl hover:border-brand-dark p-2 transition-colors"><svg
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg></button>
+                    class="w-12 h-12 flex items-center justify-center bg-brand-watermelon/10 text-brand-watermelon rounded-2xl hover:bg-brand-watermelon hover:text-white transition-all duration-300 transform hover:rotate-90">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </button>
             </div>
             <form id="owner-form-create-student" onsubmit="window.saveOwnerStudent(event)" class="space-y-6">
                 <input type="hidden" id="owner-student-edit-id">
@@ -1470,9 +1515,15 @@
             if (val === 'requests') {
                 document.getElementById('admin-view-requests').classList.remove('hidden-page');
                 document.getElementById('admin-view-monthly').classList.add('hidden-page');
-            } else {
+                document.getElementById('admin-view-direct').classList.add('hidden-page');
+            } else if (val === 'monthly') {
                 document.getElementById('admin-view-requests').classList.add('hidden-page');
                 document.getElementById('admin-view-monthly').classList.remove('hidden-page');
+                document.getElementById('admin-view-direct').classList.add('hidden-page');
+            } else if (val === 'direct') {
+                document.getElementById('admin-view-requests').classList.add('hidden-page');
+                document.getElementById('admin-view-monthly').classList.add('hidden-page');
+                document.getElementById('admin-view-direct').classList.remove('hidden-page');
             }
         };
 
@@ -1853,6 +1904,32 @@
             });
         };
 
+        // --- Semester Logic ---
+        window.getSemester = function(dateStr) {
+            if (dateStr >= "2026-03-30" && dateStr <= "2026-08-28") return 1;
+            if (dateStr >= "2026-08-29" && dateStr <= "2027-01-31") return 2;
+            return 1;
+        };
+
+        window.getTakenLeaves = function(studentId) {
+            let s1 = 0, s2 = 0;
+            appLeaves.filter(l => l.studentId === studentId && l.status === 'approved').forEach(l => {
+                if (l.details) {
+                    let d = JSON.parse(l.details);
+                    d.forEach(x => {
+                        let sem = window.getSemester(x.date);
+                        if (sem === 1) s1 += 0.5;
+                        else if (sem === 2) s2 += 0.5;
+                    });
+                } else {
+                    let sem = window.getSemester(l.start);
+                    if (sem === 1) s1 += Number(l.days || 0);
+                    else if (sem === 2) s2 += Number(l.days || 0);
+                }
+            });
+            return { s1, s2 };
+        };
+
         // --- Admin Leave Logic ---
         window.autoFillStudent = function () {
             const adNo = document.getElementById('leave-adno').value;
@@ -1860,6 +1937,36 @@
             const classInp = document.getElementById('leave-student-class');
             const idInp = document.getElementById('leave-student-id');
             const btn = document.getElementById('btn-submit-leave');
+
+            const student = appUsers.find(u => u.adNo === adNo && u.role === 'user');
+            if (student) {
+                if (student.adminId !== appSession.id) {
+                    nameInp.value = "UNAUTHORIZED";
+                    classInp.value = "-";
+                    idInp.value = "";
+                    btn.disabled = true;
+                    window.showToast("Student Is Assigned To Another Admin.", "error");
+                    return;
+                }
+                nameInp.value = student.name;
+                classInp.value = student.className;
+                idInp.value = student.id;
+                btn.disabled = false;
+            } else {
+                nameInp.value = "";
+                classInp.value = "";
+                idInp.value = "";
+                if (adNo !== "") window.showToast("Student Not Found", "error");
+                btn.disabled = true;
+            }
+        };
+
+        window.autoFillStudentDirect = function () {
+            const adNo = document.getElementById('direct-leave-adno').value;
+            const nameInp = document.getElementById('direct-leave-student-name');
+            const classInp = document.getElementById('direct-leave-student-class');
+            const idInp = document.getElementById('direct-leave-student-id');
+            const btn = document.getElementById('btn-submit-admin-direct-leave');
 
             const student = appUsers.find(u => u.adNo === adNo && u.role === 'user');
             if (student) {
@@ -1938,10 +2045,158 @@
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_leaves'), data);
                 window.showToast("Leave Deducted Successfully!");
                 event.target.reset();
-                window.handleReasonChange(); // reset ui
                 document.getElementById('preview-calc-days').innerText = '0';
                 window.autoFillStudent();
             } catch (e) { window.showToast("Error Recording Leave", "error"); }
+        };
+
+        window.renderAdminDateRows = function () {
+            const start = document.getElementById('direct-leave-start').value;
+            const end = document.getElementById('direct-leave-end').value;
+            const wrap = document.getElementById('admin-date-rows-wrapper');
+            const cont = document.getElementById('admin-date-rows-container');
+
+            if (!start || !end) {
+                wrap.classList.add('hidden-page');
+                cont.innerHTML = '';
+                document.getElementById('admin-preview-calc-days').innerText = '0';
+                return;
+            }
+
+            const d1 = new Date(start); const d2 = new Date(end);
+            if (d2 < d1) {
+                wrap.classList.remove('hidden-page');
+                cont.innerHTML = '<p class="text-brand-watermelon text-xs font-bold capitalize">End Date Cannot Be Before Start Date.</p>';
+                document.getElementById('admin-preview-calc-days').innerText = '0';
+                return;
+            }
+            
+            const studentId = document.getElementById('direct-leave-student-id').value;
+            if(!studentId) {
+                wrap.classList.add('hidden-page');
+                cont.innerHTML = '<p class="text-brand-watermelon text-xs font-bold capitalize">Please Look Up A Student First.</p>';
+                document.getElementById('admin-preview-calc-days').innerText = '0';
+                return;
+            }
+
+            const taken = window.getTakenLeaves(studentId);
+            let s1Used = taken.s1;
+            let s2Used = taken.s2;
+
+            wrap.classList.remove('hidden-page');
+            let html = '';
+            let cur = new Date(d1);
+            while (cur <= d2) {
+                const dateStr = cur.toISOString().split('T')[0];
+                const sem = window.getSemester(dateStr);
+                
+                let mChecked = false, aChecked = false;
+                let mDisabled = false, aDisabled = false;
+
+                if (sem === 1) {
+                    if (s1Used + 0.5 <= 7.5) { mChecked = true; s1Used += 0.5; } else { mDisabled = true; }
+                    if (s1Used + 0.5 <= 7.5) { aChecked = true; s1Used += 0.5; } else { aDisabled = true; }
+                } else {
+                    if (s2Used + 0.5 <= 7.5) { mChecked = true; s2Used += 0.5; } else { mDisabled = true; }
+                    if (s2Used + 0.5 <= 7.5) { aChecked = true; s2Used += 0.5; } else { aDisabled = true; }
+                }
+
+                html += `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200/10 pb-2 mb-2">
+                        <span class="text-sm font-bold text-brand-dark font-mono">${dateStr} <span class="text-[9px] text-brand-blue">(Sem ${sem})</span></span>
+                        <div class="flex items-center gap-4">
+                            <label class="flex items-center gap-2 text-xs font-bold capitalize cursor-pointer hover:text-brand-blue">
+                                <input type="checkbox" class="admin-leave-cb" data-date="${dateStr}" data-type="morn" ${mChecked ? 'checked' : ''} ${mDisabled ? 'disabled' : ''} onchange="window.handleAdminLeaveCheck(this)"> Morning
+                            </label>
+                            <label class="flex items-center gap-2 text-xs font-bold capitalize cursor-pointer hover:text-brand-blue">
+                                <input type="checkbox" class="admin-leave-cb" data-date="${dateStr}" data-type="after" ${aChecked ? 'checked' : ''} ${aDisabled ? 'disabled' : ''} onchange="window.handleAdminLeaveCheck(this)"> Afternoon
+                            </label>
+                        </div>
+                    </div>
+                `;
+                cur.setDate(cur.getDate() + 1);
+            }
+            cont.innerHTML = html;
+            window.calcAdminTotal();
+        };
+
+        window.handleAdminLeaveCheck = function(cb) {
+            const studentId = document.getElementById('direct-leave-student-id').value;
+            if (!studentId) {
+                cb.checked = false;
+                return window.showToast("Please select a student first", "error");
+            }
+            const taken = window.getTakenLeaves(studentId);
+            let s1 = taken.s1, s2 = taken.s2;
+            
+            document.querySelectorAll('.admin-leave-cb:checked').forEach(chk => {
+                let sem = window.getSemester(chk.dataset.date);
+                if (sem === 1) s1 += 0.5;
+                else if (sem === 2) s2 += 0.5;
+            });
+
+            if (s1 > 7.5) {
+                cb.checked = false;
+                window.showToast("Cannot exceed 7.5 days in Semester 1 (Rest: " + (7.5 - taken.s1) + " days)", "error");
+            } else if (s2 > 7.5) {
+                cb.checked = false;
+                window.showToast("Cannot exceed 7.5 days in Semester 2 (Rest: " + (7.5 - taken.s2) + " days)", "error");
+            }
+            window.calcAdminTotal();
+        };
+
+        window.calcAdminTotal = function () {
+            const cbs = document.querySelectorAll('.admin-leave-cb:checked');
+            const total = cbs.length * 0.5;
+            document.getElementById('admin-preview-calc-days').innerText = total;
+            return total;
+        };
+
+        window.submitAdminDirectLeaveRequest = async function (event) {
+            event.preventDefault();
+            if (!fireUser || !appSession) return;
+            
+            const studentId = document.getElementById('direct-leave-student-id').value;
+            if (!studentId) return window.showToast("Valid Admission No Required", "error");
+
+            const totalDays = window.calcAdminTotal();
+            if (totalDays <= 0) return window.showToast("Cannot Apply For 0 Days.", "error");
+
+            const reason = document.getElementById('direct-leave-reason').value;
+            const start = document.getElementById('direct-leave-start').value;
+            const end = document.getElementById('direct-leave-end').value;
+
+            const student = appUsers.find(u => u.id === studentId);
+
+            let details = [];
+            document.querySelectorAll('.admin-leave-cb:checked').forEach(cb => {
+                details.push({ date: cb.dataset.date, half: cb.dataset.type });
+            });
+
+            const data = {
+                studentId: student.id,
+                adNo: student.adNo,
+                studentName: student.name,
+                className: student.className,
+                adminId: appSession.id,
+                start: start,
+                end: end,
+                days: totalDays,
+                reason: reason,
+                status: 'approved',
+                recordedBy: appSession.name,
+                details: JSON.stringify(details)
+            };
+
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_leaves'), data);
+                window.showToast("Direct Leave Deducted!");
+                event.target.reset();
+                document.getElementById('admin-date-rows-wrapper').classList.add('hidden-page');
+                document.getElementById('admin-date-rows-container').innerHTML = '';
+                document.getElementById('admin-preview-calc-days').innerText = '0';
+                window.autoFillStudentDirect();
+            } catch (e) { window.showToast("Error Submitting Leave", "error"); }
         };
 
         window.updateLeaveStatus = async function (docId, newStatus) {
@@ -1980,20 +2235,37 @@
                 return;
             }
 
+            const taken = window.getTakenLeaves(appSession.id);
+            let s1Used = taken.s1;
+            let s2Used = taken.s2;
+
             wrap.classList.remove('hidden-page');
             let html = '';
             let cur = new Date(d1);
             while (cur <= d2) {
                 const dateStr = cur.toISOString().split('T')[0];
+                const sem = window.getSemester(dateStr);
+                
+                let mChecked = false, aChecked = false;
+                let mDisabled = false, aDisabled = false;
+
+                if (sem === 1) {
+                    if (s1Used + 0.5 <= 7.5) { mChecked = true; s1Used += 0.5; } else { mDisabled = true; }
+                    if (s1Used + 0.5 <= 7.5) { aChecked = true; s1Used += 0.5; } else { aDisabled = true; }
+                } else {
+                    if (s2Used + 0.5 <= 7.5) { mChecked = true; s2Used += 0.5; } else { mDisabled = true; }
+                    if (s2Used + 0.5 <= 7.5) { aChecked = true; s2Used += 0.5; } else { aDisabled = true; }
+                }
+
                 html += `
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200/10 pb-2 mb-2">
-                        <span class="text-sm font-bold text-brand-dark font-mono">${dateStr}</span>
+                        <span class="text-sm font-bold text-brand-dark font-mono">${dateStr} <span class="text-[9px] text-brand-blue">(Sem ${sem})</span></span>
                         <div class="flex items-center gap-4">
                             <label class="flex items-center gap-2 text-xs font-bold capitalize cursor-pointer hover:text-brand-blue">
-                                <input type="checkbox" class="user-leave-cb" data-date="${dateStr}" data-type="morn" checked onchange="window.calcUserTotal()"> Morning
+                                <input type="checkbox" class="user-leave-cb" data-date="${dateStr}" data-type="morn" ${mChecked ? 'checked' : ''} ${mDisabled ? 'disabled' : ''} onchange="window.handleUserLeaveCheck(this)"> Morning
                             </label>
                             <label class="flex items-center gap-2 text-xs font-bold capitalize cursor-pointer hover:text-brand-blue">
-                                <input type="checkbox" class="user-leave-cb" data-date="${dateStr}" data-type="after" checked onchange="window.calcUserTotal()"> Afternoon
+                                <input type="checkbox" class="user-leave-cb" data-date="${dateStr}" data-type="after" ${aChecked ? 'checked' : ''} ${aDisabled ? 'disabled' : ''} onchange="window.handleUserLeaveCheck(this)"> Afternoon
                             </label>
                         </div>
                     </div>
@@ -2001,6 +2273,26 @@
                 cur.setDate(cur.getDate() + 1);
             }
             cont.innerHTML = html;
+            window.calcUserTotal();
+        };
+
+        window.handleUserLeaveCheck = function(cb) {
+            const taken = window.getTakenLeaves(appSession.id);
+            let s1 = taken.s1, s2 = taken.s2;
+            
+            document.querySelectorAll('.user-leave-cb:checked').forEach(chk => {
+                let sem = window.getSemester(chk.dataset.date);
+                if (sem === 1) s1 += 0.5;
+                else if (sem === 2) s2 += 0.5;
+            });
+
+            if (s1 > 7.5) {
+                cb.checked = false;
+                window.showToast("Cannot exceed 7.5 days in Semester 1 (Rest: " + (7.5 - taken.s1) + " days)", "error");
+            } else if (s2 > 7.5) {
+                cb.checked = false;
+                window.showToast("Cannot exceed 7.5 days in Semester 2 (Rest: " + (7.5 - taken.s2) + " days)", "error");
+            }
             window.calcUserTotal();
         };
 
@@ -2123,16 +2415,78 @@
                 });
                 if (rhtml === '') rhtml = '<tr><td colspan="2" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Reasons Defined.</td></tr>';
                 rbody.innerHTML = rhtml;
+
+                const statusBody = document.getElementById('owner-status-table');
+                if (statusBody) {
+                    let statusHtml = '';
+                    const statusFilterEl = document.getElementById('owner-status-filter');
+                    const statusFilter = statusFilterEl ? statusFilterEl.value.toLowerCase() : '';
+                    
+                    const monthFilterEl = document.getElementById('owner-status-month');
+                    const monthFilter = monthFilterEl ? monthFilterEl.value : ''; // "YYYY-MM"
+
+                    let statusData = appUsers.filter(u => u.role === 'user').map(u => {
+                        let totalTaken = 0;
+                        let monthTaken = 0;
+                        
+                        const takenLeaves = window.getTakenLeaves(u.id);
+                        totalTaken = takenLeaves.s1 + takenLeaves.s2;
+
+                        // Calculate month filter dynamically
+                        appLeaves.filter(l => l.studentId === u.id && l.status === 'approved').forEach(l => {
+                            if (monthFilter) {
+                                const lDays = Number(l.days || 0);
+                                const lStartMonth = l.start ? l.start.substring(0, 7) : '';
+                                const lEndMonth = l.end ? l.end.substring(0, 7) : '';
+                                if (lStartMonth === monthFilter || lEndMonth === monthFilter) {
+                                    monthTaken += lDays;
+                                }
+                            }
+                        });
+                        
+                        const displayTaken = monthFilter ? monthTaken : totalTaken;
+                        const balanceS1 = Math.max(0, 7.5 - takenLeaves.s1);
+                        const balanceS2 = Math.max(0, 7.5 - takenLeaves.s2);
+
+                        return {
+                            ...u,
+                            totalTaken: totalTaken,
+                            displayTaken: displayTaken,
+                            balance: balanceS1 + balanceS2,
+                            balanceStr: `S1: ${balanceS1} | S2: ${balanceS2}`,
+                            searchStr: (u.name + ' ' + (u.className || '') + ' ' + u.adNo).toLowerCase()
+                        };
+                    });
+
+                    // Filter by search term and sort by highest leaves taken (based on current view: monthly or total)
+                    statusData = statusData.filter(u => u.searchStr.includes(statusFilter));
+                    statusData.sort((a, b) => b.displayTaken - a.displayTaken);
+
+                    statusData.forEach(u => {
+                        const takenColor = u.displayTaken > 0 ? (u.displayTaken > 15 ? 'text-brand-watermelon' : 'text-brand-blue') : 'text-brand-dark/50';
+                        statusHtml += `<tr class="border-b border-gray-200/20 hover:bg-brand-light">
+                            <td class="px-6 py-4 font-mono text-xs font-bold text-brand-dark border-r border-gray-200/20">${u.adNo}</td>
+                            <td class="px-6 py-4 font-bold text-brand-dark border-r border-gray-200/20">${u.name}</td>
+                            <td class="px-6 py-4 text-xs font-bold text-brand-dark border-r border-gray-200/20">${u.className || '-'}</td>
+                            <td class="px-6 py-4 text-center font-bold border-r border-gray-200/20">15</td>
+                            <td class="px-6 py-4 text-center font-semibold ${takenColor} border-r border-gray-200/20">${u.displayTaken} ${monthFilter ? '<span class="text-[9px] text-brand-dark/60 font-bold ml-1">in ' + monthFilter + '</span>' : ''}</td>
+                            <td class="px-6 py-4 text-center font-semibold text-brand-dark"><span class="block text-sm">${u.balance}</span><span class="block text-[9px] text-brand-grey font-mono">${u.balanceStr}</span></td>
+                        </tr>`;
+                    });
+
+                    if (statusHtml === '') statusHtml = '<tr><td colspan="6" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Status Records Found.</td></tr>';
+                    statusBody.innerHTML = statusHtml;
+                }
             }
 
             if (appSession.role === 'admin') {
-                const adminReasonSelect = document.getElementById('leave-reason');
+                const adminReasonSelect = document.getElementById('direct-leave-reason');
                 if (adminReasonSelect) {
                     const currentVal = adminReasonSelect.value;
-                    let customOptions = '<option value="Monthly Leave">Monthly Leave</option>';
+                    let customOptions = '<option value="" disabled selected>Select A Reason...</option>';
                     appReasons.forEach(r => { customOptions += `<option value="${r.text}">${r.text}</option>`; });
                     adminReasonSelect.innerHTML = customOptions;
-                    if (currentVal && (currentVal === 'Monthly Leave' || appReasons.some(r => r.text === currentVal))) {
+                    if (currentVal && appReasons.some(r => r.text === currentVal)) {
                         adminReasonSelect.value = currentVal;
                     }
                 }
@@ -2230,24 +2584,78 @@
                     const stat = l.status || 'approved';
                     if (stat === 'approved') totalTaken += l.days;
 
-                    const statColor = stat === 'pending' ? 'bg-brand-golden text-brand-dark' : stat === 'rejected' ? 'bg-brand-watermelon text-white' : 'bg-brand-blue text-white';
+                    const statColor = stat === 'pending' ? 'bg-brand-golden text-brand-dark shadow-brand-golden/20' : stat === 'rejected' ? 'bg-brand-watermelon text-white shadow-brand-watermelon/20' : 'bg-brand-blue text-white shadow-brand-blue/20';
 
-                    html += `<tr class="border-b border-gray-200/20 hover:bg-[#FAFAFB]">
-                        <td class="px-6 py-5 border-r border-gray-200/20 text-brand-dark font-mono font-bold text-xs">${l.start}<br>to<br>${l.end}</td>
-                        <td class="px-6 py-5 text-brand-dark font-bold text-sm border-r border-gray-200/20">${l.reason}</td>
-                        <td class="px-6 py-5 font-semibold text-brand-blue border-r border-gray-200/20 text-xl text-center">${l.days}</td>
-                        <td class="px-6 py-5 text-center">
-                            <span class="${statColor} border border-gray-200 rounded-xl shadow-sm px-3 py-1 text-[10px] font-semibold capitalize">${stat}</span>
+                    html += `<tr class="group transition-colors hover:bg-white/50">
+                        <td class="px-8 py-6 border-r border-gray-100">
+                            <div class="flex flex-col">
+                                <span class="text-xs font-black text-brand-dark">${l.start}</span>
+                                <span class="text-[9px] font-black text-brand-grey uppercase tracking-tighter">to</span>
+                                <span class="text-xs font-black text-brand-dark">${l.end}</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <p class="text-sm font-black text-brand-dark capitalize leading-tight">${l.reason}</p>
+                            <p class="text-[10px] font-bold text-brand-grey mt-1">Requested Ledger Item</p>
+                        </td>
+                        <td class="px-8 py-6 text-center border-l border-gray-100">
+                            <span class="text-3xl font-sans font-black text-brand-blue leading-none">${l.days}</span>
+                            <span class="block text-[8px] font-black text-brand-grey uppercase mt-1">Days</span>
+                        </td>
+                        <td class="px-8 py-6 text-center">
+                            <span class="${statColor} shadow-lg rounded-xl px-4 py-1.5 text-[9px] font-black uppercase tracking-widest inline-block transform group-hover:scale-110 transition-transform">${stat}</span>
                         </td>
                     </tr>`;
                 });
                 if (html === '') html = '<tr><td colspan="4" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Leave Records Found.</td></tr>';
                 tbody.innerHTML = html;
 
-                document.getElementById('user-leaves-taken').innerText = totalTaken;
-                document.getElementById('user-leaves-remain').innerText = Math.max(0, 7.5 - totalTaken);
+                const myTaken = window.getTakenLeaves(appSession.id);
+                document.getElementById('user-sem1-taken').innerText = myTaken.s1;
+                document.getElementById('user-sem1-remain').innerText = Math.max(0, 7.5 - myTaken.s1);
+                document.getElementById('user-sem2-taken').innerText = myTaken.s2;
+                document.getElementById('user-sem2-remain').innerText = Math.max(0, 7.5 - myTaken.s2);
+
+                const totalTakenAll = myTaken.s1 + myTaken.s2;
+                const isExhausted = totalTakenAll >= 15;
+                const userPage = document.getElementById('page-user');
+                const submitBtn = document.getElementById('btn-submit-user-leave');
+                
+                if (isExhausted) {
+                    userPage.classList.add('grayscale-effect');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerText = "Limit Reached";
+                    }
+                } else {
+                    userPage.classList.remove('grayscale-effect');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = `Submit Request <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13" /><path d="M22 2l-7 20-4-9-9-4 20-7z" /></svg>`;
+                    }
+                }
             }
         }
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('btn-install-app');
+            if (installBtn) installBtn.classList.remove('hidden-page');
+        });
+
+        window.installPWA = async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User accepted the install prompt');
+                }
+                deferredPrompt = null;
+                const installBtn = document.getElementById('btn-install-app');
+                if (installBtn) installBtn.classList.add('hidden-page');
+            }
+        };
 
         window.showPage('page-home');
     </script>
