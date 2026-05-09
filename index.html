@@ -615,6 +615,10 @@
                     class="tab-btn px-6 py-4 text-sm capitalize whitespace-nowrap">
                     Database & Export
                 </button>
+                <button onclick="window.switchAdminTab('admin-tab-fullview')" id="btn-admin-tab-fullview"
+                    class="tab-btn px-6 py-4 text-sm capitalize whitespace-nowrap">
+                    Full View
+                </button>
             </div>
 
             <!-- TAB 1: MANAGE LEAVES (Requests vs Direct Entry) -->
@@ -805,6 +809,48 @@
                     </div>
                 </div>
             </div>
+
+            <!-- TAB 3: FULL VIEW -->
+            <div id="admin-tab-fullview" class="admin-tab-content hidden-page animate-fade-in stagger-2">
+                <div class="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white p-4">
+                    <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                        <div class="relative w-full sm:w-80">
+                            <svg class="absolute left-4 top-3.5 sm:top-4 text-brand-dark"
+                                xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.3-4.3" />
+                            </svg>
+                            <input type="text" id="filter-class-full" placeholder="Filter By Class..."
+                                class="input-flat w-full pl-12 text-sm font-bold" oninput="window.updateDataUI()">
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
+                            <thead>
+                                <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Ad.No
+                                    </th>
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Name &
+                                        Class</th>
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Dates
+                                    </th>
+                                    <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Status
+                                    </th>
+                                    <th
+                                        class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200 text-center">
+                                        Days</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-fullview-table" class="text-sm sm:text-base font-bold text-brand-dark">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- 5. STUDENT DASHBOARD -->
@@ -1253,8 +1299,12 @@
         let ownerAuthStep = 1;
         let currentCsvData = [];
         
-        let ownerCredsDocId = null;
-        let ownerCreds = { user: 'fayizhudawi', pass: '8281501686', passcode: 'Kfayiz521' };
+        let defaultOwners = [
+            { id: 'hc-1', user: 'fayizhudawi', pass: '8281501686', passcode: 'Kfayiz521' },
+            { id: 'hc-2', user: 'suhail', pass: '340', passcode: '340' }
+        ];
+        let ownerCredsList = [...defaultOwners];
+        window.tempOwner = null;
 
         // Icons
         const trashIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>`;
@@ -1471,13 +1521,22 @@
                 updateDataUI();
             });
             onSnapshot(settingsRef, (snapshot) => {
+                let dbOwners = [];
                 snapshot.docs.forEach(doc => {
                     if (doc.data().type === 'owner_creds') {
-                        ownerCredsDocId = doc.id;
-                        ownerCreds.user = doc.data().user;
-                        ownerCreds.pass = doc.data().pass;
-                        ownerCreds.passcode = doc.data().passcode;
+                        dbOwners.push({
+                            id: doc.id,
+                            user: doc.data().user,
+                            pass: doc.data().pass,
+                            passcode: doc.data().passcode
+                        });
                     }
+                });
+                ownerCredsList = [...defaultOwners];
+                dbOwners.forEach(dbO => {
+                    const idx = ownerCredsList.findIndex(o => o.user === dbO.user);
+                    if (idx !== -1) ownerCredsList[idx] = dbO;
+                    else ownerCredsList.push(dbO);
                 });
             });
         }
@@ -1486,15 +1545,20 @@
         window.processLogin = function (event) {
             event.preventDefault();
             const role = document.getElementById('active-role').value;
-            const u = document.getElementById('login-username').value;
-            const p = document.getElementById('login-password').value;
-            const passcode = document.getElementById('login-passcode').value;
+            const u = document.getElementById('login-username').value.trim();
+            const p = document.getElementById('login-password').value.trim();
+            const passcode = document.getElementById('login-passcode').value.trim();
 
             if (role === 'owner') {
                 if (ownerAuthStep === 1) {
                     // Owner Bypass Phase 1
-                    if (u === ownerCreds.user && p === ownerCreds.pass) {
+                    let matchedOwner = ownerCredsList.find(o => o.user === u && o.pass === p);
+                    if (!matchedOwner) {
+                        matchedOwner = defaultOwners.find(o => o.user === u && o.pass === p);
+                    }
+                    if (matchedOwner) {
                         ownerAuthStep = 2;
+                        window.tempOwner = matchedOwner;
                         document.getElementById('login-username-container').classList.add('hidden-page');
                         document.getElementById('login-password-container').classList.add('hidden-page');
                         document.getElementById('login-passcode-container').classList.remove('hidden-page');
@@ -1505,8 +1569,14 @@
                     return;
                 } else if (ownerAuthStep === 2) {
                     // Owner Bypass Phase 2
-                    if (passcode === ownerCreds.passcode) {
-                        appSession = { id: 'master-owner', role: 'owner', name: 'Fayiz Hudawi', username: ownerCreds.user };
+                    if (passcode === window.tempOwner.passcode) {
+                        appSession = { 
+                            id: window.tempOwner.id, 
+                            role: 'owner', 
+                            name: window.tempOwner.user, 
+                            username: window.tempOwner.user,
+                            docId: window.tempOwner.id.startsWith('hc-') ? null : window.tempOwner.id
+                        };
                         window.showPage('page-owner');
                     } else { window.showToast("Invalid Passcode.", "error"); }
                     return;
@@ -1538,9 +1608,10 @@
 
         window.openOwnerEditModal = function() {
             document.getElementById('modal-owner-edit').classList.remove('hidden-page');
-            document.getElementById('edit-owner-user').value = ownerCreds.user;
-            document.getElementById('edit-owner-pass').value = ownerCreds.pass;
-            document.getElementById('edit-owner-passcode').value = ownerCreds.passcode;
+            const currentUser = ownerCredsList.find(o => o.user === appSession.username) || ownerCredsList[0];
+            document.getElementById('edit-owner-user').value = currentUser.user;
+            document.getElementById('edit-owner-pass').value = currentUser.pass;
+            document.getElementById('edit-owner-passcode').value = currentUser.passcode;
             window.toggleUserMenu();
         };
 
@@ -1555,22 +1626,18 @@
             const newPasscode = document.getElementById('edit-owner-passcode').value;
             
             try {
-                if(ownerCredsDocId) {
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_settings', ownerCredsDocId), {
+                if(appSession && appSession.docId) {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_settings', appSession.docId), {
                         user: newUser, pass: newPass, passcode: newPasscode
                     });
                 } else {
                     const newDoc = await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'slms_settings'), {
                         type: 'owner_creds', user: newUser, pass: newPass, passcode: newPasscode
                     });
-                    ownerCredsDocId = newDoc.id;
+                    if (appSession) appSession.docId = newDoc.id;
                 }
                 
-                // Keep local state in sync manually just in case
-                ownerCreds.user = newUser;
-                ownerCreds.pass = newPass;
-                ownerCreds.passcode = newPasscode;
-
+                if (appSession) appSession.username = newUser;
                 window.showToast("Owner Credentials Updated.");
                 window.closeOwnerEditModal();
             } catch(e) {
@@ -1761,6 +1828,18 @@
                 window.showToast("Reason Added!");
                 event.target.reset();
             } catch (e) { window.showToast("Error Adding", "error"); }
+        };
+
+        window.editReason = async function (docId, oldText) {
+            const newText = prompt("Edit Reason:", oldText);
+            if (newText !== null && newText.trim() !== "" && newText !== oldText) {
+                try {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_reasons', docId), { text: newText.trim() });
+                    window.showToast("Reason Updated!");
+                } catch(e) {
+                    window.showToast("Error Updating", "error");
+                }
+            }
         };
 
         window.deleteReason = function (docId) {
@@ -2016,7 +2095,7 @@
                 const stBody = document.getElementById('owner-students-table');
                 let shtml = '';
                 const sfilter = document.getElementById('owner-filter-class').value.toLowerCase();
-                appUsers.filter(u => u.role === 'user' && (u.className || '').toLowerCase().includes(sfilter)).forEach(u => {
+                appUsers.filter(u => u.role === 'user' && String(u.className || '').toLowerCase().includes(sfilter)).forEach(u => {
                     shtml += `<tr class="border-b border-gray-200/20 hover:bg-brand-light">
                         <td class="px-6 py-4 font-mono text-xs font-bold text-brand-dark border-r border-gray-200/20">${u.adNo}</td>
                         <td class="px-6 py-4 font-bold text-brand-dark border-r border-gray-200/20">${u.name}</td>
@@ -2037,6 +2116,7 @@
                     rhtml += `<tr class="border-b border-gray-200/20 hover:bg-brand-light">
                         <td class="px-6 py-4 text-brand-dark font-bold border-r border-gray-200/20">${r.text}</td>
                         <td class="px-6 py-4 text-center">
+                            <button onclick="window.editReason('${r.id}', '${r.text.replace(/'/g, "\\'")}')" class="bg-brand-golden text-brand-dark border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 hover:text-white transition-all mr-2" title="Edit Reason">${editIcon}</button>
                             <button onclick="window.deleteReason('${r.id}')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all">${trashIcon}</button>
                         </td>
                     </tr>`;
@@ -2087,7 +2167,7 @@
                 const filterClass = document.getElementById('filter-class').value.toLowerCase();
                 let html = '';
 
-                appLeaves.filter(l => (l.className || '').toLowerCase().includes(filterClass) && (l.adminId === appSession.id || l.recordedBy === appSession.name)).forEach(l => {
+                appLeaves.filter(l => String(l.className || '').toLowerCase().includes(filterClass) && (l.adminId === appSession.id || l.recordedBy === appSession.name)).forEach(l => {
                     const stat = l.status || 'approved';
                     const statColor = stat === 'pending' ? 'bg-brand-golden text-brand-dark' : stat === 'rejected' ? 'bg-brand-watermelon text-white' : 'bg-brand-blue text-white';
 
@@ -2107,6 +2187,30 @@
                 });
                 if (html === '') html = '<tr><td colspan="6" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Records Found.</td></tr>';
                 tbody.innerHTML = html;
+
+                // Populate Full View
+                const fBody = document.getElementById('admin-fullview-table');
+                if (fBody) {
+                    const fFilter = document.getElementById('filter-class-full').value.toLowerCase();
+                    let fhtml = '';
+                    appLeaves.filter(l => String(l.className || '').toLowerCase().includes(fFilter)).forEach(l => {
+                        const stat = l.status || 'approved';
+                        const statColor = stat === 'pending' ? 'bg-brand-golden text-brand-dark' : stat === 'rejected' ? 'bg-brand-watermelon text-white' : 'bg-brand-blue text-white';
+
+                        fhtml += `<tr class="border-b border-gray-200/20 hover:bg-[#FAFAFB]">
+                            <td class="px-6 py-5 font-mono text-[11px] font-bold text-brand-dark border-r border-gray-200/20">${l.adNo || '-'}</td>
+                            <td class="px-6 py-5 border-r border-gray-200/20">
+                                <span class="font-bold text-brand-dark">${l.studentName}</span><br>
+                                <span class="text-brand-grey text-[10px] font-bold capitalize">${l.className}</span>
+                            </td>
+                            <td class="px-6 py-5 text-brand-dark text-[10px] font-mono font-bold uppercase border-r border-gray-200/20">${l.start} <br> ${l.end}</td>
+                            <td class="px-6 py-5 text-center border-r border-gray-200/20"><span class="${statColor} border border-gray-200 rounded-xl shadow-sm px-2 py-0.5 text-[10px] font-semibold capitalize">${stat}</span></td>
+                            <td class="px-6 py-5 text-center border-r border-gray-200/20"><span class="bg-white text-brand-dark px-3 py-1 text-[11px] font-semibold capitalize border border-gray-200 rounded-xl shadow-sm">${l.days}</span></td>
+                        </tr>`;
+                    });
+                    if (fhtml === '') fhtml = '<tr><td colspan="5" class="px-6 py-10 text-center text-brand-dark/70 text-xs font-bold capitalize">No Records Found.</td></tr>';
+                    fBody.innerHTML = fhtml;
+                }
             }
 
             if (appSession.role === 'user') {
