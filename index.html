@@ -40,9 +40,7 @@
         }
     </script>
     <!-- Fontshare Fonts -->
-    <link
-        href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap"
-        rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #f9fafb;
@@ -72,7 +70,7 @@
             border-radius: 12px;
             padding: 0.875rem 1.25rem;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
         }
 
         .input-flat:focus {
@@ -98,8 +96,15 @@
 
         /* Animations */
         @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .toast-enter {
@@ -107,17 +112,35 @@
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .animate-fade-in {
             animation: fadeInUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
 
-        .stagger-1 { opacity: 0; animation-delay: 100ms; }
-        .stagger-2 { opacity: 0; animation-delay: 200ms; }
-        .stagger-3 { opacity: 0; animation-delay: 300ms; }
+        .stagger-1 {
+            opacity: 0;
+            animation-delay: 100ms;
+        }
+
+        .stagger-2 {
+            opacity: 0;
+            animation-delay: 200ms;
+        }
+
+        .stagger-3 {
+            opacity: 0;
+            animation-delay: 300ms;
+        }
 
         /* Premium Tabs */
         .tab-btn {
@@ -142,13 +165,17 @@
         .grayscale-effect {
             filter: grayscale(100%) brightness(0.9) !important;
         }
-        .grayscale-effect button, .grayscale-effect input, .grayscale-effect select {
+
+        .grayscale-effect button,
+        .grayscale-effect input,
+        .grayscale-effect select {
             cursor: not-allowed !important;
         }
 
         .sem-card {
             transition: all 0.2s ease;
         }
+
         .sem-card:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
@@ -164,7 +191,8 @@
             <div class="flex items-center gap-3 cursor-pointer group animate-fade-in"
                 onclick="window.showPage('page-home')">
                 <div class="w-5 h-5 bg-brand-golden rounded-lg flex-shrink-0"></div>
-                <h1 class="text-[14px] sm:text-[16px] font-sans font-black text-brand-dark tracking-tight leading-tight">
+                <h1
+                    class="text-[14px] sm:text-[16px] font-sans font-black text-brand-dark tracking-tight leading-tight">
                     Leave Management System <span class="hidden sm:inline text-brand-blue">| SFADC Odamala</span>
                 </h1>
             </div>
@@ -178,7 +206,12 @@
                 <!-- Install App button: always shown as icon, label appears when PWA prompt available -->
                 <button id="link-install-app" onclick="window.installPWA()" title="Install App"
                     class="flex items-center gap-2 border border-gray-200 text-brand-dark px-3 py-2 rounded-lg text-xs font-bold hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-all duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" x2="12" y1="3" y2="15" />
+                    </svg>
                     <span id="install-label" class="hidden sm:inline">Install</span>
                 </button>
 
@@ -191,17 +224,31 @@
                     <div id="user-dropdown"
                         class="absolute right-0 mt-3 w-64 bg-white border border-gray-200 rounded-xl shadow-lg py-3 hidden opacity-0 transition-all duration-200 z-50 origin-top-right">
                         <div class="px-5 py-3 border-b border-gray-100 mb-2">
-                            <p class="text-[10px] text-brand-blue font-bold uppercase tracking-widest mb-0.5" id="dropdown-role">Role</p>
-                            <p class="text-sm font-bold text-brand-dark truncate capitalize" id="dropdown-name">User Name</p>
+                            <p class="text-[10px] text-brand-blue font-bold uppercase tracking-widest mb-0.5"
+                                id="dropdown-role">Role</p>
+                            <p class="text-sm font-bold text-brand-dark truncate capitalize" id="dropdown-name">User
+                                Name</p>
                         </div>
                         <div class="px-3 space-y-1">
-                            <button id="btn-owner-edit" onclick="window.openOwnerEditModal()" class="w-full text-left px-4 py-3 text-brand-dark hover:bg-gray-50 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors hidden-page">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                            <button id="btn-owner-edit" onclick="window.openOwnerEditModal()"
+                                class="w-full text-left px-4 py-3 text-brand-dark hover:bg-gray-50 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors hidden-page">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                    <path d="m15 5 4 4" />
+                                </svg>
                                 Edit Credentials
                             </button>
                             <button onclick="window.handleLogout()"
                                 class="w-full text-left px-4 py-3 text-brand-watermelon hover:bg-red-50 rounded-lg text-sm font-semibold flex items-center gap-3 transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                    <polyline points="16 17 21 12 16 7" />
+                                    <line x1="21" x2="9" y1="12" y2="12" />
+                                </svg>
                                 Logout
                             </button>
                         </div>
@@ -217,7 +264,12 @@
         <div id="page-home" class="app-page w-full max-w-md mx-auto mt-16 sm:mt-24">
             <div class="bg-white border border-gray-200 rounded-2xl p-8 sm:p-10 text-center shadow-sm">
                 <div class="w-14 h-14 bg-brand-golden rounded-xl flex items-center justify-center mx-auto mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-brand-dark"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-brand-dark">
+                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                    </svg>
                 </div>
                 <h2 class="text-3xl font-sans font-black text-brand-dark mb-2 tracking-tight">Access Portal</h2>
                 <p class="text-gray-500 text-sm mb-8">Select your role to continue</p>
@@ -225,18 +277,36 @@
                     <button onclick="window.openLogin('admin')"
                         class="w-full flex items-center justify-between px-5 py-4 bg-brand-blue text-white rounded-xl font-bold text-sm hover:bg-opacity-90 transition-colors">
                         <div class="flex items-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
                             Admin Portal
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m9 18 6-6-6-6" />
+                        </svg>
                     </button>
                     <button onclick="window.openLogin('user')"
                         class="w-full flex items-center justify-between px-5 py-4 bg-brand-golden text-brand-dark rounded-xl font-bold text-sm hover:bg-yellow-300 transition-colors">
                         <div class="flex items-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
                             Student Portal
                         </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m9 18 6-6-6-6" />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -262,27 +332,41 @@
                 class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
                 <input type="hidden" id="active-role">
                 <div id="login-username-container" class="mb-5">
-                    <label id="login-username-label" class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Username</label>
-                    <input type="text" id="login-username" class="input-flat w-full text-sm font-semibold" placeholder="Enter your ID" required>
+                    <label id="login-username-label"
+                        class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Username</label>
+                    <input type="text" id="login-username" class="input-flat w-full text-sm font-semibold"
+                        placeholder="Enter your ID" required>
                 </div>
                 <div id="login-password-container" class="mb-5">
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Password</label>
                     <div class="relative">
-                        <input type="password" id="login-password" class="input-flat w-full text-sm font-semibold" placeholder="••••••••">
-                        <span onclick="window.toggleLoginPass()" class="absolute right-4 top-3.5 text-gray-400 cursor-pointer hover:text-brand-blue transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <input type="password" id="login-password" class="input-flat w-full text-sm font-semibold"
+                            placeholder="••••••••">
+                        <span onclick="window.toggleLoginPass()"
+                            class="absolute right-4 top-3.5 text-gray-400 cursor-pointer hover:text-brand-blue transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
                         </span>
                     </div>
                 </div>
                 <div id="login-passcode-container" class="hidden-page mb-5">
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Security Passcode</label>
-                    <input type="password" id="login-passcode" class="input-flat w-full text-center tracking-[0.4em] font-bold text-lg">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Security
+                        Passcode</label>
+                    <input type="password" id="login-passcode"
+                        class="input-flat w-full text-center tracking-[0.4em] font-bold text-lg">
                 </div>
-                <button type="submit" class="w-full bg-brand-blue text-white rounded-xl font-bold text-sm py-3.5 hover:bg-opacity-90 transition-colors mt-2">
+                <button type="submit"
+                    class="w-full bg-brand-blue text-white rounded-xl font-bold text-sm py-3.5 hover:bg-opacity-90 transition-colors mt-2">
                     <span id="login-btn-text">Sign In</span>
                 </button>
                 <div class="mt-5 text-center">
-                    <button type="button" onclick="window.showPage('page-home')" class="text-gray-400 text-xs font-semibold hover:text-brand-dark transition-colors">← Back</button>
+                    <button type="button" onclick="window.showPage('page-home')"
+                        class="text-gray-400 text-xs font-semibold hover:text-brand-dark transition-colors">←
+                        Back</button>
                 </div>
             </form>
         </div>
@@ -356,12 +440,14 @@
                     </form>
                 </div>
 
-                <div class="lg:col-span-2 border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col bg-white h-fit">
+                <div
+                    class="lg:col-span-2 border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col bg-white h-fit">
                     <div class="p-6 border-b border-gray-200 bg-brand-golden">
                         <h3 class="font-sans font-semibold text-xl text-brand-dark capitalize">Registered Admins</h3>
                     </div>
                     <div class="overflow-x-auto flex-grow p-4 bg-white">
-                        <table class="w-full text-left border-collapse min-w-[500px] border border-gray-200 rounded-xl shadow-sm">
+                        <table
+                            class="w-full text-left border-collapse min-w-[500px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
                                     <th class="px-6 py-4 font-bold border-r border-gray-200">Admin Details</th>
@@ -413,7 +499,8 @@
 
                 <div class="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white p-4">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
+                        <table
+                            class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
                                     <th class="px-6 py-5 font-bold border-r border-gray-200">Ad.No</th>
@@ -465,24 +552,41 @@
 
             <!-- TAB 4: LEAVE STATUS -->
             <div id="owner-tab-status" class="owner-tab-content hidden-page max-w-5xl mx-auto w-full animate-fade-in">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-white border border-gray-200 rounded-xl shadow-sm p-4">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 bg-white border border-gray-200 rounded-xl shadow-sm p-4">
                     <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                         <div class="relative w-full sm:w-80">
-                            <svg class="absolute left-4 top-4 text-brand-dark" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                            <input type="text" id="owner-status-filter" placeholder="Filter By Name or Class..." class="input-flat w-full pl-12 font-bold" oninput="window.updateDataUI()">
+                            <svg class="absolute left-4 top-4 text-brand-dark" xmlns="http://www.w3.org/2000/svg"
+                                width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8" />
+                                <path d="m21 21-4.3-4.3" />
+                            </svg>
+                            <input type="text" id="owner-status-filter" placeholder="Filter By Name or Class..."
+                                class="input-flat w-full pl-12 font-bold" oninput="window.updateDataUI()">
                         </div>
                         <div class="relative">
-                            <input type="month" id="owner-status-month" class="input-flat font-bold text-sm cursor-pointer w-full" onchange="window.updateDataUI()" title="Filter by Month">
+                            <input type="month" id="owner-status-month"
+                                class="input-flat font-bold text-sm cursor-pointer w-full"
+                                onchange="window.updateDataUI()" title="Filter by Month">
                         </div>
                     </div>
-                    <button class="bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark px-6 py-3 text-sm font-sans font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 ease-in-out capitalize flex items-center justify-center gap-2" onclick="window.print()">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9" /><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><rect width="12" height="8" x="6" y="14" /></svg>
+                    <button
+                        class="bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark px-6 py-3 text-sm font-sans font-semibold hover:bg-gray-800 hover:text-white transition-all duration-300 ease-in-out capitalize flex items-center justify-center gap-2"
+                        onclick="window.print()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 6 2 18 2 18 9" />
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                            <rect width="12" height="8" x="6" y="14" />
+                        </svg>
                         Print Status
                     </button>
                 </div>
                 <div class="border border-gray-200 rounded-xl shadow-sm overflow-hidden bg-white p-4">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
+                        <table
+                            class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
                                     <th class="px-6 py-5 font-bold border-r border-gray-200">Ad.No</th>
@@ -559,13 +663,15 @@
                 </div>
 
                 <!-- Sub-View: Student Requests -->
-                <div id="admin-view-requests" class="border border-gray-200 rounded-xl shadow-sm p-4 bg-white animate-fade-in">
+                <div id="admin-view-requests"
+                    class="border border-gray-200 rounded-xl shadow-sm p-4 bg-white animate-fade-in">
                     <div
                         class="p-4 sm:p-6 border-b border-gray-200 bg-brand-golden flex justify-between items-center mb-4">
                         <h3 class="font-sans font-semibold text-xl text-brand-dark capitalize">Pending Requests</h3>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
+                        <table
+                            class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
                                     <th class="px-4 sm:px-6 py-4 font-bold border-r border-gray-200">Student Details
@@ -587,12 +693,14 @@
                 <div id="admin-view-monthly"
                     class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-10 bg-white hidden-page animate-fade-in">
                     <form id="form-record-leave" onsubmit="window.recordLeave(event)" class="space-y-6">
-                        <div class="p-5 sm:p-6 bg-brand-blue border border-gray-200 rounded-xl shadow-sm relative overflow-hidden mb-8">
+                        <div
+                            class="p-5 sm:p-6 bg-brand-blue border border-gray-200 rounded-xl shadow-sm relative overflow-hidden mb-8">
                             <label class="block text-sm font-semibold text-white mb-3 capitalize">
                                 Lookup Admission No.
                             </label>
-                            <input type="text" id="leave-adno" class="input-flat w-full font-semibold text-xl text-center"
-                                placeholder="----" onblur="window.autoFillStudent()">
+                            <input type="text" id="leave-adno"
+                                class="input-flat w-full font-semibold text-xl text-center" placeholder="----"
+                                onblur="window.autoFillStudent()">
 
                             <div
                                 class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 bg-white border border-gray-200 rounded-xl shadow-sm p-4">
@@ -626,8 +734,8 @@
                                     <label class="block text-xs font-semibold text-brand-dark mb-2 capitalize">Deduction
                                         Multiplier</label>
                                     <input type="number" id="monthly-late-val" min="1" max="2"
-                                        class="input-flat w-full text-base font-semibold text-center" placeholder="1 or 2"
-                                        required oninput="window.calculateLeavePreview()">
+                                        class="input-flat w-full text-base font-semibold text-center"
+                                        placeholder="1 or 2" required oninput="window.calculateLeavePreview()">
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -668,13 +776,16 @@
                 <!-- Sub-View: Direct Entry (Regular Leave) -->
                 <div id="admin-view-direct"
                     class="border border-gray-200 rounded-xl shadow-sm p-6 sm:p-10 bg-white hidden-page animate-fade-in">
-                    <form id="form-admin-direct-leave" onsubmit="window.submitAdminDirectLeaveRequest(event)" class="space-y-6">
-                        <div class="p-5 sm:p-6 bg-brand-golden border border-gray-200 rounded-xl shadow-sm relative overflow-hidden mb-8">
+                    <form id="form-admin-direct-leave" onsubmit="window.submitAdminDirectLeaveRequest(event)"
+                        class="space-y-6">
+                        <div
+                            class="p-5 sm:p-6 bg-brand-golden border border-gray-200 rounded-xl shadow-sm relative overflow-hidden mb-8">
                             <label class="block text-sm font-semibold text-brand-dark mb-3 capitalize">
                                 Lookup Admission No.
                             </label>
-                            <input type="text" id="direct-leave-adno" class="input-flat w-full font-semibold text-xl text-center"
-                                placeholder="----" onblur="window.autoFillStudentDirect()">
+                            <input type="text" id="direct-leave-adno"
+                                class="input-flat w-full font-semibold text-xl text-center" placeholder="----"
+                                onblur="window.autoFillStudentDirect()">
 
                             <div
                                 class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 bg-white border border-gray-200 rounded-xl shadow-sm p-4">
@@ -705,7 +816,8 @@
                             </select>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-[#FAFAFB] p-4 border border-gray-200 rounded-xl shadow-sm">
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-[#FAFAFB] p-4 border border-gray-200 rounded-xl shadow-sm">
                             <div>
                                 <label class="block text-[11px] font-semibold text-brand-dark mb-2 capitalize">Start
                                     Date</label>
@@ -720,7 +832,8 @@
                             </div>
                         </div>
 
-                        <div id="admin-date-rows-wrapper" class="hidden-page border border-gray-200 rounded-xl shadow-sm p-4 bg-white">
+                        <div id="admin-date-rows-wrapper"
+                            class="hidden-page border border-gray-200 rounded-xl shadow-sm p-4 bg-white">
                             <h4
                                 class="text-xs font-semibold text-brand-blue capitalize mb-4 border-b border-gray-200 pb-2">
                                 Select Halves Per Day</h4>
@@ -779,7 +892,8 @@
                         </button>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
+                        <table
+                            class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
                                     <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Ad.No
@@ -821,7 +935,8 @@
                         </div>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
+                        <table
+                            class="w-full text-left border-collapse min-w-[700px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200">
                                     <th class="px-4 sm:px-6 py-4 sm:py-5 font-bold border-r border-gray-200">Ad.No
@@ -850,7 +965,8 @@
         <!-- 5. STUDENT DASHBOARD -->
         <div id="page-user" class="app-page hidden-page space-y-6 sm:space-y-10">
             <div class="mb-6 animate-fade-in">
-                <h2 class="text-4xl sm:text-5xl font-sans font-semibold text-brand-dark tracking-tight capitalize">Student
+                <h2 class="text-4xl sm:text-5xl font-sans font-semibold text-brand-dark tracking-tight capitalize">
+                    Student
                     <span class="text-brand-blue">Ledger</span>
                 </h2>
                 <p class="text-brand-dark font-bold text-sm sm:text-base mt-2 capitalize">Apply For Leaves And Monitor
@@ -883,7 +999,8 @@
                                 <p id="apply-adno" class="font-mono text-base font-bold">-</p>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-semibold text-brand-grey capitalize mb-1">Name</label>
+                                <label
+                                    class="block text-[10px] font-semibold text-brand-grey capitalize mb-1">Name</label>
                                 <p id="apply-name" class="text-base font-bold truncate">-</p>
                             </div>
                             <div>
@@ -902,7 +1019,8 @@
                             </select>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-[#FAFAFB] p-4 border border-gray-200 rounded-xl shadow-sm">
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-[#FAFAFB] p-4 border border-gray-200 rounded-xl shadow-sm">
                             <div>
                                 <label class="block text-[11px] font-semibold text-brand-dark mb-2 capitalize">Start
                                     Date</label>
@@ -918,7 +1036,8 @@
                         </div>
 
                         <!-- Dynamic Checkbox Container for each day -->
-                        <div id="user-date-rows-wrapper" class="hidden-page border border-gray-200 rounded-xl shadow-sm p-4 bg-white">
+                        <div id="user-date-rows-wrapper"
+                            class="hidden-page border border-gray-200 rounded-xl shadow-sm p-4 bg-white">
                             <h4
                                 class="text-xs font-semibold text-brand-blue capitalize mb-4 border-b border-gray-200 pb-2">
                                 Select Halves Per Day</h4>
@@ -953,16 +1072,28 @@
             <div id="user-tab-history" class="user-tab-content hidden-page animate-fade-in stagger-2">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12">
                     <!-- Semester 1 Card -->
-                    <div class="sem-card glass-panel premium-shadow rounded-[32px] p-8 sm:p-10 border border-white/60 relative overflow-hidden group">
-                        <div class="absolute -top-12 -right-12 w-32 h-32 bg-brand-golden/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                    <div
+                        class="sem-card glass-panel premium-shadow rounded-[32px] p-8 sm:p-10 border border-white/60 relative overflow-hidden group">
+                        <div
+                            class="absolute -top-12 -right-12 w-32 h-32 bg-brand-golden/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700">
+                        </div>
                         <div class="flex items-center justify-between mb-8">
-                             <div class="w-14 h-14 bg-brand-golden rounded-2xl shadow-lg shadow-brand-golden/20 text-brand-dark flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 2v18"/><path d="M12 8h4"/><path d="M12 12h4"/></svg>
-                             </div>
-                             <div class="text-right">
-                                <span class="block text-[10px] font-black text-brand-grey uppercase tracking-widest mb-1">Status</span>
+                            <div
+                                class="w-14 h-14 bg-brand-golden rounded-2xl shadow-lg shadow-brand-golden/20 text-brand-dark flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                                    <path d="M6 2v18" />
+                                    <path d="M12 8h4" />
+                                    <path d="M12 12h4" />
+                                </svg>
+                            </div>
+                            <div class="text-right">
+                                <span
+                                    class="block text-[10px] font-black text-brand-grey uppercase tracking-widest mb-1">Status</span>
                                 <span class="text-sm font-bold text-brand-dark">Semester 01</span>
-                             </div>
+                            </div>
                         </div>
                         <div class="grid grid-cols-3 gap-4">
                             <div class="bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
@@ -971,7 +1102,8 @@
                             </div>
                             <div class="bg-brand-watermelon/5 p-4 rounded-2xl border border-brand-watermelon/10">
                                 <p class="text-[9px] font-black text-brand-watermelon uppercase mb-2">Taken</p>
-                                <p id="user-sem1-taken" class="text-2xl font-sans font-black text-brand-watermelon">0</p>
+                                <p id="user-sem1-taken" class="text-2xl font-sans font-black text-brand-watermelon">0
+                                </p>
                             </div>
                             <div class="bg-brand-blue/5 p-4 rounded-2xl border border-brand-blue/10">
                                 <p class="text-[9px] font-black text-brand-blue uppercase mb-2">Remaining</p>
@@ -980,16 +1112,28 @@
                         </div>
                     </div>
                     <!-- Semester 2 Card -->
-                    <div class="sem-card bg-brand-dark premium-shadow rounded-[32px] p-8 sm:p-10 border border-white/5 relative overflow-hidden group">
-                        <div class="absolute -top-12 -right-12 w-32 h-32 bg-brand-blue/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                    <div
+                        class="sem-card bg-brand-dark premium-shadow rounded-[32px] p-8 sm:p-10 border border-white/5 relative overflow-hidden group">
+                        <div
+                            class="absolute -top-12 -right-12 w-32 h-32 bg-brand-blue/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700">
+                        </div>
                         <div class="flex items-center justify-between mb-8">
-                             <div class="w-14 h-14 bg-brand-blue rounded-2xl shadow-lg shadow-brand-blue/30 text-white flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 2v18"/><path d="M12 8h4"/><path d="M12 12h4"/></svg>
-                             </div>
-                             <div class="text-right">
-                                <span class="block text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Status</span>
+                            <div
+                                class="w-14 h-14 bg-brand-blue rounded-2xl shadow-lg shadow-brand-blue/30 text-white flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                                    <path d="M6 2v18" />
+                                    <path d="M12 8h4" />
+                                    <path d="M12 12h4" />
+                                </svg>
+                            </div>
+                            <div class="text-right">
+                                <span
+                                    class="block text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Status</span>
                                 <span class="text-sm font-bold text-white">Semester 02</span>
-                             </div>
+                            </div>
                         </div>
                         <div class="grid grid-cols-3 gap-4">
                             <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
@@ -1011,7 +1155,8 @@
                 <div class="glass-panel premium-shadow rounded-[32px] overflow-hidden mt-12 border border-white/60">
                     <div class="px-10 py-8 border-b border-gray-100 flex items-center justify-between bg-white/30">
                         <h3 class="text-2xl font-sans font-black text-brand-dark tracking-tight">Application Ledger</h3>
-                        <span class="bg-brand-blue/10 text-brand-blue text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">History</span>
+                        <span
+                            class="bg-brand-blue/10 text-brand-blue text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest">History</span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse min-w-[600px]">
@@ -1039,13 +1184,19 @@
     <!-- Owner Student Modal (Manual & Edit) -->
     <div id="modal-owner-student"
         class="fixed inset-0 bg-brand-dark/90 backdrop-blur-md z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
-        <div class="glass-panel premium-shadow rounded-[40px] p-8 sm:p-12 border border-white/40 max-w-lg w-full animate-fade-in my-8 relative overflow-hidden">
-             <div class="absolute -top-12 -right-12 w-48 h-48 bg-brand-blue/5 rounded-full blur-3xl"></div>
+        <div
+            class="glass-panel premium-shadow rounded-[40px] p-8 sm:p-12 border border-white/40 max-w-lg w-full animate-fade-in my-8 relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-48 h-48 bg-brand-blue/5 rounded-full blur-3xl"></div>
             <div class="flex justify-between items-center mb-10">
-                <h3 class="text-3xl font-sans font-black text-brand-dark tracking-tighter" id="student-modal-title">Student Profile</h3>
+                <h3 class="text-3xl font-sans font-black text-brand-dark tracking-tighter" id="student-modal-title">
+                    Student Profile</h3>
                 <button onclick="window.closeStudentModal()"
                     class="w-12 h-12 flex items-center justify-center bg-brand-watermelon/10 text-brand-watermelon rounded-2xl hover:bg-brand-watermelon hover:text-white transition-all duration-300 transform hover:rotate-90">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
                 </button>
             </div>
             <form id="owner-form-create-student" onsubmit="window.saveOwnerStudent(event)" class="space-y-6">
@@ -1086,7 +1237,8 @@
             class="bg-brand-light border border-gray-200 rounded-xl shadow-sm max-w-2xl w-full animate-fade-in flex flex-col max-h-[90vh] overflow-hidden">
             <div class="p-6 sm:p-8 border-b border-gray-200 flex justify-between items-center bg-white">
                 <h3 class="text-xl font-sans font-semibold text-brand-dark capitalize flex items-center gap-3">
-                    <div class="inline-flex p-2 border border-gray-200 rounded-xl shadow-sm bg-brand-golden text-brand-dark">
+                    <div
+                        class="inline-flex p-2 border border-gray-200 rounded-xl shadow-sm bg-brand-golden text-brand-dark">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -1139,7 +1291,8 @@
 
                 <!-- STEP 2 -->
                 <div class="text-center max-w-sm w-full hidden-page" id="csv-step-2">
-                    <div class="inline-flex p-5 bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark mb-4">
+                    <div
+                        class="inline-flex p-5 bg-brand-golden border border-gray-200 rounded-xl shadow-sm text-brand-dark mb-4">
                         <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -1176,8 +1329,10 @@
                     <p
                         class="text-sm text-brand-dark font-semibold capitalize mb-4 text-center border-b border-gray-200 pb-2 inline-block mx-auto">
                         Step 3: Live Edit & Confirm</p>
-                    <div class="overflow-y-auto border border-gray-200 rounded-xl shadow-sm bg-white flex-grow mb-6 min-h-[300px] p-4">
-                        <table class="w-full text-left border-collapse min-w-[500px] border border-gray-200 rounded-xl shadow-sm">
+                    <div
+                        class="overflow-y-auto border border-gray-200 rounded-xl shadow-sm bg-white flex-grow mb-6 min-h-[300px] p-4">
+                        <table
+                            class="w-full text-left border-collapse min-w-[500px] border border-gray-200 rounded-xl shadow-sm">
                             <thead>
                                 <tr
                                     class="bg-brand-dark text-white text-xs capitalize border-b border-gray-200 sticky top-0 z-10">
@@ -1207,7 +1362,8 @@
     <!-- Confirm Modal -->
     <div id="confirm-modal"
         class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all">
-        <div class="bg-white p-8 border border-gray-200 rounded-xl shadow-sm max-w-sm w-full animate-fade-in text-center">
+        <div
+            class="bg-white p-8 border border-gray-200 rounded-xl shadow-sm max-w-sm w-full animate-fade-in text-center">
             <div
                 class="w-16 h-16 bg-brand-watermelon border border-gray-200 rounded-xl shadow-sm text-white flex items-center justify-center mb-6 mx-auto">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
@@ -1232,7 +1388,8 @@
     <!-- Owner Edit Credentials Modal -->
     <div id="modal-owner-edit"
         class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
-        <div class="bg-white p-8 sm:p-10 border border-gray-200 rounded-xl shadow-sm max-w-md w-full animate-fade-in my-8">
+        <div
+            class="bg-white p-8 sm:p-10 border border-gray-200 rounded-xl shadow-sm max-w-md w-full animate-fade-in my-8">
             <div class="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
                 <h3 class="text-2xl font-sans font-semibold text-brand-dark capitalize">Edit Owner Credentials</h3>
                 <button onclick="window.closeOwnerEditModal()"
@@ -1257,7 +1414,108 @@
                     <input type="text" id="edit-owner-passcode" class="input-flat w-full text-base font-bold" required>
                 </div>
                 <button type="submit"
-                    class="w-full mt-8 bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold py-4 transition-all duration-300 ease-in-out capitalize text-lg hover:bg-gray-800">Save Changes</button>
+                    class="w-full mt-8 bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold py-4 transition-all duration-300 ease-in-out capitalize text-lg hover:bg-gray-800">Save
+                    Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Admin Modal (Owner) -->
+    <div id="modal-edit-admin"
+        class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
+        <div
+            class="bg-white p-8 sm:p-10 border border-gray-200 rounded-xl shadow-sm max-w-md w-full animate-fade-in my-8">
+            <div class="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
+                <h3 class="text-2xl font-sans font-semibold text-brand-dark capitalize">Edit Admin</h3>
+                <button onclick="window.closeAdminEditModal()"
+                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border border-transparent rounded-xl hover:border-brand-dark p-2 transition-colors"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg></button>
+            </div>
+            <form id="form-edit-admin" onsubmit="window.saveAdminEdit(event)" class="space-y-5">
+                <input type="hidden" id="edit-admin-id">
+                <div>
+                    <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Full Name</label>
+                    <input type="text" id="edit-admin-name" class="input-flat w-full font-bold" required>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Phone</label>
+                        <input type="tel" id="edit-admin-phone" class="input-flat w-full font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Place</label>
+                        <input type="text" id="edit-admin-place" class="input-flat w-full font-bold">
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-gray-200 space-y-4">
+                    <p class="text-xs font-bold text-brand-dark/60 uppercase tracking-wide">Credentials</p>
+                    <div>
+                        <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Username</label>
+                        <input type="text" id="edit-admin-user" class="input-flat w-full font-bold" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Password</label>
+                        <input type="text" id="edit-admin-pass" class="input-flat w-full font-bold" required>
+                    </div>
+                </div>
+                <button type="submit"
+                    class="w-full mt-4 bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold py-4 transition-all duration-300 ease-in-out capitalize text-lg hover:bg-gray-800">Save
+                    Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Leave Modal (Admin) -->
+    <div id="modal-edit-leave"
+        class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-50 hidden-page flex items-center justify-center p-4 transition-all overflow-y-auto">
+        <div
+            class="bg-white p-8 sm:p-10 border border-gray-200 rounded-xl shadow-sm max-w-md w-full animate-fade-in my-8">
+            <div class="flex justify-between items-center mb-8 border-b border-gray-200 pb-4">
+                <h3 class="text-2xl font-sans font-semibold text-brand-dark capitalize">Edit Leave Record</h3>
+                <button onclick="window.closeLeaveEditModal()"
+                    class="text-brand-dark hover:bg-brand-watermelon hover:text-white border border-transparent rounded-xl hover:border-brand-dark p-2 transition-colors"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg></button>
+            </div>
+            <form id="form-edit-leave" onsubmit="window.saveLeaveEdit(event)" class="space-y-5">
+                <input type="hidden" id="edit-leave-id">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Start Date</label>
+                        <input type="date" id="edit-leave-start" class="input-flat w-full font-bold" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">End Date</label>
+                        <input type="date" id="edit-leave-end" class="input-flat w-full font-bold" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Days Deducted</label>
+                    <input type="number" id="edit-leave-days" class="input-flat w-full font-bold" step="0.5" min="0.5"
+                        required>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Reason</label>
+                    <input type="text" id="edit-leave-reason" class="input-flat w-full font-bold" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-brand-dark mb-2 capitalize">Status</label>
+                    <select id="edit-leave-status" class="input-flat w-full font-bold">
+                        <option value="approved">Approved</option>
+                        <option value="pending">Pending</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                <button type="submit"
+                    class="w-full mt-4 bg-brand-blue text-white border border-gray-200 rounded-xl shadow-sm font-sans font-semibold py-4 transition-all duration-300 ease-in-out capitalize text-lg hover:bg-gray-800">Save
+                    Changes</button>
             </form>
         </div>
     </div>
@@ -1293,7 +1551,7 @@
         let appReasons = [];
         let ownerAuthStep = 1;
         let currentCsvData = [];
-        
+
         let defaultOwners = [
             { id: 'hc-1', user: 'fayizhudawi', pass: '8281501686', passcode: 'Kfayiz521' },
             { id: 'hc-2', user: 'suhail', pass: '340', passcode: '340' }
@@ -1385,7 +1643,7 @@
                     document.getElementById('nav-avatar').innerText = disp.charAt(0).toUpperCase();
                     document.getElementById('dropdown-role').innerText = appSession.role;
                     document.getElementById('dropdown-name').innerText = disp;
-                    
+
                     const btnEdit = document.getElementById('btn-owner-edit');
                     if (btnEdit) {
                         if (appSession.role === 'owner') btnEdit.classList.remove('hidden-page');
@@ -1571,10 +1829,10 @@
                 } else if (ownerAuthStep === 2) {
                     // Owner Bypass Phase 2
                     if (passcode === window.tempOwner.passcode) {
-                        appSession = { 
-                            id: window.tempOwner.id, 
-                            role: 'owner', 
-                            name: window.tempOwner.user, 
+                        appSession = {
+                            id: window.tempOwner.id,
+                            role: 'owner',
+                            name: window.tempOwner.user,
                             username: window.tempOwner.user,
                             docId: window.tempOwner.id.startsWith('hc-') ? null : window.tempOwner.id
                         };
@@ -1607,7 +1865,7 @@
             else pass.type = 'password';
         }
 
-        window.openOwnerEditModal = function() {
+        window.openOwnerEditModal = function () {
             document.getElementById('modal-owner-edit').classList.remove('hidden-page');
             const currentUser = ownerCredsList.find(o => o.user === appSession.username) || ownerCredsList[0];
             document.getElementById('edit-owner-user').value = currentUser.user;
@@ -1616,18 +1874,18 @@
             window.toggleUserMenu();
         };
 
-        window.closeOwnerEditModal = function() {
+        window.closeOwnerEditModal = function () {
             document.getElementById('modal-owner-edit').classList.add('hidden-page');
         };
 
-        window.saveOwnerCredentials = async function(event) {
+        window.saveOwnerCredentials = async function (event) {
             event.preventDefault();
             const newUser = document.getElementById('edit-owner-user').value;
             const newPass = document.getElementById('edit-owner-pass').value;
             const newPasscode = document.getElementById('edit-owner-passcode').value;
-            
+
             try {
-                if(appSession && appSession.docId) {
+                if (appSession && appSession.docId) {
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_settings', appSession.docId), {
                         user: newUser, pass: newPass, passcode: newPasscode
                     });
@@ -1637,11 +1895,11 @@
                     });
                     if (appSession) appSession.docId = newDoc.id;
                 }
-                
+
                 if (appSession) appSession.username = newUser;
                 window.showToast("Owner Credentials Updated.");
                 window.closeOwnerEditModal();
-            } catch(e) {
+            } catch (e) {
                 window.showToast("Error updating credentials.", "error");
             }
         };
@@ -1663,6 +1921,78 @@
                 window.showToast("Admin Account Created!");
                 event.target.reset();
             } catch (e) { window.showToast("Error Creating Admin", "error"); }
+        };
+
+        // --- Edit Admin Modal (Owner) ---
+        window.openAdminEditModal = function (adminId) {
+            const admin = appUsers.find(u => u.id === adminId);
+            if (!admin) return window.showToast("Admin not found.", "error");
+            document.getElementById('edit-admin-id').value = admin.id;
+            document.getElementById('edit-admin-name').value = admin.name || '';
+            document.getElementById('edit-admin-phone').value = admin.phone || '';
+            document.getElementById('edit-admin-place').value = admin.place || '';
+            document.getElementById('edit-admin-user').value = admin.username || '';
+            document.getElementById('edit-admin-pass').value = admin.password || '';
+            document.getElementById('modal-edit-admin').classList.remove('hidden-page');
+        };
+
+        window.closeAdminEditModal = function () {
+            document.getElementById('modal-edit-admin').classList.add('hidden-page');
+        };
+
+        window.saveAdminEdit = async function (event) {
+            event.preventDefault();
+            if (!fireUser) return;
+            const editId = document.getElementById('edit-admin-id').value;
+            if (!editId) return;
+            const data = {
+                name: document.getElementById('edit-admin-name').value.trim(),
+                phone: document.getElementById('edit-admin-phone').value.trim(),
+                place: document.getElementById('edit-admin-place').value.trim(),
+                username: document.getElementById('edit-admin-user').value.trim(),
+                password: document.getElementById('edit-admin-pass').value.trim()
+            };
+            try {
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_users', editId), data);
+                window.showToast("Admin Updated!");
+                window.closeAdminEditModal();
+            } catch (e) { window.showToast("Error Updating Admin", "error"); }
+        };
+
+        // --- Edit Leave Modal (Admin) ---
+        window.openLeaveEditModal = function (leaveId) {
+            const leave = appLeaves.find(l => l.id === leaveId);
+            if (!leave) return window.showToast("Leave record not found.", "error");
+            document.getElementById('edit-leave-id').value = leave.id;
+            document.getElementById('edit-leave-start').value = leave.start || '';
+            document.getElementById('edit-leave-end').value = leave.end || '';
+            document.getElementById('edit-leave-days').value = leave.days || '';
+            document.getElementById('edit-leave-reason').value = leave.reason || '';
+            document.getElementById('edit-leave-status').value = leave.status || 'approved';
+            document.getElementById('modal-edit-leave').classList.remove('hidden-page');
+        };
+
+        window.closeLeaveEditModal = function () {
+            document.getElementById('modal-edit-leave').classList.add('hidden-page');
+        };
+
+        window.saveLeaveEdit = async function (event) {
+            event.preventDefault();
+            if (!fireUser) return;
+            const editId = document.getElementById('edit-leave-id').value;
+            if (!editId) return;
+            const data = {
+                start: document.getElementById('edit-leave-start').value,
+                end: document.getElementById('edit-leave-end').value,
+                days: Number(document.getElementById('edit-leave-days').value),
+                reason: document.getElementById('edit-leave-reason').value.trim(),
+                status: document.getElementById('edit-leave-status').value
+            };
+            try {
+                await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_leaves', editId), data);
+                window.showToast("Leave Record Updated!");
+                window.closeLeaveEditModal();
+            } catch (e) { window.showToast("Error Updating Leave", "error"); }
         };
 
         window.togglePass = function (id, pass) {
@@ -1837,7 +2167,7 @@
                 try {
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'slms_reasons', docId), { text: newText.trim() });
                     window.showToast("Reason Updated!");
-                } catch(e) {
+                } catch (e) {
                     window.showToast("Error Updating", "error");
                 }
             }
@@ -1855,13 +2185,13 @@
         };
 
         // --- Semester Logic ---
-        window.getSemester = function(dateStr) {
+        window.getSemester = function (dateStr) {
             if (dateStr >= "2026-03-30" && dateStr <= "2026-08-28") return 1;
             if (dateStr >= "2026-08-29" && dateStr <= "2027-01-31") return 2;
             return 1;
         };
 
-        window.getTakenLeaves = function(studentId) {
+        window.getTakenLeaves = function (studentId) {
             let s1 = 0, s2 = 0;
             appLeaves.filter(l => l.studentId === studentId && l.status === 'approved').forEach(l => {
                 if (l.details) {
@@ -2020,9 +2350,9 @@
                 document.getElementById('admin-preview-calc-days').innerText = '0';
                 return;
             }
-            
+
             const studentId = document.getElementById('direct-leave-student-id').value;
-            if(!studentId) {
+            if (!studentId) {
                 wrap.classList.add('hidden-page');
                 cont.innerHTML = '<p class="text-brand-watermelon text-xs font-bold capitalize">Please Look Up A Student First.</p>';
                 document.getElementById('admin-preview-calc-days').innerText = '0';
@@ -2039,7 +2369,7 @@
             while (cur <= d2) {
                 const dateStr = cur.toISOString().split('T')[0];
                 const sem = window.getSemester(dateStr);
-                
+
                 let mChecked = false, aChecked = false;
                 let mDisabled = false, aDisabled = false;
 
@@ -2070,7 +2400,7 @@
             window.calcAdminTotal();
         };
 
-        window.handleAdminLeaveCheck = function(cb) {
+        window.handleAdminLeaveCheck = function (cb) {
             const studentId = document.getElementById('direct-leave-student-id').value;
             if (!studentId) {
                 cb.checked = false;
@@ -2078,7 +2408,7 @@
             }
             const taken = window.getTakenLeaves(studentId);
             let s1 = taken.s1, s2 = taken.s2;
-            
+
             document.querySelectorAll('.admin-leave-cb:checked').forEach(chk => {
                 let sem = window.getSemester(chk.dataset.date);
                 if (sem === 1) s1 += 0.5;
@@ -2105,7 +2435,7 @@
         window.submitAdminDirectLeaveRequest = async function (event) {
             event.preventDefault();
             if (!fireUser || !appSession) return;
-            
+
             const studentId = document.getElementById('direct-leave-student-id').value;
             if (!studentId) return window.showToast("Valid Admission No Required", "error");
 
@@ -2195,7 +2525,7 @@
             while (cur <= d2) {
                 const dateStr = cur.toISOString().split('T')[0];
                 const sem = window.getSemester(dateStr);
-                
+
                 let mChecked = false, aChecked = false;
                 let mDisabled = false, aDisabled = false;
 
@@ -2226,10 +2556,10 @@
             window.calcUserTotal();
         };
 
-        window.handleUserLeaveCheck = function(cb) {
+        window.handleUserLeaveCheck = function (cb) {
             const taken = window.getTakenLeaves(appSession.id);
             let s1 = taken.s1, s2 = taken.s2;
-            
+
             document.querySelectorAll('.user-leave-cb:checked').forEach(chk => {
                 let sem = window.getSemester(chk.dataset.date);
                 if (sem === 1) s1 += 0.5;
@@ -2327,7 +2657,10 @@
                             <button onclick="togglePass('${u.id}', '${u.password}')" class="text-brand-dark hover:scale-110 hover:text-brand-blue transition">${eyeIcon}</button>
                         </td>
                         <td class="px-6 py-5 text-center">
-                            <button onclick="window.deleteUser('${u.id}')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all" title="Delete Admin">${trashIcon}</button>
+                            <div class="flex justify-center gap-2">
+                                <button onclick="window.openAdminEditModal('${u.id}')" class="bg-brand-golden text-brand-dark border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 hover:text-white transition-all" title="Edit Admin">${editIcon}</button>
+                                <button onclick="window.deleteUser('${u.id}')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all" title="Delete Admin">${trashIcon}</button>
+                            </div>
                         </td>
                     </tr>`;
                 });
@@ -2371,14 +2704,14 @@
                     let statusHtml = '';
                     const statusFilterEl = document.getElementById('owner-status-filter');
                     const statusFilter = statusFilterEl ? statusFilterEl.value.toLowerCase() : '';
-                    
+
                     const monthFilterEl = document.getElementById('owner-status-month');
                     const monthFilter = monthFilterEl ? monthFilterEl.value : ''; // "YYYY-MM"
 
                     let statusData = appUsers.filter(u => u.role === 'user').map(u => {
                         let totalTaken = 0;
                         let monthTaken = 0;
-                        
+
                         const takenLeaves = window.getTakenLeaves(u.id);
                         totalTaken = takenLeaves.s1 + takenLeaves.s2;
 
@@ -2393,7 +2726,7 @@
                                 }
                             }
                         });
-                        
+
                         const displayTaken = monthFilter ? monthTaken : totalTaken;
                         const balanceS1 = Math.max(0, 7.5 - takenLeaves.s1);
                         const balanceS2 = Math.max(0, 7.5 - takenLeaves.s2);
@@ -2485,7 +2818,10 @@
                         <td class="px-6 py-5 text-center border-r border-gray-200/20"><span class="${statColor} border border-gray-200 rounded-xl shadow-sm px-2 py-0.5 text-[10px] font-semibold capitalize">${stat}</span></td>
                         <td class="px-6 py-5 text-center border-r border-gray-200/20"><span class="bg-white text-brand-dark px-3 py-1 text-[11px] font-semibold capitalize border border-gray-200 rounded-xl shadow-sm">${l.days}</span></td>
                         <td class="px-6 py-5 text-center no-print">
-                            <button onclick="window.deleteLeave('${l.id}')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all">${trashIcon}</button>
+                            <div class="flex justify-center gap-2">
+                                <button onclick="window.openLeaveEditModal('${l.id}')" class="bg-brand-golden text-brand-dark border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 hover:text-white transition-all" title="Edit Leave">${editIcon}</button>
+                                <button onclick="window.deleteLeave('${l.id}')" class="bg-brand-watermelon text-white border border-gray-200 rounded-xl shadow-sm px-3 py-1.5 hover:bg-gray-800 transition-all" title="Delete Leave">${trashIcon}</button>
+                            </div>
                         </td>
                     </tr>`;
                 });
@@ -2570,7 +2906,7 @@
                 const isExhausted = totalTakenAll >= 15;
                 const userPage = document.getElementById('page-user');
                 const submitBtn = document.getElementById('btn-submit-user-leave');
-                
+
                 if (isExhausted) {
                     userPage.classList.add('grayscale-effect');
                     if (submitBtn) {
